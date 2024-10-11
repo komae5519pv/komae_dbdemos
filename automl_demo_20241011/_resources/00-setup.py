@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run ../01_config
+# MAGIC %run ../00_config
 
 # COMMAND ----------
 
@@ -37,7 +37,6 @@ from datetime import date
 
 #credit_automl_run_name = "lakehouse_fsi_credit_decisioning_auto_ml"
 #credit_model_name = "dbdemos_fsi_credit_decisioning"
-
 
 # Helper function
 def get_latest_model_version(model_name):

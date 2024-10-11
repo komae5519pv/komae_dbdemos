@@ -118,7 +118,7 @@
 
 CREATE OR REFRESH STREAMING LIVE TABLE credit_bureau_bronze AS
   SELECT * FROM
-    cloud_files('/Volumes/${init_setting.catalog}/${init_setting.schema}/${init_setting.volume}/credit_bureau', 'json',
+    cloud_files('/Volumes/komae_demo/automl_e2e_demo/credit_raw_data/credit_bureau', 'json',
                  map('header', 'true', 
                      'inferSchema', 'true', 
                      'cloudFiles.inferColumnTypes', 'true'))
