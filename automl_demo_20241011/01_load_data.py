@@ -70,7 +70,7 @@ DBDemos.download_file_from_git(
 
 # fund_transをダウンロード
 DBDemos.download_file_from_git(
-    dest="/Volumes/komae_demo/automl_e2e_demo/credit_raw_data/fund_trans",
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/fund_trans",
     owner="komae5519pv",
     repo="komae_dbdemos",
     path="/automl_demo_20241011/_rawdata/fund_trans/"
