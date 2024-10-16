@@ -27,7 +27,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 01. カタログ、スキーマを作る
+# MAGIC ## 01. カタログ・スキーマ作成
 
 # COMMAND ----------
 
@@ -72,35 +72,7 @@ display(df.limit(10))
 
 # COMMAND ----------
 
-# %sql
-# CREATE OR REPLACE TABLE silver_online_retail AS
-# SELECT
-#     InvoiceNo,                                      -- インボイス番号
-#     StockCode,                                      -- 商品コード
-#     Description,                                    -- 商品説明
-#     CAST(Quantity AS INT) AS Quantity,              -- 購入数量
-#     TO_TIMESTAMP(
-#         CONCAT(
-#             LPAD(SPLIT(InvoiceDate, '/')[0], 2, '0'), '/',                -- 月を2桁に変換
-#             LPAD(SPLIT(InvoiceDate, '/')[1], 2, '0'), '/',                -- 日を2桁に変換
-#             SPLIT(SPLIT(InvoiceDate, ' ')[0], '/')[2], ' ',               -- 年
-#             LPAD(SPLIT(SPLIT(InvoiceDate, ' ')[1], ':')[0], 2, '0'), ':', -- 時を2桁に変換
-#             SPLIT(SPLIT(InvoiceDate, ' ')[1], ':')[1]                     -- 分
-#         ),
-#         'MM/dd/yy HH:mm'
-#     ) AS InvoiceDate,                               -- 日付をタイムスタンプ型に変換
-#     CAST(UnitPrice AS DOUBLE) AS UnitPrice,         -- 商品単価
-#     CustomerID,                                     -- 顧客ID
-#     Country                                         -- 国
-# FROM
-#     bronze_online_retail
-# WHERE
-#     CustomerID IS NOT NULL;
-
-# SELECT * FROM silver_online_retail LIMIT 10;
-
-# COMMAND ----------
-
+# DBTITLE 1,テーブル作成
 # MAGIC %sql
 # MAGIC -- 日付型変換用の関数を作成
 # MAGIC CREATE OR REPLACE FUNCTION transform_date(InvoiceDate STRING) RETURNS TIMESTAMP
@@ -118,15 +90,15 @@ display(df.limit(10))
 # MAGIC -- データをDATEとTIMEに分けて保存
 # MAGIC CREATE OR REPLACE TABLE silver_online_retail AS
 # MAGIC SELECT
-# MAGIC     InvoiceNo,                                                          -- インボイス番号
+# MAGIC     InvoiceNo AS OrderNo,                                               -- 注文番号
 # MAGIC     StockCode,                                                          -- 商品コード
 # MAGIC     Description,                                                        -- 商品説明
-# MAGIC     CAST(Quantity AS INT) AS Quantity,                                  -- 購入数量
-# MAGIC     TO_DATE(transform_date(InvoiceDate)) AS OrderDate,                  -- 購入日付（yyyy-mm-dd）
-# MAGIC     DATE_FORMAT(transform_date(InvoiceDate), 'HH:mm') AS OrderTime,     -- 購入時間（HH:ss）
+# MAGIC     CAST(Quantity AS INT) AS Quantity,                                  -- 商品点数
+# MAGIC     TO_DATE(transform_date(InvoiceDate)) AS OrderDate,                  -- 注文日付（yyyy-mm-dd）
+# MAGIC     DATE_FORMAT(transform_date(InvoiceDate), 'HH:mm') AS OrderTime,     -- 注文時間（HH:ss）
 # MAGIC     LPAD(
 # MAGIC       HOUR(DATE_FORMAT(transform_date(InvoiceDate), 'HH:mm'))
-# MAGIC       , 2 , '0') AS OrderHour,                                          -- 購入時間帯（HH）
+# MAGIC       , 2 , '0') AS OrderHour,                                          -- 注文時間帯（HH）
 # MAGIC     CAST(UnitPrice AS DOUBLE) AS UnitPrice,                             -- 商品単価
 # MAGIC     CustomerID,                                                         -- 顧客ID
 # MAGIC     Country                                                             -- 国
@@ -139,24 +111,25 @@ display(df.limit(10))
 
 # COMMAND ----------
 
+# DBTITLE 1,テーブル説明・カラムコメントを追加
 # テーブル名
 table_name = 'silver_online_retail'
 
 # テーブルコメント
 comment = """
-`silver_online_retail` テーブルは、オンライン小売取引に関連するデータを含んでいます。このテーブルには、インボイス番号、商品コード、商品の説明、注文数量、注文日と時間、注文時間帯、単価、顧客ID、国といった情報が含まれています。このテーブルは、販売実績、顧客の行動、オンライン小売業の国際的な広がりを理解するために重要です。このテーブルのデータは、人気商品の特定、時間を通じた販売傾向の分析、国別に顧客の好みを理解するためのさまざまな分析に活用できます。
+`silver_online_retail` テーブルは、オンライン小売取引に関連するデータを含んでいます。このテーブルには、注文番号、商品コード、商品の説明、注文数量、注文日と時間、注文時間帯、単価、顧客ID、国といった情報が含まれています。このテーブルは、販売実績、顧客の行動、オンライン小売業の国際的な広がりを理解するために重要です。このテーブルのデータは、人気商品の特定、時間を通じた販売傾向の分析、国別に顧客の好みを理解するためのさまざまな分析に活用できます。
 """
 spark.sql(f'COMMENT ON TABLE {table_name} IS "{comment}"')
 
 # カラムコメント
 column_comments = {
-    "InvoiceNo": "文字列、ユニーク(主キー)、受注番号、例: '536365'",
+    "OrderNo": "文字列、ユニーク(主キー)、注文番号、例: '536365'",
     "StockCode": "文字列、商品コード（外部キー）、例: '85123A'",
     "Description": "文字列、商品説明、例: WHITE METAL LANTERN",
     "Quantity": "整数、商品点数",
-    "OrderDate": "日付、YYYY-MM-DD、受注日付",
-    "OrderTime": "文字列、hh:ss、受注時間",
-    "OrderHour": "文字列、hh、受注時間帯",
+    "OrderDate": "日付、YYYY-MM-DD、注文日付",
+    "OrderTime": "文字列、hh:ss、注文時間",
+    "OrderHour": "文字列、hh、注文時間帯",
     "UnitPrice": "浮動小数点、商品単価",
     "CustomerID": "整数、顧客ID（外部キー）、例: 17850",
     "Country": "文字列、国、例: 'United Kingdom'"
@@ -196,8 +169,8 @@ for column, comment in column_comments.items():
 # MAGIC SELECT
 # MAGIC   CustomerID,                                   -- 顧客ID
 # MAGIC   StockCode,                                    -- 商品コード
-# MAGIC   SUM(Quantity) AS total_quantity_purchased,    -- 購買商品数
-# MAGIC   SUM(Quantity * UnitPrice) AS total_spent      -- 購買金額
+# MAGIC   SUM(Quantity) AS total_quantity_purchased,    -- 商品点数
+# MAGIC   SUM(Quantity * UnitPrice) AS total_spent      -- 注文金額
 # MAGIC FROM
 # MAGIC   silver_online_retail
 # MAGIC GROUP BY
@@ -243,11 +216,11 @@ for column, comment in column_comments.items():
 # MAGIC RETURN
 # MAGIC SELECT
 # MAGIC     StockCode,                                        -- 商品コード
-# MAGIC     SUM(Quantity) AS total_quantity_sold,             -- 商品の総販数
+# MAGIC     SUM(Quantity) AS total_quantity_sold,             -- 商品の販売点数
 # MAGIC     SUM(Quantity * UnitPrice) AS total_revenue,       -- 商品の総売上
 # MAGIC     AVG(UnitPrice) AS avg_unit_price,                 -- 商品の平均単価
 # MAGIC     COUNT(DISTINCT CustomerID) AS distinct_customers, -- 商品を購入した異なる顧客数
-# MAGIC     COUNT(DISTINCT InvoiceNo) AS total_invoices       -- 商品が含まれた会計回数
+# MAGIC     COUNT(DISTINCT InvoiceNo) AS total_invoices       -- 商品が含まれた注文回数
 # MAGIC FROM
 # MAGIC     silver_online_retail
 # MAGIC GROUP BY
@@ -343,9 +316,9 @@ for column, comment in column_comments.items():
 # MAGIC )
 # MAGIC RETURN
 # MAGIC SELECT
-# MAGIC     OrderDate AS purchase_date,                 -- 購入日付
-# MAGIC     OrderHour AS purchase_hour,                 -- 購入時間帯
-# MAGIC     SUM(Quantity) AS total_quantity,            -- 時間帯ごとの購入数量
+# MAGIC     OrderDate AS purchase_date,                 -- 注文日付
+# MAGIC     OrderHour AS purchase_hour,                 -- 注文時間帯
+# MAGIC     SUM(Quantity) AS total_quantity,            -- 時間帯ごとに購入された商品点数
 # MAGIC     SUM(Quantity * UnitPrice) AS total_revenue  -- 時間帯ごとの売上金額
 # MAGIC FROM
 # MAGIC     silver_online_retail
