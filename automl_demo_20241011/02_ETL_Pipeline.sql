@@ -110,7 +110,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md-sandbox
--- MAGIC ### 2. Databricks Autoloader (cloud_files) を使用してデータを読み込む
+-- MAGIC ### 2. Autoloader (cloud_files) を使用してデータを読み込む
 -- MAGIC
 -- MAGIC <img width="650px" style="float:right" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/credit_decisioning/fsi_credit_decisioning_dlt_1.png"/>
 -- MAGIC
@@ -220,7 +220,7 @@ CREATE OR REFRESH STREAMING LIVE TABLE telco_bronze AS
 -- COMMAND ----------
 
 -- MAGIC %md-sandbox
--- MAGIC ### 3. データアナリスト向けに品質を強化し、マテリアライズドテーブルを作成
+-- MAGIC ### 3. データ品質を強化し、マテリアライズドテーブルを作成
 -- MAGIC
 -- MAGIC <img width="650px" style="float:right" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/credit_decisioning/fsi_credit_decisioning_dlt_2.png"/>
 -- MAGIC
