@@ -110,7 +110,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md-sandbox
--- MAGIC ### 2. Autoloader (cloud_files) を使用してデータを読み込む
+-- MAGIC ### 2. bronze - Autoloader (cloud_files) を使用してデータを読み込む
 -- MAGIC
 -- MAGIC <img width="650px" style="float:right" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/credit_decisioning/fsi_credit_decisioning_dlt_1.png"/>
 -- MAGIC
@@ -220,7 +220,7 @@ CREATE OR REFRESH STREAMING LIVE TABLE telco_bronze AS
 -- COMMAND ----------
 
 -- MAGIC %md-sandbox
--- MAGIC ### 3. データ品質を強化し、マテリアライズドテーブルを作成
+-- MAGIC ### 3. silver - データ品質を強化してマテリアライズドテーブルを作成
 -- MAGIC
 -- MAGIC <img width="650px" style="float:right" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/credit_decisioning/fsi_credit_decisioning_dlt_2.png"/>
 -- MAGIC
@@ -301,7 +301,7 @@ CREATE OR REFRESH LIVE TABLE account_silver AS
 
 -- MAGIC %md-sandbox
 -- MAGIC
--- MAGIC ### 4. 分析 & MLのための、集計レイヤー
+-- MAGIC ### 4. gold - 分析 & MLのための、集計レイヤー
 -- MAGIC
 -- MAGIC <img width="650px" style="float:right" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/credit_decisioning/fsi_credit_decisioning_dlt_3.png"/>
 -- MAGIC
@@ -465,14 +465,3 @@ SELECT
   END AS first_name
 FROM
   live.customer_gold AS c
-
--- COMMAND ----------
-
--- MAGIC %md
--- MAGIC # Next: secure and share data with Unity Catalog
--- MAGIC
--- MAGIC Now that we have ingested all these various sources of data, we can jump to the:
--- MAGIC
--- MAGIC * [Governance with Unity Catalog notebook]($../02-Data-Governance/02-Data-Governance-credit-decisioning) to see how to grant fine-grained access to every user and persona and explore the **data lineage graph**,
--- MAGIC * [Feature Engineering notebook]($../03-Data-Science-ML/03.1-Feature-Engineering-credit-decisioning) and start creating features for our machine learning models,
--- MAGIC * Go back to the [Introduction]($../00-Credit-Decisioning).

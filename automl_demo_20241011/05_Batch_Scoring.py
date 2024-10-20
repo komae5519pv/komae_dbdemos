@@ -1,7 +1,13 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC # 1. Batch Scoringの実行
+# MAGIC クラスタ：Runtime 15.4 LTS ML以上
+
+# COMMAND ----------
+
 # MAGIC %md-sandbox
 # MAGIC
-# MAGIC # AutoMLで生成された最良のモデルを使用して、クレジットの信用度をバッチスコアリングする
+# MAGIC ## AutoMLで生成された最良のモデルを使用して、クレジットの信用度をバッチスコアリングする
 # MAGIC
 # MAGIC <img src="https://raw.githubusercontent.com/QuentinAmbard/databricks-demo/main/retail/resources/images/lakehouse-retail/lakehouse-retail-churn-ml-experiment.png" style="float: right" width="600px">
 # MAGIC
@@ -15,13 +21,6 @@
 # MAGIC
 # MAGIC <!-- Collect usage data (view). Remove it to disable collection. View README for more details.  -->
 # MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=lakehouse&org_id=984752964297111&notebook=%2F03-Data-Science-ML%2F03.3-Batch-Scoring-credit-decisioning&demo_name=lakehouse-fsi-credit&event=VIEW&path=%2F_dbdemos%2Flakehouse%2Flakehouse-fsi-credit%2F03-Data-Science-ML%2F03.3-Batch-Scoring-credit-decisioning&version=1">
-
-# COMMAND ----------
-
-# MAGIC %md 
-# MAGIC ### A cluster has been created for this demo
-# MAGIC To run this demo, just select the cluster `dbdemos-lakehouse-fsi-credit-konomi_omae` from the dropdown menu ([open cluster configuration](https://adb-984752964297111.11.azuredatabricks.net/#setting/clusters/0914-122336-4u3552ik/configuration)). <br />
-# MAGIC *Note: If the cluster was deleted after 30 days, you can re-create it with `dbdemos.create_cluster('lakehouse-fsi-credit')` or re-install the demo: `dbdemos.install('lakehouse-fsi-credit')`*
 
 # COMMAND ----------
 
@@ -47,6 +46,7 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,本番環境のモデルをロード
 # MLflowのレジストリURIを設定
 mlflow.set_registry_uri('databricks-uc')
 
@@ -89,7 +89,7 @@ underbanked_df_with_timestamp.write.mode("append").saveAsTable(f"{MY_CATALOG}.{M
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 推論結果データをS3にエクスポート
+# MAGIC # 2. 推論結果データをS3にエクスポート
 
 # COMMAND ----------
 
@@ -114,16 +114,3 @@ print(f"ファイル出力完了: /Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_E
 # DBTITLE 1,ExportファイルALL削除
 # dbutils.fs.rm(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_EXPORT}", True)
 # print(f"ファイル削除完了: /Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_EXPORT}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC
-# MAGIC ### 次のステップ
-# MAGIC
-# MAGIC * モデルをリアルタイム推論にデプロイし、銀行内で```後払い```機能を有効にするには、[03.4-model-serving-BNPL-credit-decisioning]($./03.4-model-serving-BNPL-credit-decisioning) を使用してください。
-# MAGIC
-# MAGIC または
-# MAGIC
-# MAGIC * どのような顧客層に対しても公平なモデルを構築することは、FSI（金融サービス業界）のユースケースにおける本番環境向けMLモデルの構築において非常に重要です。<br/>
-# MAGIC モデルをLakehouseで [03.5-Explainability-and-Fairness-credit-decisioning]($./03.5-Explainability-and-Fairness-credit-decisioning) を使用して探求してみてください。

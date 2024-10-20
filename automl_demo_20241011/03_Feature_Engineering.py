@@ -1,11 +1,17 @@
 # Databricks notebook source
 # MAGIC %md
+# MAGIC # 特徴量エンジニアリング
+# MAGIC クラスタ：Runtime 15.4 LTS 以上 or 15.4 LTS ML以上
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC
-# MAGIC # ML: 高い債務不履行確率を持つクレジット所有者の予測
+# MAGIC ## ML: 高い債務不履行確率を持つクレジット所有者の予測
 # MAGIC
 # MAGIC すべてのデータがロードされ、セキュリティが確保された（**data unification**部分）後、データを探索し、理解し、アクションに繋がるインサイトを作成するための**data decisioning**に進むことができます。
 # MAGIC
-# MAGIC [イントロダクションノートブック]($../00-Credit-Decisioning)で説明したように、以下の3つのビジネス成果を目指して機械学習（ML）モデルを構築します：
+# MAGIC ここでは、以下の3つのビジネス成果を目指して機械学習（ML）モデルを構築します：
 # MAGIC 1. 信用力が高いが現在銀行サービスを十分に利用していない顧客を特定し、クレジット商品を提供する
 # MAGIC 2. 高い債務不履行の確率を持つ現在のクレジット所有者を予測し、デフォルト時の損失額を予測する
 # MAGIC 3. 顧客が取引を完了するためのクレジット限度額や口座残高が不足している場合、瞬時に少額ローン（後払い）を提供する
@@ -17,13 +23,6 @@
 # MAGIC
 # MAGIC <!-- Collect usage data (view). Remove it to disable collection. View README for more details.  -->
 # MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=lakehouse&org_id=984752964297111&notebook=%2F03-Data-Science-ML%2F03.1-Feature-Engineering-credit-decisioning&demo_name=lakehouse-fsi-credit&event=VIEW&path=%2F_dbdemos%2Flakehouse%2Flakehouse-fsi-credit%2F03-Data-Science-ML%2F03.1-Feature-Engineering-credit-decisioning&version=1">
-
-# COMMAND ----------
-
-# MAGIC %md 
-# MAGIC ### A cluster has been created for this demo
-# MAGIC To run this demo, just select the cluster `dbdemos-lakehouse-fsi-credit-konomi_omae` from the dropdown menu ([open cluster configuration](https://adb-984752964297111.11.azuredatabricks.net/#setting/clusters/0914-122336-4u3552ik/configuration)). <br />
-# MAGIC *Note: If the cluster was deleted after 30 days, you can re-create it with `dbdemos.create_cluster('lakehouse-fsi-credit')` or re-install the demo: `dbdemos.install('lakehouse-fsi-credit')`*
 
 # COMMAND ----------
 
