@@ -74,7 +74,7 @@
 
 -- MAGIC %md
 -- MAGIC ### 1. パイプライン手動設定
--- MAGIC パイプライン > パイプライン設定
+-- MAGIC パイプライン > パイプラインを作成  
 -- MAGIC 一般
 -- MAGIC 下記内容で設定してください
 -- MAGIC ```
@@ -82,8 +82,23 @@
 -- MAGIC パイプラインモード: トリガー（バッチ処理）
 -- MAGIC ```
 -- MAGIC
+-- MAGIC パイプライン > パイプラインを作成  
+-- MAGIC 配信先
+-- MAGIC ```
+-- MAGIC カタログ: <カタログ名を指定してください>
+-- MAGIC スキーマ: automl_e2e_demo
+-- MAGIC ```
 -- MAGIC
--- MAGIC パイプラインを作成 > Advanced > 設定を追加
+-- MAGIC パイプライン > パイプラインを作成  
+-- MAGIC クラスター
+-- MAGIC ```
+-- MAGIC クラスターポリシー: なし
+-- MAGIC クラスタモード: 強化オートスケーリング
+-- MAGIC ワーカーの最小数: 1
+-- MAGIC ワーカーの最大数: 5
+-- MAGIC ```
+-- MAGIC
+-- MAGIC パイプライン > パイプラインを作成 > Advanced > 設定を追加  
 -- MAGIC キーと値を設定してください
 -- MAGIC ```
 -- MAGIC init_setting.catalog: <カタログ名を指定してください>
