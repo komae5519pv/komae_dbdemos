@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md-sandbox  
--- MAGIC # Delta Live Tablesを使ったデータ取り込みと変換の簡素化
+-- MAGIC <!-- # Delta Live Tablesを使ったデータ取り込みと変換の簡素化
 -- MAGIC
 -- MAGIC このノートブックでは、データエンジニアとしてクレジット判断データベースを構築します。  
 -- MAGIC 生データソースを取り込み、BIやMLワークロードに必要なテーブルを準備します。
@@ -53,7 +53,7 @@
 -- MAGIC
 -- MAGIC Lakehouseで作成するすべてのテーブルはDelta Lakeテーブルとして保存されます。Delta Lakeは、信頼性とパフォーマンスを提供するオープンストレージフレームワークです。  
 -- MAGIC 多くの機能（ACIDトランザクション、DELETE/UPDATE/MERGE、クローンゼロコピー、変更データキャプチャなど）を提供しています。  
--- MAGIC Delta Lakeの詳細については、`dbdemos.install('delta-lake')`を実行してください。
+-- MAGIC Delta Lakeの詳細については、`dbdemos.install('delta-lake')`を実行してください。 -->
 
 -- COMMAND ----------
 
@@ -69,12 +69,6 @@
 -- MAGIC 次のフローを実装しましょう：
 -- MAGIC
 -- MAGIC <div><img width="1000px" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/credit_decisioning/fsi_credit_decisioning_dlt_0.png" /></div>
-
--- COMMAND ----------
-
--- MAGIC %md
--- MAGIC Your DLT Pipeline has been installed and started for you! Open the <a dbdemos-pipeline-id="dlt-fsi-credit-decisioning" href="#joblist/pipelines" target="_blank">Delta Live Table pipeline</a> to see it in action.<br/>
--- MAGIC *(Note: The pipeline will automatically start once the initialization job is completed, this might take a few minutes... Check installation logs for more details)*
 
 -- COMMAND ----------
 
