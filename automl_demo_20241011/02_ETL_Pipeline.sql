@@ -330,7 +330,7 @@ AS
 
 -- MAGIC %md
 -- MAGIC
--- MAGIC #### 1. Fund transfer table(金融取引データ)
+-- MAGIC #### 2. Fund transfer table(金融取引データ)
 -- MAGIC
 -- MAGIC `fund transfer`は、顧客と他の人物との間で行われたピアツーピア(P2P)の支払いを表しています。これにより、各顧客の支払い頻度や金額に関する属性を理解し、クレジットリスクの評価に役立てることができます。
 
