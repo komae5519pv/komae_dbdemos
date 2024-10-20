@@ -129,7 +129,7 @@
 
 CREATE OR REFRESH STREAMING LIVE TABLE credit_bureau_bronze AS
   SELECT * FROM
-    cloud_files('/Volumes/${init_setting.catalog}/${init_setting.schema}/${init_setting.volume}/credit_bureau', 'json',
+    cloud_files('/Volumes/${init_setting.catalog}/${init_setting.schema}/${init_setting.volume}/credit_bureau/credit_bureau', 'json',
                  map('header', 'true', 
                      'inferSchema', 'true', 
                      'cloudFiles.inferColumnTypes', 'true'))
