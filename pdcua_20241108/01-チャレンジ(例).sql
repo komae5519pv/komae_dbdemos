@@ -1,9 +1,7 @@
 -- Databricks notebook source
 -- MAGIC %python
--- MAGIC # catalog_name = "komae"
--- MAGIC # chema_name  = "komae_schema"
--- MAGIC catalog_name = "komae_demo"
--- MAGIC schema_name  = "pcdua"
+-- MAGIC catalog_name = "komae"
+-- MAGIC schema_name  = "komae_schema"
 -- MAGIC spark.sql(f"USE {catalog_name}.{schema_name}")
 
 -- COMMAND ----------

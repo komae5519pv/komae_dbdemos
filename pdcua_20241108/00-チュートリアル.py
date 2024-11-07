@@ -486,11 +486,18 @@ print(f'/Volumes/{catalog_name}/{schema_name}/pcdua_volume/sample_submit.csv')
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC SIGNATE提出用のサンプルフォーマットをロード
+
+# COMMAND ----------
+
+# DBTITLE 1,GithubからVolumeにダウンロードするためのヘルパー読み込み
 # MAGIC %run ./_init/_init_helper
 
 # COMMAND ----------
 
-# credit_bureauをダウンロード
+# DBTITLE 1,GithubからVolumeにダウンロード
+# sample_submit.csvをダウンロード
 DBDemos.download_file_from_git(
     dest=f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume",
     owner="komae5519pv",
