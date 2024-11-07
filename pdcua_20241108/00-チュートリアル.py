@@ -4,10 +4,23 @@
 
 # COMMAND ----------
 
-# catalog_name = "komae"
-# schema_name  = "komae_schema"
-catalog_name = "komae_demo"
-schema_name  = "pcdua"
+catalog_name = "komae" # ご自身のカタログ名に変更してください
+schema_name = "komae_schema" # ご自身のスキーマ名に変更してください
+volume_name = "pcdua_volume"
+
+# COMMAND ----------
+
+# カタログ、スキーマ、ボリューム作成
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {catalog_name};")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {catalog_name}.{schema_name};")
+spark.sql(f"CREATE VOLUME IF NOT EXISTS {catalog_name}.{schema_name}.{volume_name};")
+
+print(f"カタログパス: {catalog_name}")
+print(f"スキーマパス: {catalog_name}.{schema_name}")
+print(f"ボリュームパス: /Volumes/{catalog_name}/{schema_name}/{volume_name}")
+
+# COMMAND ----------
+
 spark.sql(f"USE {catalog_name}.{schema_name}")
 
 # COMMAND ----------
@@ -17,8 +30,7 @@ spark.sql(f"USE {catalog_name}.{schema_name}")
 
 # COMMAND ----------
 
-# df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/train.csv", header=True, inferSchema=True)
-df = spark.read.csv(f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume/train.csv", header=True, inferSchema=True)
+df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/train.csv", header=True, inferSchema=True)
 df.write.format("delta").mode("overwrite").saveAsTable("train")
 
 # COMMAND ----------
@@ -221,16 +233,13 @@ df.write.format("delta").mode("overwrite").saveAsTable("train")
 
 # COMMAND ----------
 
-# df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/tag_info.csv", header=True, inferSchema=True)
-df = spark.read.csv(f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume/tag_info.csv", header=True, inferSchema=True)
+df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/tag_info.csv", header=True, inferSchema=True)
 df.write.format("delta").mode("overwrite").saveAsTable("tag_info")
 
-# df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/area_info.csv", header=True, inferSchema=True)
-df = spark.read.csv(f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume/area_info.csv", header=True, inferSchema=True)
+df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/area_info.csv", header=True, inferSchema=True)
 df.write.format("delta").mode("overwrite").saveAsTable("area_info")
 
-# df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/setsubi_info.csv", header=True, inferSchema=True)
-df = spark.read.csv(f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume/setsubi_info.csv", header=True, inferSchema=True)
+df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/setsubi_info.csv", header=True, inferSchema=True)
 df.write.format("delta").mode("overwrite").saveAsTable("setsubi_info")
 
 # COMMAND ----------
@@ -406,8 +415,8 @@ df.write.format("delta").mode("overwrite").saveAsTable("setsubi_info")
 # schema_name  = "komae_schema"
 # spark.sql(f"USE {catalog_name}.{schema_name}")
 
-# df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/test.csv", header=True, inferSchema=True)
-df = spark.read.csv(f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume/test.csv", header=True, inferSchema=True)
+df = spark.read.csv("/Volumes/pcdua_shared_catalog/default/pcdua_volume/test.csv", header=True, inferSchema=True)
+# df = spark.read.csv(f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume/test.csv", header=True, inferSchema=True)
 df.write.format("delta").mode("overwrite").saveAsTable("test")
 
 # COMMAND ----------
@@ -470,6 +479,20 @@ test_pd_df = test_df.toPandas()
 
 # Make predictions
 predictions = best_model.predict(test_pd_df)
+
+# COMMAND ----------
+
+print(f'/Volumes/{catalog_name}/{schema_name}/pcdua_volume/sample_submit.csv')
+
+# COMMAND ----------
+
+# credit_bureauをダウンロード
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/pdcua_20241108/_submit_template/"
+)
 
 # COMMAND ----------
 
