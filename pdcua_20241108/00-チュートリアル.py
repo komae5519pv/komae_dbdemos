@@ -4,6 +4,7 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,自分専用のカタログ・スキーマ・ボリュームを作成
 catalog_name = "komae" # ご自身のカタログ名に変更してください
 schema_name = "komae_schema" # ご自身のスキーマ名に変更してください
 volume_name = "pcdua_volume"
