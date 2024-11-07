@@ -1,5 +1,11 @@
 -- Databricks notebook source
-USE komae_demo.pcdua
+-- MAGIC %md
+-- MAGIC # ダッシュボード、およびGenieで使うマートを作成します
+
+-- COMMAND ----------
+
+-- DBTITLE 1,使用するカタログ・スキーマ名の固定
+USE komae.komae_schema -- ご自身のカタログ.スキーマ名に変更してください
 
 -- COMMAND ----------
 
