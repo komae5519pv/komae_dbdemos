@@ -1,5 +1,6 @@
 -- Databricks notebook source
-USE komae_demo.pcdua;
+-- DBTITLE 1,使用するカタログ・スキーマ名の指定
+USE komae.komae_schema -- ご自身のカタログ.スキーマ名に変更してください
 
 -- COMMAND ----------
 
@@ -166,8 +167,6 @@ SELECT
 --statuses /*very very needed*/
   corr(money_room, case when parking_keiyaku in (1) then 1 else 0 end),/*needed*/
   corr(money_room, case when parking_keiyaku in (2) then 1 else 0 end),/*needed*/
-  corr(money_room, case when money_hoshou_company in (1) then 1 else 0 end),
-  corr(money_room, case when money_hoshou_company in (2) then 1 else 0 end),
   corr(money_room, free_rent_duration)/*needed*/
 FROM 
   train

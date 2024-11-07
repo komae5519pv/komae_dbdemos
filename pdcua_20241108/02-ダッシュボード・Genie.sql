@@ -4,7 +4,7 @@
 
 -- COMMAND ----------
 
--- DBTITLE 1,使用するカタログ・スキーマ名の固定
+-- DBTITLE 1,使用するカタログ・スキーマ名の指定
 USE komae.komae_schema -- ご自身のカタログ.スキーマ名に変更してください
 
 -- COMMAND ----------

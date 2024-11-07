@@ -1,7 +1,8 @@
 -- Databricks notebook source
+-- DBTITLE 1,自分専用のカタログ・スキーマ・ボリュームを作成
 -- MAGIC %python
--- MAGIC catalog_name = "komae"
--- MAGIC schema_name  = "komae_schema"
+-- MAGIC catalog_name = "komae"  # ご自身のカタログ名に変更してください
+-- MAGIC schema_name  = "komae_schema" # ご自身のスキーマ名に変更してください
 -- MAGIC spark.sql(f"USE {catalog_name}.{schema_name}")
 
 -- COMMAND ----------
@@ -93,8 +94,8 @@ select * from relevant_train_data_4
 -- MAGIC     train_df,
 -- MAGIC     target_col="money_room",
 -- MAGIC     exclude_cols=["Building_ID"],
--- MAGIC     timeout_minutes=30
--- MAGIC     # timeout_minutes=5
+-- MAGIC     # timeout_minutes=30
+-- MAGIC     timeout_minutes=5
 -- MAGIC )
 -- MAGIC
 
