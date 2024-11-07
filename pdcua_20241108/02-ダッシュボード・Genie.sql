@@ -126,7 +126,7 @@ SELECT
   ,p.bus_stop1
   ,p.bus_time1
   ,p.walk_distance1
-  ,(p.walk_distance1 / 80) as walk_min -- 徒歩所要時間
+  ,(p.walk_distance1 / 80) as walk_min -- 駅からの徒歩所要時間
   ,CASE
     WHEN (p.walk_distance1 / 80) <= 1 THEN '徒歩01分以内'
     WHEN (p.walk_distance1 / 80) >= 2 AND (p.walk_distance1 / 80) <= 5 THEN '徒歩05分以内'
@@ -220,9 +220,8 @@ ON
 -- DBTITLE 1,カラムコメント追加
 ALTER TABLE property_info ALTER COLUMN building_age COMMENT '築年数';
 ALTER TABLE property_info ALTER COLUMN building_age_range COMMENT '築年数範囲';
-ALTER TABLE property_info ALTER COLUMN walk_min COMMENT '徒歩所要時間';
+ALTER TABLE property_info ALTER COLUMN walk_min COMMENT '駅からの徒歩所要時間';
 ALTER TABLE property_info ALTER COLUMN walk_min_range COMMENT '徒歩所要時間範囲';
 ALTER TABLE property_info ALTER COLUMN money_room_range COMMENT '賃料範囲';
-ALTER TABLE property_info ALTER COLUMN walk_min COMMENT '徒歩所要時間';
 ALTER TABLE property_info ALTER COLUMN floor_area COMMENT '占有面積（平米）';
 ALTER TABLE property_info ALTER COLUMN property_condition COMMENT '物件状態';
