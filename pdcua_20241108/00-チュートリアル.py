@@ -486,12 +486,16 @@ print(f'/Volumes/{catalog_name}/{schema_name}/pcdua_volume/sample_submit.csv')
 
 # COMMAND ----------
 
+# MAGIC %run ./_init/_init_helper
+
+# COMMAND ----------
+
 # credit_bureauをダウンロード
 DBDemos.download_file_from_git(
     dest=f"/Volumes/{catalog_name}/{schema_name}/pcdua_volume",
     owner="komae5519pv",
     repo="komae_dbdemos",
-    path="/pdcua_20241108/_submit_template/"
+    path="/pdcua_20241108/_submit_temp/"
 )
 
 # COMMAND ----------

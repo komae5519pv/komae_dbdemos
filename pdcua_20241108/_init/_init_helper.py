@@ -1,9 +1,4 @@
 # Databricks notebook source
-# MAGIC %md
-# MAGIC 変更しないでください
-
-# COMMAND ----------
-
 import requests
 import os
 from concurrent.futures import ThreadPoolExecutor
