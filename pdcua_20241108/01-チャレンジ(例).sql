@@ -94,8 +94,8 @@ select * from relevant_train_data_challenge
 -- MAGIC     train_df,
 -- MAGIC     target_col="money_room",
 -- MAGIC     exclude_cols=["Building_ID"],
--- MAGIC     # timeout_minutes=30
--- MAGIC     timeout_minutes=5
+-- MAGIC     timeout_minutes=30
+-- MAGIC     # timeout_minutes=5
 -- MAGIC )
 -- MAGIC
 
