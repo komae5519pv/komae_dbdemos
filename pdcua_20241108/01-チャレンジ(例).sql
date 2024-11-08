@@ -104,7 +104,7 @@ select * from relevant_train_data_challenge
 CREATE OR REPLACE TABLE relevant_test_data_challenge AS
 SELECT
   Building_ID,
-  money_room,
+  -- money_room,
   unit_count,
   case when building_structure = 1 then 1 else 0 end as building_structure_1,
   case when building_structure = 3 then 1 else 0 end as building_structure_3,

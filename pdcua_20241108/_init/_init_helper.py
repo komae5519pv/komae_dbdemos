@@ -24,13 +24,3 @@ class DBDemos:
 
         with ThreadPoolExecutor(max_workers=10) as executor:
             executor.map(lambda url: download_file(url, dest), download_urls)
-
-# COMMAND ----------
-
-# # credit_bureauをダウンロード
-# DBDemos.download_file_from_git(
-#     dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/credit_bureau",
-#     owner="komae5519pv",
-#     repo="komae_dbdemos",
-#     path="/automl_demo_20241011/_rawdata/credit_bureau/"
-# )
