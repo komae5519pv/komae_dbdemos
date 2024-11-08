@@ -7,7 +7,7 @@
 
 -- COMMAND ----------
 
-CREATE OR REPLACE TABLE relevant_train_data_4 AS
+CREATE OR REPLACE TABLE relevant_train_data_challenge AS
 SELECT
   Building_ID,
   money_room,
@@ -71,7 +71,7 @@ From train
 
 -- COMMAND ----------
 
-select * from relevant_train_data_4
+select * from relevant_train_data_challenge
 
 -- COMMAND ----------
 
@@ -87,7 +87,7 @@ select * from relevant_train_data_4
 -- MAGIC from databricks import automl
 -- MAGIC
 -- MAGIC # Load training data
--- MAGIC train_df = spark.table("relevant_train_data_4")
+-- MAGIC train_df = spark.table("relevant_train_data_challenge")
 -- MAGIC
 -- MAGIC # Run AutoML for regression
 -- MAGIC summary = automl.regress(
@@ -101,7 +101,7 @@ select * from relevant_train_data_4
 
 -- COMMAND ----------
 
-CREATE OR REPLACE TABLE relevant_test_data_4 AS
+CREATE OR REPLACE TABLE relevant_test_data_challenge AS
 SELECT
   Building_ID,
   money_room,
@@ -171,7 +171,7 @@ From test
 -- MAGIC best_model = summary.best_trial.load_model()
 -- MAGIC
 -- MAGIC # Load test data
--- MAGIC test_df = spark.table("relevant_test_data_4")
+-- MAGIC test_df = spark.table("relevant_test_data_challenge")
 -- MAGIC
 -- MAGIC # Convert Spark DataFrame to Pandas DataFrame
 -- MAGIC test_pd_df = test_df.toPandas()
