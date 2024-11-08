@@ -218,6 +218,10 @@ ON
 -- COMMAND ----------
 
 -- DBTITLE 1,カラムコメント追加
+-- テーブルコメント
+COMMENT ON TABLE property_info IS "`property_info`テーブルには、建物とその賃貸情報に関するデータが含まれています。データは特定の時間範囲に抽出された対象年月を示しており、各建物の代表的な賃料も含まれています。この賃料は分析の目的変数として使用されます。その他の重要なフィールドには、建物のID、状態、作成日時、修正日時、建物種別、名前、住所があります。さらに、テーブルには各建物の総戸数、地理座標、建物の構造タイプ、床面積と階数に関連するさまざまな測定値の情報も提供されています。";
+
+-- カラムコメント
 ALTER TABLE property_info ALTER COLUMN building_age COMMENT '築年数';
 ALTER TABLE property_info ALTER COLUMN building_age_range COMMENT '築年数範囲';
 ALTER TABLE property_info ALTER COLUMN walk_min COMMENT '駅からの徒歩所要時間';
