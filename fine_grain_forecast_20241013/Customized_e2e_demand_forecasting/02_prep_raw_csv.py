@@ -16,19 +16,19 @@
 # MAGIC │       ├── bronze_vending_machine_location   <- 自販機設定場所マスタ
 # MAGIC │       ├── bronze_date_master                <- 日付マスタ
 # MAGIC │       ├── bronze_items                      <- 商品マスタ
-# MAGIC │       ├── bronze_train                      <- トレーニングデータ
 # MAGIC │   ├── silver_xxx                            <- bronze_xxxをクレンジングしたテーブル
-# MAGIC │       ├── silver_analysis                   <- 分析用マート
-# MAGIC │       ├── silver_demand_forecasting         <- 需要予測結果データ
+# MAGIC │       ├── silver_train                      <- トレーニングデータ
+# MAGIC │       ├── silver_analysis                   <- 分析マート（需要予測結果なし）
+# MAGIC │       ├── silver_inference_input            <- ai_query()専用の未来日付きsalesデータ
 # MAGIC │       ├── silver_forecasts                  <- 需要予測結果データ
 # MAGIC │       ├── silver_forecast_evals             <- 需要予測評価メトリクス
 # MAGIC │   ├── gold_xxx                              <- silver_xxxを使いやすく加工したテーブル
-# MAGIC │       ├── gold_analysis                     <- 需要予測結果付き分析マート
+# MAGIC │       ├── gold_analysis                     <- 分析マート（需要予測結果あり）
 # MAGIC │   ├── raw_data                              <- ボリューム(Import用)
-# MAGIC │       ├── sales.csv                         <- RAWファイルを配置：自動販売機売上      ★ココ!
-# MAGIC │       ├── vending_machine_location.csv      <- RAWファイルを配置：自販機設定場所マスタ ★ココ!
-# MAGIC │       ├── date_master.csv                   <- RAWファイルを配置：日付マスタ         ★ココ!
-# MAGIC │       ├── items.csv                         <- RAWファイルを配置：商品マスタ         ★ココ!
+# MAGIC │       ├── sales.csv                         <- RAWファイルを配置：自動販売機売上          ★ココ!
+# MAGIC │       ├── vending_machine_location.csv      <- RAWファイルを配置：自販機設定場所マスタ     ★ココ!
+# MAGIC │       ├── date_master.csv                   <- RAWファイルを配置：日付マスタ             ★ココ!
+# MAGIC │       ├── items.csv                         <- RAWファイルを配置：商品マスタ             ★ココ!
 # MAGIC │   ├── export_data                           <- ボリューム(Export用)
 # MAGIC ```
 # MAGIC
@@ -71,6 +71,77 @@ train = spark.read.format('csv') \
 
 # COMMAND ----------
 
+# from pyspark.sql.functions import col, row_number, expr, when, rand, lit
+# from pyspark.sql.window import Window
+# from pyspark.sql.types import StructType, StructField, DateType, IntegerType, LongType
+# from pyspark.sql.functions import abs, ceil, sin, datediff
+
+# # 既存のCSVファイルのスキーマ定義
+# train_schema = StructType([
+#     StructField('date', DateType()),      # 日付
+#     StructField('store', IntegerType()),  # 店舗ID
+#     StructField('item', IntegerType()),   # 商品ID
+#     StructField('sales', IntegerType())   # 売上
+# ])
+
+# # ウィンドウ関数の定義（受注IDの生成用）
+# window_spec = Window.orderBy("date", "store", "item")
+
+# # データフレームの変換
+# sales_df = (train
+#     .select(
+#         col("date").alias("order_date"),                            # 受注日
+#         col("store").alias("vending_machine_id").cast(LongType()),  # 自動販売機ID
+#         col("item").alias("item_id").cast(LongType()),              # 商品ID
+#         col("sales").alias("sales_quantity").cast(LongType())       # 販売数
+#     )
+# )
+
+# '''
+# 概要：在庫数
+# 詳細：季節性と商品カテゴリーを考慮した在庫計算
+# 　　　・在庫切れの確率10%
+# 　　　・商品IDを使用してABC分析に基づく分類を行い、それぞれ異なる在庫計算ロジックを適用
+# 　　　　└ Aランク商品には季節性を導入し、sin関数を使用して年間の需要変動を模倣
+# 　　　　└ BランクとCランク商品には、異なる乱数範囲を適用して変動性を持たせる
+# '''
+# sales_df = sales_df.withColumn(
+#     "stock_quantity",
+#     when(rand() < 0.1, 0)  # 10%の確率で在庫切れ
+#     .otherwise(
+#         when(col("item_id") % 3 == 0,  # Aランク商品
+#             abs((col("sales_quantity") * (0.8 + sin(datediff(col("order_date"), lit("2024-01-01")) / 365 * 2 * 3.14159) * 0.5) + (rand() - 0.5) * 50)).cast(LongType())
+#         ).when(col("item_id") % 3 == 1,  # Bランク商品
+#             abs((col("sales_quantity") * (1.0 + rand() * 0.8) + (rand() - 0.5) * 30)).cast(LongType())
+#         ).otherwise(  # Cランク商品
+#             abs((col("sales_quantity") * (1.2 + rand() * 1.5) - ceil(rand() * 20))).cast(LongType())
+#         )
+#     )
+# )
+
+# # NULLレコードを追加する関数（修正版）
+# def add_null_records(df, column_name, num_records=10):
+#     # 元のデータフレームから10件のレコードを選択し、特定のカラムのみNULLにする
+#     null_df = df.limit(num_records).withColumn(column_name, lit(None))
+    
+#     # 元のデータフレームと、NULLレコードを結合
+#     return df.union(null_df)
+
+# # NULLレコードを追加（それぞれ10件のみ）
+# sales_df = add_null_records(sales_df, "order_date")
+# sales_df = add_null_records(sales_df, "vending_machine_id")
+# sales_df = add_null_records(sales_df, "item_id")
+
+# # CSVファイルとして出力
+# sales_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales/sales.csv", index=False)
+
+# # データの確認
+# print(f"Total records: {sales_df.count()}")
+# display(sales_df)
+
+# COMMAND ----------
+
+# DBTITLE 1,bk
 from pyspark.sql.functions import col, row_number, expr, when, rand
 from pyspark.sql.window import Window
 from pyspark.sql.types import StructType, StructField, DateType, IntegerType, LongType
@@ -101,7 +172,7 @@ sales_df = (train
 '''
 概要：在庫数
 詳細：季節性と商品カテゴリーを考慮した在庫計算
-　　　・在庫切れの確率を5%
+　　　・在庫切れの確率10%
 　　　・商品IDを使用してABC分析に基づく分類を行い、それぞれ異なる在庫計算ロジックを適用
 　　　　└ Aランク商品には季節性を導入し、sin関数を使用して年間の需要変動を模倣
 　　　　└ BランクとCランク商品には、異なる乱数範囲を適用して変動性を持たせる
@@ -121,7 +192,7 @@ sales_df = sales_df.withColumn(
 )
 
 # CSVファイルとして出力
-sales_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales.csv", index=False)
+sales_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales/sales.csv", index=False)
 
 # データの確認
 print(f"Total records: {sales_df.count()}")
@@ -130,142 +201,60 @@ display(sales_df)
 
 # COMMAND ----------
 
-# DBTITLE 1,bk
-# from pyspark.sql.functions import col, row_number, expr, when, rand
-# from pyspark.sql.window import Window
-# from pyspark.sql.types import StructType, StructField, DateType, IntegerType, LongType
-# from pyspark.sql.functions import col, when, rand, sin, datediff, lit
+from pyspark.sql.functions import lit, rand, when, date_add
+from pyspark.sql.types import StructType, StructField, DateType, LongType, IntegerType
 
-# # 既存のCSVファイルのスキーマ定義
-# train_schema = StructType([
-#   StructField('date', DateType()),      # 日付
-#   StructField('store', IntegerType()),  # 店舗ID
-#   StructField('item', IntegerType()),   # 商品ID
-#   StructField('sales', IntegerType())   # 売上
-# ])
+# NULLを含むデータのスキーマ定義
+null_schema = StructType([
+    StructField("order_date", DateType()),
+    StructField("vending_machine_id", LongType()),
+    StructField("item_id", LongType()),
+    StructField("sales_quantity", LongType()),
+    StructField("stock_quantity", LongType())
+])
 
-# # ウィンドウ関数の定義（受注IDの生成用）
-# window_spec = Window.orderBy("date", "store", "item")
+# NULLを含むデータの生成
+null_data = spark.createDataFrame([], schema=null_schema)
 
-# # データフレームの変換
-# sales_df = (train
-#     .select(
-#         col("date").alias("order_date"),                            # 受注日
-#         col("store").alias("vending_machine_id").cast(LongType()),  # 自動販売機ID
-#         col("item").alias("item_id").cast(LongType()),              # 商品ID
-#         col("sales").alias("sales_quantity").cast(LongType())       # 販売数
-#     )
-# )
+# order_date NULL 10件
+null_data = null_data.union(
+    spark.range(10).select(
+        lit(None).cast(DateType()).alias("order_date"),
+        lit(11).cast(LongType()).alias("vending_machine_id"),
+        (rand() * 50 + 51).cast(LongType()).alias("item_id"),
+        lit(0).cast(LongType()).alias("sales_quantity"),
+        lit(0).cast(LongType()).alias("stock_quantity")
+    )
+)
 
-# '''
-# 概要：在庫数
-# 詳細：季節性と商品カテゴリーを考慮した在庫計算
-# 　　　・在庫切れの確率を5%
-# 　　　・商品IDを使用してABC分析に基づく分類を行い、それぞれ異なる在庫計算ロジックを適用
-# 　　　　└ Aランク商品には季節性を導入し、sin関数を使用して年間の需要変動を模倣
-# 　　　　└ BランクとCランク商品には、異なる乱数範囲を適用して変動性を持たせる
-# '''
-# sales_df = sales_df.withColumn(
-#     "stock_quantity",
-#     when(rand() < 0.03, 0)  # 3%の確率で在庫切れ
-#     .otherwise(
-#         when(col("item_id") % 3 == 0,  # Aランク商品
-#             (col("sales_quantity") * (1.2 + sin(datediff(col("order_date"), lit("2024-01-01")) / 365 * 2 * 3.14159) * 0.2)).cast(LongType())
-#         ).when(col("item_id") % 3 == 1,  # Bランク商品
-#             (col("sales_quantity") * (1.5 + rand() * 0.5)).cast(LongType())
-#         ).otherwise(  # Cランク商品
-#             (col("sales_quantity") * (2 + rand())).cast(LongType())
-#         )
-#     )
-# )
+# item_id NULL 10件
+null_data = null_data.union(
+    spark.range(10).select(
+        date_add(lit("2012-12-31"), -(rand() * 365 * 10).cast("int")).alias("order_date"),
+        lit(11).cast(LongType()).alias("vending_machine_id"),
+        lit(None).cast(LongType()).alias("item_id"),
+        lit(0).cast(LongType()).alias("sales_quantity"),
+        lit(0).cast(LongType()).alias("stock_quantity")
+    )
+)
 
-# # CSVファイルとして出力
-# sales_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales.csv", index=False)
+# vending_machine_id NULL 10件
+null_data = null_data.union(
+    spark.range(10).select(
+        date_add(lit("2012-12-31"), -(rand() * 365 * 10).cast("int")).alias("order_date"),
+        lit(None).cast(LongType()).alias("vending_machine_id"),
+        (rand() * 50 + 51).cast(LongType()).alias("item_id"),
+        lit(0).cast(LongType()).alias("sales_quantity"),
+        lit(0).cast(LongType()).alias("stock_quantity")
+    )
+)
 
-# # データの確認
-# print(f"Total records: {sales_df.count()}")
-# # display(sales_df.limit(10))
-# display(sales_df)
+# データをCSVファイルとして出力
+null_data.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales/sales_with_null.csv", header=True)
 
-# COMMAND ----------
-
-# DBTITLE 1,削除
-# from pyspark.sql.functions import col, row_number, expr, when, rand
-# from pyspark.sql.window import Window
-# from pyspark.sql.types import StructType, StructField, DateType, IntegerType, LongType
-
-# # 既存のCSVファイルのスキーマ定義
-# train_schema = StructType([
-#   StructField('date', DateType()),      # 日付
-#   StructField('store', IntegerType()),  # 店舗ID
-#   StructField('item', IntegerType()),   # 商品ID
-#   StructField('sales', IntegerType())   # 売上
-# ])
-
-# # ウィンドウ関数の定義（受注IDの生成用）
-# window_spec = Window.orderBy("date", "store", "item")
-
-# # データフレームの変換
-# sales_df = (train
-#     .select(
-#         col("date").alias("order_date"),                            # 受注日
-#         col("store").alias("vending_machine_id").cast(LongType()),  # 自動販売機ID
-#         col("item").alias("item_id").cast(LongType()),              # 商品ID
-#         col("sales").alias("sales_quantity").cast(LongType())       # 販売数
-#     )
-# )
-
-# # 在庫数の追加
-# sales_df = sales_df.withColumn(
-#     "stock_quantity",
-#     when(rand() < 0.05, 0)  # 5%の確率で在庫切れ（0）
-#     .otherwise(
-#         (col("sales_quantity") * (1 + rand() * 0.5)).cast(LongType())  # 販売数の1〜1.5倍
-#     )
-# )
-
-# # CSVファイルとして出力
-# sales_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales.csv", index=False)
-
-# # データの確認
-# print(f"Total records: {sales_df.count()}")
-# # display(sales_df.limit(10))
-# display(sales_df)
-
-# COMMAND ----------
-
-# DBTITLE 1,削除
-# from pyspark.sql.functions import col, row_number, expr
-# from pyspark.sql.window import Window
-# from pyspark.sql.types import StructType, StructField, DateType, IntegerType, LongType
-
-# # 既存のCSVファイルのスキーマ定義
-# train_schema = StructType([
-#   StructField('date', DateType()),      # 日付
-#   StructField('store', IntegerType()),  # 店舗ID
-#   StructField('item', IntegerType()),   # 商品ID
-#   StructField('sales', IntegerType())   # 売上
-# ])
-
-# # ウィンドウ関数の定義（受注IDの生成用）
-# window_spec = Window.orderBy("date", "store", "item")
-
-# # データフレームの変換
-# sales_df = (train
-#     .select(
-#         col("date").alias("order_date"),                            # 受注日
-#         col("store").alias("vending_machine_id").cast(LongType()),  # 自動販売機ID
-#         col("item").alias("item_id").cast(LongType()),              # 商品ID
-#         col("sales").alias("sales_quantity").cast(LongType())       # 販売数
-#     )
-# )
-
-# # CSVファイルとして出力
-# sales_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales.csv", index=False)
-
-# # データの確認
-# print(f"Total records: {sales_df.count()}")
-# display(sales_df.limit(10))
+# データの確認
+print(f"Total records with NULL: {null_data.count()}")
+display(null_data)
 
 # COMMAND ----------
 
@@ -321,7 +310,7 @@ vending_machine_locations_df = (
 )
 
 # CSVファイルとして出力
-vending_machine_locations_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/vending_machine_location.csv", index=False)
+vending_machine_locations_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/vending_machine_location/vending_machine_location.csv", index=False)
 
 # レコード数とサンプルデータの表示
 print(f"Total records: {vending_machine_locations_df.count()}")
@@ -383,7 +372,7 @@ date_master_df = (
 )
 
 # CSVファイルとして出力
-date_master_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/date_master.csv", index=False)
+date_master_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/date_master/date_master.csv", index=False)
 
 # レコード数とサンプルデータの表示
 print(f"Total records: {date_master_df.count()}")
@@ -465,7 +454,7 @@ df = df[['item_id', 'item_name', 'category_name', 'unit_price', 'unit_cost']]
 items_df = spark.createDataFrame(df)
 
 # CSVファイルとして出力
-items_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/items.csv", index=False)
+items_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/items/items.csv", index=False)
 
 # データの確認
 print(f"Total records: {items_df.count()}")

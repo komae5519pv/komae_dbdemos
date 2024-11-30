@@ -16,14 +16,14 @@
 # MAGIC │       ├── bronze_vending_machine_location   <- 自販機設定場所マスタ
 # MAGIC │       ├── bronze_date_master                <- 日付マスタ
 # MAGIC │       ├── bronze_items                      <- 商品マスタ
-# MAGIC │       ├── bronze_train                      <- トレーニングデータ
 # MAGIC │   ├── silver_xxx                            <- bronze_xxxをクレンジングしたテーブル
-# MAGIC │       ├── silver_analysis                   <- 分析用マート ★ココ!
-# MAGIC │       ├── silver_demand_forecasting         <- 需要予測結果付き分析マート
+# MAGIC │       ├── silver_train                      <- トレーニングデータ
+# MAGIC │       ├── silver_analysis                   <- 分析マート（需要予測結果なし）
+# MAGIC │       ├── silver_inference_input            <- ai_query()専用の未来日付きsalesデータ
 # MAGIC │       ├── silver_forecasts                  <- 需要予測結果データ
 # MAGIC │       ├── silver_forecast_evals             <- 需要予測評価メトリクス
 # MAGIC │   ├── gold_xxx                              <- silver_xxxを使いやすく加工したテーブル
-# MAGIC │       ├── gold_analysis                     <- 需要予測結果付き分析マート ★ココ!
+# MAGIC │       ├── gold_analysis                     <- 分析マート（需要予測結果あり）             ★ココ!
 # MAGIC │   ├── raw_data                              <- ボリューム(Import用)
 # MAGIC │       ├── sales.csv                         <- RAWファイルを配置：自動販売機売上
 # MAGIC │       ├── vending_machine_location.csv      <- RAWファイルを配置：自販機設定場所マスタ
@@ -77,101 +77,95 @@ SELECT
     f.order_date,                                                     -- 受注日
     f.vending_machine_id,                                             -- 自動販売機ID
     f.item_id,                                                        -- 商品ID
-    i.item_name,                                                      -- 商品名
-    i.category_name,                                                  -- カテゴリ名
-    CAST(s.sales_quantity * i.unit_price AS BIGINT) AS actual_sales,  -- 実績売上金額
-    i.unit_price,                                                     -- 商品単価
-    s.sales_quantity AS actual_sales_quantity,                        -- 実績販売数
+    a.item_name,                                                      -- 商品名
+    a.category_name,                                                  -- カテゴリ名
+    a.actual_sales,                                                   -- 実績売上金額
+    a.unit_price,                                                     -- 商品単価
+    a.actual_sales_quantity,                                          -- 実績販売数
     f.forecast_sales_quantity,                                        -- 予測販売数
     f.forecast_sales_quantity_upper,                                  -- 予測販売数（上限）
     f.forecast_sales_quantity_lower,                                  -- 予測販売数（下限）
     f.sales_inference_date,                                           -- 販売数予測日
-    s.stock_quantity,                                                 -- 在庫数
+    a.stock_quantity,                                                 -- 在庫数
     CASE
-        WHEN s.stock_quantity < f.forecast_sales_quantity THEN 1 
+        WHEN a.stock_quantity < f.forecast_sales_quantity THEN 1 
         ELSE 0
-    END AS restock_flag,                                             -- 補充フラグ
+    END AS restock_flag,                                              -- 補充フラグ
     CASE 
-        WHEN s.stock_quantity < f.forecast_sales_quantity THEN f.forecast_sales_quantity - s.stock_quantity 
+        WHEN a.stock_quantity < f.forecast_sales_quantity THEN f.forecast_sales_quantity - a.stock_quantity 
         ELSE 0 
     END AS recommended_restock_quantity,                              -- 推奨補充数量
-    v.location_type,                                                  -- 設置場所タイプ
-    v.postal_code,                                                    -- 郵便番号
-    v.address,                                                        -- 住所
-    v.pref,                                                           -- 都道府県
-    v.city,                                                           -- 市区町村
-    v.latitude,                                                       -- 緯度
-    v.longitude,                                                      -- 経度
-    d.day_of_week,                                                    -- 曜日
-    d.month,                                                          -- 月
-    d.quarter,                                                        -- 四半期
-    d.year,                                                           -- 年
-    d.is_holiday,                                                     -- 祝日フラグ
-    AVG(s.sales_quantity) OVER (
+    a.location_type,                                                  -- 設置場所タイプ
+    a.postal_code,                                                    -- 郵便番号
+    a.address,                                                        -- 住所
+    a.pref,                                                           -- 都道府県
+    a.city,                                                           -- 市区町村
+    a.latitude,                                                       -- 緯度
+    a.longitude,                                                      -- 経度
+    a.day_of_week,                                                    -- 曜日
+    a.month,                                                          -- 月
+    a.quarter,                                                        -- 四半期
+    a.year,                                                           -- 年
+    a.is_holiday,                                                     -- 祝日フラグ
+    AVG(a.actual_sales_quantity) OVER (
         PARTITION BY f.vending_machine_id, f.item_id 
         ORDER BY f.order_date 
         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
     ) AS avg_daily_demand,                                            -- 平均日次需要（過去7日）
-    MAX(s.sales_quantity) OVER (
+    MAX(a.actual_sales_quantity) OVER (
         PARTITION BY f.vending_machine_id, f.item_id 
         ORDER BY f.order_date 
         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
     ) AS max_daily_demand,                                            -- 最大日次需要（過去7日）
     ROUND(
-        (MAX(s.sales_quantity) OVER (
+        (MAX(a.actual_sales_quantity) OVER (
             PARTITION BY f.vending_machine_id, f.item_id 
             ORDER BY f.order_date 
             ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-        ) * 2.2) - (AVG(s.sales_quantity) OVER (
+        ) * 2.2) - (AVG(a.actual_sales_quantity) OVER (
             PARTITION BY f.vending_machine_id, f.item_id 
             ORDER BY f.order_date 
             ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
         ) * 1.5), 
     2) AS safety_stock,                                               -- 安全在庫（Average-Max方式）
     CASE
-        WHEN s.sales_quantity / NULLIF(f.forecast_sales_quantity, 0) < 1 THEN 1
+        WHEN a.actual_sales_quantity / NULLIF(f.forecast_sales_quantity, 0) < 1 THEN 1
         ELSE 0
     END AS stock_warn,                                                -- 在庫警告フラグ
     CASE 
-        WHEN s.stock_quantity > (f.forecast_sales_quantity + safety_stock) 
-        THEN s.stock_quantity - (f.forecast_sales_quantity + safety_stock)
+        WHEN a.stock_quantity > (f.forecast_sales_quantity + safety_stock) 
+        THEN a.stock_quantity - (f.forecast_sales_quantity + safety_stock)
         ELSE 0 
     END AS excess_inventory,                                          -- 過剰在庫数
     CASE 
-        WHEN s.stock_quantity > (f.forecast_sales_quantity + safety_stock) 
-        THEN (s.stock_quantity - (f.forecast_sales_quantity + safety_stock)) * i.unit_price
+        WHEN a.stock_quantity > (f.forecast_sales_quantity + safety_stock) 
+        THEN (a.stock_quantity - (f.forecast_sales_quantity + safety_stock)) * a.unit_price
         ELSE 0 
     END AS excess_inventory_value,                                    -- 過剰在庫金額
     -- 機会損失数の計算
     CASE 
-        WHEN s.stock_quantity < f.forecast_sales_quantity AND s.sales_quantity < f.forecast_sales_quantity
-        THEN f.forecast_sales_quantity - s.sales_quantity
+        WHEN a.stock_quantity < f.forecast_sales_quantity AND a.actual_sales_quantity < f.forecast_sales_quantity
+        THEN f.forecast_sales_quantity - a.actual_sales_quantity
         ELSE 0 
     END AS lost_sales_quantity,                                       -- 機会損失数
     -- 機会損失金額の計算
     CASE 
-        WHEN s.stock_quantity < f.forecast_sales_quantity AND s.sales_quantity < f.forecast_sales_quantity
-        THEN (f.forecast_sales_quantity - s.sales_quantity) * i.unit_price
+        WHEN a.stock_quantity < f.forecast_sales_quantity AND a.actual_sales_quantity < f.forecast_sales_quantity
+        THEN (f.forecast_sales_quantity - a.actual_sales_quantity) * a.unit_price
         ELSE 0 
     END AS lost_sales_value,                                         -- 機会損失金額
     -- 需要充足率の計算
     CASE 
         WHEN f.forecast_sales_quantity > 0 
-        THEN ROUND(s.sales_quantity / f.forecast_sales_quantity * 100, 1)
+        THEN ROUND(a.actual_sales_quantity / f.forecast_sales_quantity * 100, 1)
         ELSE 100 
     END AS demand_fulfillment_rate                                   -- 需要充足率（%）
 FROM
-    {MY_CATALOG}.{MY_SCHEMA}.silver_forecasts f 
-LEFT JOIN
-    {MY_CATALOG}.{MY_SCHEMA}.bronze_sales s ON f.order_date = s.order_date
-                                            AND f.vending_machine_id = s.vending_machine_id
-                                            AND f.item_id = s.item_id
-LEFT JOIN
-    {MY_CATALOG}.{MY_SCHEMA}.bronze_items i ON f.item_id = i.item_id
-LEFT JOIN
-    {MY_CATALOG}.{MY_SCHEMA}.bronze_vending_machine_location v ON f.vending_machine_id = v.vending_machine_id
-LEFT JOIN
-    {MY_CATALOG}.{MY_SCHEMA}.bronze_date_master d ON f.order_date = d.date
+    {MY_CATALOG}.{MY_SCHEMA}.silver_forecasts f
+LEFT OUTER JOIN
+    {MY_CATALOG}.{MY_SCHEMA}.silver_analysis a ON f.order_date = a.order_date
+                                              AND f.vending_machine_id = a.vending_machine_id
+                                              AND f.item_id = a.item_id
 """
 
 # 一時ビューを作成
@@ -180,126 +174,6 @@ spark.sql(create_view_query)
 display(
     spark.table("tmp_view_analysis")
 )
-
-# COMMAND ----------
-
-# DBTITLE 1,Step1 Temp View
-# # ----------------------------------------------
-# # Step1 一時ビューを作成
-# # ----------------------------------------------
-# create_view_query = f"""
-# CREATE OR REPLACE TEMPORARY VIEW tmp_view_analysis AS
-# SELECT
-#     f.order_date,                                                     -- 受注日
-#     f.vending_machine_id,                                             -- 自動販売機ID
-#     f.item_id,                                                        -- 商品ID
-#     i.item_name,                                                      -- 商品名
-#     i.category_name,                                                  -- カテゴリ名
-#     CAST(s.sales_quantity * i.unit_price AS BIGINT) AS actual_sales,  -- 実績売上金額
-#     i.unit_price,                                                     -- 商品単価
-#     s.sales_quantity AS actual_sales_quantity,                        -- 実績販売数
-#     f.forecast_sales_quantity,                                        -- 予測販売数
-#     f.forecast_sales_quantity_upper,                                  -- 予測販売数（上限）
-#     f.forecast_sales_quantity_lower,                                  -- 予測販売数（下限）
-#     f.sales_inference_date,                                           -- 販売数予測日
-#     s.stock_quantity,                                                 -- 在庫数
-#     CASE
-#         WHEN s.stock_quantity < f.forecast_sales_quantity THEN 1 
-#         ELSE 0
-#     END AS restock_flag,
-#     CASE 
-#         WHEN s.stock_quantity < f.forecast_sales_quantity THEN f.forecast_sales_quantity - s.stock_quantity 
-#         ELSE 0 
-#     END AS recommended_restock_quantity,                              -- 推奨補充数量
-#     v.location_type,                                                  -- 設置場所タイプ
-#     v.postal_code,                                                    -- 郵便番号
-#     v.address,                                                        -- 住所
-#     v.pref,                                                           -- 都道府県
-#     v.city,                                                           -- 市区町村
-#     v.latitude,                                                       -- 緯度
-#     v.longitude,                                                      -- 経度
-#     d.day_of_week,                                                    -- 曜日
-#     d.month,                                                          -- 月
-#     d.quarter,                                                        -- 四半期
-#     d.year,                                                           -- 年
-#     d.is_holiday,                                                     -- 祝日フラグ
-#     AVG(s.sales_quantity) OVER (
-#         PARTITION BY f.vending_machine_id, f.item_id 
-#         ORDER BY f.order_date 
-#         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-#     ) AS avg_daily_demand,                                            -- 平均日次需要（過去7日）
-#     MAX(s.sales_quantity) OVER (
-#         PARTITION BY f.vending_machine_id, f.item_id 
-#         ORDER BY f.order_date 
-#         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-#     ) AS max_daily_demand,                                            -- 最大日次需要（過去7日）
-#     ROUND(
-#         (MAX(s.sales_quantity) OVER (
-#             PARTITION BY f.vending_machine_id, f.item_id 
-#             ORDER BY f.order_date 
-#             ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-#         ) * 2.2) - (AVG(s.sales_quantity) OVER (
-#             PARTITION BY f.vending_machine_id, f.item_id 
-#             ORDER BY f.order_date 
-#             ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-#         ) * 1.5), 
-#     2) AS safety_stock,                                               -- 安全在庫（Average-Max方式）
-#     CASE
-#         WHEN s.stock_quantity < f.forecast_sales_quantity THEN 1      -- 在庫が予測販売数を下回る場合に警告
-#         ELSE 0
-#     END AS stock_warn,                                                -- 安全在庫警告フラグ(安全在庫が在庫実績より多い場合のフラグ)
-
-#     CASE 
-#         WHEN s.stock_quantity > (f.forecast_sales_quantity + safety_stock) 
-#         THEN s.stock_quantity - (f.forecast_sales_quantity + safety_stock)
-#         ELSE 0 
-#     END AS excess_inventory,                                          -- 過剰在庫数
-#     CASE 
-#         WHEN s.stock_quantity > (f.forecast_sales_quantity + safety_stock) 
-#         THEN (s.stock_quantity - (f.forecast_sales_quantity + safety_stock)) * i.unit_price
-#         ELSE 0 
-#     END AS excess_inventory_value,                                    -- 過剰在庫金額
-
-#     -- 機会損失数の計算
-#     CASE 
-#         WHEN s.stock_quantity < f.forecast_sales_quantity 
-#         THEN f.forecast_sales_quantity - s.sales_quantity
-#         ELSE 0 
-#     END AS lost_sales_quantity,                                       -- 機会損失数
-
-#     -- 機会損失金額の計算
-#     CASE 
-#         WHEN s.sales_quantity >= s.stock_quantity 
-#         THEN (f.forecast_sales_quantity - s.stock_quantity) * i.unit_price
-#         ELSE 0 
-#     END AS lost_sales_value,                                         -- 機会損失金額
-
-#     -- 需要充足率の計算（実績販売数/予測販売数）
-#     CASE 
-#         WHEN s.stock_quantity < f.forecast_sales_quantity 
-#         THEN ROUND(s.sales_quantity / f.forecast_sales_quantity * 100, 2)
-#         ELSE 100 
-#     END AS demand_fulfillment_rate                                   -- 需要充足率（%）
-# FROM
-#     {MY_CATALOG}.{MY_SCHEMA}.silver_forecasts f 
-# LEFT JOIN
-#     {MY_CATALOG}.{MY_SCHEMA}.bronze_sales s ON f.order_date = s.order_date
-#                                             AND f.vending_machine_id = s.vending_machine_id
-#                                             AND f.item_id = s.item_id
-# LEFT JOIN
-#     {MY_CATALOG}.{MY_SCHEMA}.bronze_items i ON f.item_id = i.item_id
-# LEFT JOIN
-#     {MY_CATALOG}.{MY_SCHEMA}.bronze_vending_machine_location v ON f.vending_machine_id = v.vending_machine_id
-# LEFT JOIN
-#     {MY_CATALOG}.{MY_SCHEMA}.bronze_date_master d ON f.order_date = d.date
-# """
-
-# # 一時ビューを作成
-# spark.sql(create_view_query)
-
-# display(
-#     spark.table("tmp_view_analysis")
-# )
 
 # COMMAND ----------
 

@@ -2,7 +2,8 @@
 # MAGIC %md
 # MAGIC # Unity Catalogに登録されたモデルをサービングする
 # MAGIC
-# MAGIC ここでは、Databricks Model Serving を使用してカスタム モデルを提供するモデル サービング エンドポイントを作成します。
+# MAGIC 事前に、ノートブック`./06_AutoML`で、AutoMLでトレーニングしたベストモデルをUnity Catalogに登録しました。  
+# MAGIC さらにここでは、Databricks Model Serving を使用してカスタム モデルを提供するモデル サービング エンドポイントを作成します。
 # MAGIC
 # MAGIC Model Serving には、提供エンドポイントの作成に関する次のオプションが用意されています。
 # MAGIC - 提供 UI
@@ -15,13 +16,13 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./01_config
+# MAGIC %md
+# MAGIC
+# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/00_overall.png' width='1200'/>
 
 # COMMAND ----------
 
-# エンドポイントを更新フラグ
-# UPDATE_ENDPOINT_FLG = True # 更新する
-UPDATE_ENDPOINT_FLG = False # 更新しない
+# MAGIC %run ./01_config
 
 # COMMAND ----------
 
@@ -82,17 +83,6 @@ print(f"エンドポイント '{endpoint_name}' の処理が完了しました�
 
 # COMMAND ----------
 
-# DBTITLE 1,create dummy table for ai_query
-result = dbutils.notebook.run("./_helper/create_table_for_inference", timeout_seconds=60)
-print(f"{MY_CATALOG}.{MY_SCHEMA}.silver_inference_input を作成しました！")
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC DESCRIBE komae_demo_v2.demand_forecast.silver_inference_input
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ### サービングしたモデルをSQL `ai_query()`でクエリしてみましょう！
 
@@ -107,31 +97,36 @@ SELECT
   item,
   y,
   ai_query(
-    'komae_demand_forecast_automl',
+    'komae_{MODEL_NAME_AUTOML}',
     named_struct(
       "ds", ds,
       "vm", vm,
       "item", item
     )
   ).yhat AS prediction
-FROM komae_demo_v2.demand_forecast.silver_inference_input
+FROM {MY_CATALOG}.{MY_SCHEMA}.silver_inference_input
 ''')
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC
-# MAGIC SELECT 
-# MAGIC   ds,
-# MAGIC   vm,
-# MAGIC   item,
-# MAGIC   y,
-# MAGIC   ai_query(
-# MAGIC     'komae_demand_forecast_automl',
-# MAGIC     named_struct(
-# MAGIC       "ds", ds,
-# MAGIC       "vm", vm,
-# MAGIC       "item", item
-# MAGIC     )
-# MAGIC   ).yhat AS prediction
-# MAGIC FROM komae_demo_v2.demand_forecast.silver_inference_input
+# MAGIC %md
+# MAGIC サービングエンドポイントがREADYになったら、下記SQLを、上記セルの出力結果の文字列に書き換えて実行してください
+
+# COMMAND ----------
+
+# %sql
+
+# SELECT 
+#   ds,
+#   vm,
+#   item,
+#   y,
+#   ai_query(
+#     'komae_demand_forecast_automl',
+#     named_struct(
+#       "ds", ds,
+#       "vm", vm,
+#       "item", item
+#     )
+#   ).yhat AS prediction
+# FROM komae_demo_v2.demand_forecast.silver_inference_input
