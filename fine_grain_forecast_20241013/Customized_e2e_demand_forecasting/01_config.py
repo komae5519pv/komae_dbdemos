@@ -32,9 +32,9 @@ dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/vending
 dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/date_master")
 
 # SQLで使う変数設定
-spark.conf.set("c.catalog", MY_CATALOG)
-spark.conf.set("c.schema", MY_SCHEMA)
-spark.conf.set("c.volume", MY_VOLUME_IMPORT)
+# spark.conf.set("c.catalog", MY_CATALOG)
+# spark.conf.set("c.schema", MY_SCHEMA)
+# spark.conf.set("c.volume", MY_VOLUME_IMPORT)
 
 print(f"カタログ: {MY_CATALOG}")
 print(f"スキーマ: {MY_CATALOG}.{MY_SCHEMA}")
