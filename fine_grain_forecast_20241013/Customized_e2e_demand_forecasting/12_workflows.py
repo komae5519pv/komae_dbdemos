@@ -5,7 +5,7 @@
 # MAGIC - 必要なジョブをワークフローで自動化します
 # MAGIC - [テーブル定義書](https://docs.google.com/spreadsheets/d/10wdoTxlAGcD5gHjY4_upPYKd1gt4rEupKLSgP5q4uWI/edit?gid=1392031218#gid=1392031218)に基づくテーブルを作成してます
 # MAGIC
-# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/02_workflows.png' width='1200'/>
+# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/workflows.png' width='1200'/>
 
 # COMMAND ----------
 
@@ -67,9 +67,14 @@
 # MAGIC     - パス: <`06_AutoML`のノートブックパスを選択してください>
 # MAGIC     - クラスタ: <`Runtime 15.4 ML LTS以上`のクラスタを選択してください>
 # MAGIC     - 依存先: `ETL_for_ai_query`
+# MAGIC   - batch_scoring
+# MAGIC     - 種類: `ノートブック`
+# MAGIC     - パス: <`08_batch_scoring`のノートブックパスを選択してください>
+# MAGIC     - クラスタ: <`Runtime 15.4 ML LTS以上`のクラスタを選択してください>
+# MAGIC     - 依存先: `AutoML`
 # MAGIC   - model_serving
 # MAGIC     - 種類: `ノートブック`
-# MAGIC     - パス: <`08_model_serving`のノートブックパスを選択してください>
+# MAGIC     - パス: <`09_model_serving`のノートブックパスを選択してください>
 # MAGIC     - クラスタ: <`Runtime 15.4 ML LTS以上`のクラスタを選択してください>
 # MAGIC     - 依存先: `AutoML`
 # MAGIC   - model_train_and_predict
@@ -79,11 +84,11 @@
 # MAGIC     - 依存先: `ETL`
 # MAGIC   - ETL_for_dashboard
 # MAGIC     - 種類: `ノートブック`
-# MAGIC     - パス: <`05_model_training`のノートブックパスを選択してください>
+# MAGIC     - パス: <`10_ETL_for_dashboard`のノートブックパスを選択してください>
 # MAGIC     - クラスタ: <`Runtime 15.4 ML LTS以上`のクラスタを選択してください>
 # MAGIC     - 依存先: `model_train_and_predict`
-# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/workflow%20setting.png' width='1200'/>
+# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/workflow_setting.png' width='1200'/>
 # MAGIC
 # MAGIC #### 4. ワークフロー実行開始
 # MAGIC - 3まででワークフロー作成完了です。画面右上「今すぐ実行」をクリックしてください
-# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/Run%20Now!.png' width='1200'/>
+# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/workflow_run.png' width='1200'/>

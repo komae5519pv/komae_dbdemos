@@ -18,7 +18,7 @@
 
 # MAGIC %md
 # MAGIC
-# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/00_overall.png' width='1200'/>
+# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/model_serving.png' width='1200'/>
 
 # COMMAND ----------
 
@@ -97,7 +97,7 @@ SELECT
   item,
   y,
   ai_query(
-    'komae_{MODEL_NAME_AUTOML}',
+    '{MODEL_NAME_AUTOML}',
     named_struct(
       "ds", ds,
       "vm", vm,

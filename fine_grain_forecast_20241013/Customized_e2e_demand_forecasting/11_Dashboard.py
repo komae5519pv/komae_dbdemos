@@ -9,6 +9,12 @@
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC
+# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/dashboard.png' width='1200'/>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ### 在庫最適化のための分析ダッシュボード
 # MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/03_BI%20Dashboard_Inventory%20Optimization.png' width='1200'/>
 # MAGIC

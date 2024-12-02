@@ -19,6 +19,10 @@
 -- MAGIC │       ├── bronze_date_master                <- 日付マスタ                          ★ココ!
 -- MAGIC │       ├── bronze_items                      <- 商品マスタ                          ★ココ!
 -- MAGIC │   ├── silver_xxx                            <- bronze_xxxをクレンジングしたテーブル
+-- MAGIC │       ├── silver_sales                      <- 自動販売機売上                       ★ココ!
+-- MAGIC │       ├── silver_vending_machine_location   <- 自販機設定場所マスタ                  ★ココ!
+-- MAGIC │       ├── silver_date_master                <- 日付マスタ                          ★ココ!
+-- MAGIC │       ├── silver_items                      <- 商品マスタ                          ★ココ!
 -- MAGIC │       ├── silver_train                      <- トレーニングデータ                   ★ココ!
 -- MAGIC │       ├── silver_analysis                   <- 分析マート（需要予測結果なし）         ★ココ!
 -- MAGIC │       ├── silver_inference_input            <- ai_query()専用の未来日付きsalesデータ

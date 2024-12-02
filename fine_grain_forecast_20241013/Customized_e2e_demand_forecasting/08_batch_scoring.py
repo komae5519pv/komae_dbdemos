@@ -8,6 +8,12 @@
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC
+# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/batch_scoring.png' width='1200'/>
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ### 1. MLflowを用いてモデルをロード
 # MAGIC
 # MAGIC Unity Catalog Model Registry に登録されたモデルをロードする際、2つのアプローチがあります。
@@ -40,9 +46,7 @@
 
 # DBTITLE 1,Load Model
 import mlflow
-
-# vm = 1
-# item = 1
+from pyspark.sql.functions import struct, col
 
 # Get Model Path
 model_path = f"models:/{MY_CATALOG}.{MY_SCHEMA}.{MODEL_NAME_AUTOML}@prod"
@@ -59,20 +63,16 @@ model_udf = mlflow.pyfunc.spark_udf(spark, model_path)
 # COMMAND ----------
 
 # DBTITLE 1,Inference
-from pyspark.sql.functions import col
-
-# Load Dummy Dataset for Inference
-input_df = (spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.silver_inference_input")
-            .filter((col("vm") == vm) & (col("item") == item)))
+# Load Dummy Dataset for Inference / already filtered by vm=1, item=1
+input_df = spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.silver_inference_input")
 
 # Sort by Date
 input_df = input_df.orderBy("ds")
 
 # Execute Inference with Loaded Model
-df = (input_df.withColumn("prediction", model_udf())
-        .withColumn("forecast_sales_quantity", col("prediction.yhat"))
-        .withColumn("forecast_sales_quantity_upper", col("prediction.yhat_upper"))
-        .withColumn("forecast_sales_quantity_lower", col("prediction.yhat_lower"))
-        .drop("prediction")
-      )
+df = (input_df
+      .withColumn("prediction", model_udf(struct(*input_df.columns)))
+      .withColumn("forecast_sales_quantity", col("prediction"))
+      .drop("prediction")
+     )
 display(df)
