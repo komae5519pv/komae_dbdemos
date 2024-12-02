@@ -44,7 +44,7 @@ mlflow_client = mlflow.tracking.MlflowClient()
 model_version = mlflow_client.get_model_version_by_alias(f"{MY_CATALOG}.{MY_SCHEMA}.{MODEL_NAME_AUTOML}", "prod")
 
 # エンドポイントの設定
-endpoint_name = f"komae_{MODEL_NAME_AUTOML}"
+endpoint_name = f"{MODEL_NAME_AUTOML}"
 
 # エンドポイントの設定
 config = {
