@@ -6,7 +6,7 @@
 -- MAGIC - クラスタはDBR15.4 LTS or DBR15.4 LTS ML以降で実行してください
 -- MAGIC - [テーブル定義書](https://docs.google.com/spreadsheets/d/10wdoTxlAGcD5gHjY4_upPYKd1gt4rEupKLSgP5q4uWI/edit?gid=1392031218#gid=1392031218)に基づくテーブルを作ります
 -- MAGIC
--- MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/01.%20DLT_Pipeline.png' width='1200'/>
+-- MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/fine_grain_forecast_20241013/Customized_e2e_demand_forecasting/_image_for_notebook/01.%20DLT_Pipeline.png?raw=true' width='1200'/>
 -- MAGIC
 -- MAGIC 想定のディレクトリ構成
 -- MAGIC

@@ -47,7 +47,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./01_config
+# MAGIC %run ./00_config
 
 # COMMAND ----------
 
@@ -62,86 +62,26 @@
 # COMMAND ----------
 
 # DBTITLE 1,Azureストレージからcsvデータをロード
-# WASBプロトコル定義
-container = "komae"                                       # Azure コンテナ名
-storage_account = "sajpstorage"                           # Azure ストレージアカウント名
-file_path_train = "fine_grain_forecast/train"             # Azure ファイルパス（トレーニング）
+# # WASBプロトコル定義
+# container = "komae"                                       # Azure コンテナ名
+# storage_account = "sajpstorage"                           # Azure ストレージアカウント名
+# file_path_train = "fine_grain_forecast/train"             # Azure ファイルパス（トレーニング）
 
-# 公開Azure Storage Blobから学習データを取得します (WASBプロトコル)
-train = spark.read.format('csv') \
-                .option("header", "true") \
-                .option("inferSchema", "true") \
-                .load(f'wasbs://{container}@{storage_account}.blob.core.windows.net/{file_path_train}/train.csv')
+# # 公開Azure Storage Blobから学習データを取得します (WASBプロトコル)
+# train = spark.read.format('csv') \
+#                 .option("header", "true") \
+#                 .option("inferSchema", "true") \
+#                 .load(f'wasbs://{container}@{storage_account}.blob.core.windows.net/{file_path_train}/train.csv')
 
 # COMMAND ----------
 
-# from pyspark.sql.functions import col, row_number, expr, when, rand, lit
-# from pyspark.sql.window import Window
-# from pyspark.sql.types import StructType, StructField, DateType, IntegerType, LongType
-# from pyspark.sql.functions import abs, ceil, sin, datediff
-
-# # 既存のCSVファイルのスキーマ定義
-# train_schema = StructType([
-#     StructField('date', DateType()),      # 日付
-#     StructField('store', IntegerType()),  # 店舗ID
-#     StructField('item', IntegerType()),   # 商品ID
-#     StructField('sales', IntegerType())   # 売上
-# ])
-
-# # ウィンドウ関数の定義（受注IDの生成用）
-# window_spec = Window.orderBy("date", "store", "item")
-
-# # データフレームの変換
-# sales_df = (train
-#     .select(
-#         col("date").alias("order_date"),                            # 受注日
-#         col("store").alias("vending_machine_id").cast(LongType()),  # 自動販売機ID
-#         col("item").alias("item_id").cast(LongType()),              # 商品ID
-#         col("sales").alias("sales_quantity").cast(LongType())       # 販売数
-#     )
-# )
-
-# '''
-# 概要：在庫数
-# 詳細：季節性と商品カテゴリーを考慮した在庫計算
-# 　　　・在庫切れの確率10%
-# 　　　・商品IDを使用してABC分析に基づく分類を行い、それぞれ異なる在庫計算ロジックを適用
-# 　　　　└ Aランク商品には季節性を導入し、sin関数を使用して年間の需要変動を模倣
-# 　　　　└ BランクとCランク商品には、異なる乱数範囲を適用して変動性を持たせる
-# '''
-# sales_df = sales_df.withColumn(
-#     "stock_quantity",
-#     when(rand() < 0.1, 0)  # 10%の確率で在庫切れ
-#     .otherwise(
-#         when(col("item_id") % 3 == 0,  # Aランク商品
-#             abs((col("sales_quantity") * (0.8 + sin(datediff(col("order_date"), lit("2024-01-01")) / 365 * 2 * 3.14159) * 0.5) + (rand() - 0.5) * 50)).cast(LongType())
-#         ).when(col("item_id") % 3 == 1,  # Bランク商品
-#             abs((col("sales_quantity") * (1.0 + rand() * 0.8) + (rand() - 0.5) * 30)).cast(LongType())
-#         ).otherwise(  # Cランク商品
-#             abs((col("sales_quantity") * (1.2 + rand() * 1.5) - ceil(rand() * 20))).cast(LongType())
-#         )
-#     )
-# )
-
-# # NULLレコードを追加する関数（修正版）
-# def add_null_records(df, column_name, num_records=10):
-#     # 元のデータフレームから10件のレコードを選択し、特定のカラムのみNULLにする
-#     null_df = df.limit(num_records).withColumn(column_name, lit(None))
-    
-#     # 元のデータフレームと、NULLレコードを結合
-#     return df.union(null_df)
-
-# # NULLレコードを追加（それぞれ10件のみ）
-# sales_df = add_null_records(sales_df, "order_date")
-# sales_df = add_null_records(sales_df, "vending_machine_id")
-# sales_df = add_null_records(sales_df, "item_id")
-
-# # CSVファイルとして出力
-# sales_df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/sales/sales.csv", index=False)
-
-# # データの確認
-# print(f"Total records: {sales_df.count()}")
-# display(sales_df)
+# DBTITLE 1,ボリュームからtrain.csvをロード
+# デモ用の元データtrain.csvをロード
+train = spark.read.format('csv') \
+                .option("header", "true") \
+                .option("inferSchema", "true") \
+                .load(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/origin_data")
+# display(train)
 
 # COMMAND ----------
 

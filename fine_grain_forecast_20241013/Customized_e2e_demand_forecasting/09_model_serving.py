@@ -18,11 +18,11 @@
 
 # MAGIC %md
 # MAGIC
-# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/model_serving.png' width='1200'/>
+# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/fine_grain_forecast_20241013/Customized_e2e_demand_forecasting/_image_for_notebook/model_serving.png?raw=true' width='1200'/>
 
 # COMMAND ----------
 
-# MAGIC %run ./01_config
+# MAGIC %run ./00_config
 
 # COMMAND ----------
 
@@ -85,12 +85,11 @@ print(f"エンドポイント '{endpoint_name}' の処理が完了しました�
 
 # MAGIC %md
 # MAGIC ### サービングしたモデルをSQL `ai_query()`でクエリしてみましょう！
+# MAGIC クエリエディタで下記クエリを実行してみてください
 
 # COMMAND ----------
 
 print(f'''
-クエリエディタで下記実行してみてください
-
 SELECT 
   ds,
   vm,

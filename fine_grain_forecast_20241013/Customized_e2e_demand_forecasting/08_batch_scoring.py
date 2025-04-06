@@ -9,7 +9,7 @@
 
 # MAGIC %md
 # MAGIC
-# MAGIC <img src='https://sajpstorage.blob.core.windows.net/komae/fine_grain_forecast/batch_scoring.png' width='1200'/>
+# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/fine_grain_forecast_20241013/Customized_e2e_demand_forecasting/_image_for_notebook/batch_scoring.png?raw=true' width='1200'/>
 
 # COMMAND ----------
 
@@ -35,7 +35,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./01_config
+# MAGIC %run ./00_config
 
 # COMMAND ----------
 

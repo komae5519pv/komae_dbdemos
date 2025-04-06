@@ -43,7 +43,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./01_config
+# MAGIC %run ./00_config
 
 # COMMAND ----------
 

@@ -43,7 +43,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./01_config
+# MAGIC %run ./00_config
 
 # COMMAND ----------
 
@@ -181,51 +181,61 @@ display(
 
 # COMMAND ----------
 
+HOST_URL = f"https://{spark.conf.get("spark.databricks.workspaceUrl", None)}"
+
+print(HOST_URL)
+
+# COMMAND ----------
+
 # DBTITLE 1,Step2 Create Gold Table
 # ----------------------------------------------
 # Step2 gold_analysis テーブル作成
 # ----------------------------------------------
 create_table_query = f"""
 CREATE TABLE IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.gold_analysis (
-  order_date DATE,                      -- 日付
-  vending_machine_id BIGINT,            -- 自動販売機ID
-  item_id BIGINT,                       -- 商品ID
-  item_name STRING,                     -- 商品名
-  category_name STRING,                 -- カテゴリー
-  actual_sales BIGINT,                  -- 実績売上金額
-  unit_price BIGINT,                    -- 商品単価
-  actual_sales_quantity BIGINT,         -- 実績販売数
-  forecast_sales_quantity BIGINT,       -- 予測販売数
-  forecast_sales_quantity_upper BIGINT, -- 予測販売数（上限）
-  forecast_sales_quantity_lower BIGINT, -- 予測販売数（下限）
-  sales_inference_date DATE,            -- 販売数予測日
-  stock_quantity BIGINT,                -- 在庫数
-  safety_stock FLOAT,                   -- 安全在庫
-  stock_warn BIGINT,                    -- 安全在庫警告フラグ
-  excess_inventory FLOAT,               -- 過剰在庫数
-  excess_inventory_value FLOAT,         -- 過剰在庫金額
-  lost_sales_quantity FLOAT,            -- 機会損失数
-  demand_fulfillment_rate FLOAT,        -- 需要充足率（%）
-  restock_flag BIGINT,                  -- 補充フラグ
-  recommended_restock_quantity BIGINT,  -- 推奨補充数量
-  location_type STRING,                 -- 設置場所タイプ
-  postal_code STRING,                   -- 郵便番号
-  address STRING,                       -- 住所
-  pref STRING,                          -- 都道府県
-  city STRING,                          -- 市区町村
-  latitude FLOAT,                       -- 緯度
-  longitude FLOAT,                      -- 経度
-  day_of_week STRING,                   -- 曜日
-  month STRING,                         -- 月
-  quarter STRING,                       -- 四半期
-  year STRING,                          -- 年
-  is_holiday BOOLEAN                    -- 祝日フラグ
+  HOST_URL STRING,                     -- ホストURL（追加）
+  MY_CATALOG STRING,                   -- カタログ名（追加）
+  MY_SCHEMA STRING,                    -- スキーマ名（追加）
+  MY_VOLUME STRING,                    -- ボリューム名（追加）
+  order_date DATE,                     
+  vending_machine_id BIGINT,           
+  item_id BIGINT,                      
+  item_name STRING,                    
+  category_name STRING,                
+  actual_sales BIGINT,                 
+  unit_price BIGINT,                   
+  actual_sales_quantity BIGINT,        
+  forecast_sales_quantity BIGINT,      
+  forecast_sales_quantity_upper BIGINT,
+  forecast_sales_quantity_lower BIGINT,
+  sales_inference_date DATE,           
+  stock_quantity BIGINT,               
+  safety_stock FLOAT,                  
+  stock_warn BIGINT,                   
+  excess_inventory FLOAT,              
+  excess_inventory_value FLOAT,        
+  lost_sales_quantity FLOAT,           
+  demand_fulfillment_rate FLOAT,       
+  restock_flag BIGINT,                 
+  recommended_restock_quantity BIGINT, 
+  location_type STRING,                
+  postal_code STRING,                  
+  address STRING,                      
+  pref STRING,                         
+  city STRING,                         
+  latitude FLOAT,                      
+  longitude FLOAT,                     
+  day_of_week STRING,                  
+  month STRING,                        
+  quarter STRING,                      
+  year STRING,                         
+  is_holiday BOOLEAN                   
 )
 USING DELTA
 PARTITIONED BY (order_date)
 """
 
-# テーブル作成クエリを実行
+# CREATE TABLEクエリ実行
 spark.sql(create_table_query)
 
 # ----------------------------------------------
@@ -233,7 +243,47 @@ spark.sql(create_table_query)
 # ----------------------------------------------
 merge_query = f"""
 MERGE INTO {MY_CATALOG}.{MY_SCHEMA}.gold_analysis AS target
-USING tmp_view_analysis AS source
+USING (
+  SELECT 
+    '{HOST_URL}' AS HOST_URL,
+    '{MY_CATALOG}' AS MY_CATALOG,
+    '{MY_SCHEMA}' AS MY_SCHEMA,
+    '{MY_VOLUME_IMPORT}' AS MY_VOLUME,
+    order_date,
+    vending_machine_id,
+    item_id,
+    item_name,
+    category_name,
+    actual_sales,
+    unit_price,
+    actual_sales_quantity,
+    forecast_sales_quantity,
+    forecast_sales_quantity_upper,
+    forecast_sales_quantity_lower,
+    sales_inference_date,
+    stock_quantity,
+    safety_stock,
+    stock_warn,
+    excess_inventory,
+    excess_inventory_value,
+    lost_sales_quantity,
+    demand_fulfillment_rate,
+    restock_flag,
+    recommended_restock_quantity,
+    location_type,
+    postal_code,
+    address,
+    pref,
+    city,
+    latitude,
+    longitude,
+    day_of_week,
+    month,
+    quarter,
+    year,
+    is_holiday 
+  FROM tmp_view_analysis
+) AS source
 ON target.order_date = source.order_date
    AND target.vending_machine_id = source.vending_machine_id
    AND target.item_id = source.item_id
@@ -266,6 +316,10 @@ spark.sql(f'COMMENT ON TABLE {table_name} IS "{comment}"')
 
 # カラムコメント
 column_comments = {
+    "HOST_URL": "ホストURL、ダッシュボードの画像挿入のための動的パラメータとして活用",
+    "MY_CATALOG": "カタログ名、ダッシュボードの画像挿入のための動的パラメータとして活用",
+    "MY_SCHEMA": "スキーマ名、ダッシュボードの画像挿入のための動的パラメータとして活用",
+    "MY_VOLUME": "ボリューム名、ダッシュボードの画像挿入のための動的パラメータとして活用",
     "order_date": "日付、YYYY-MM-DDフォーマット（主キー、外部キー）",
     "vending_machine_id": "自動販売機ID（主キー）",
     "item_id": "商品ID（外部キー）",
