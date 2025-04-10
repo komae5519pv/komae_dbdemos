@@ -1,0 +1,2797 @@
+{
+  "datasets" : [ {
+    "name" : "55e78d84",
+    "displayName" : "silver_users",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_users"
+  }, {
+    "name" : "cc12a111",
+    "displayName" : "silver_pos_orders",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_pos_orders"
+  }, {
+    "name" : "4432e79f",
+    "displayName" : "silver_pos_orders_items",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_pos_orders_items"
+  }, {
+    "name" : "e0ba8fb6",
+    "displayName" : "silver_ec_orders",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_ec_orders"
+  }, {
+    "name" : "2c273749",
+    "displayName" : "silver_ec_order_items",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_ec_order_items"
+  }, {
+    "name" : "4c6955c8",
+    "displayName" : "silver_survey",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_survey"
+  }, {
+    "name" : "f1125cd3",
+    "displayName" : "silver_inventory_history",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_inventory_history"
+  }, {
+    "name" : "d8415457",
+    "displayName" : "silver_line_members",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.silver_line_members"
+  }, {
+    "name" : "97884127",
+    "displayName" : "gold_users",
+    "query" : "SELECT * FROM komae_demo.retail_cdp.gold_users",
+    "columns" : [ {
+      "displayName" : "active_user_rate",
+      "description" : "有効会員割合",
+      "expression" : "SUM(CASE\n      WHEN status = \"active\" THEN 1\n      ELSE 0 END) / COUNT(*)"
+    } ]
+  } ],
+  "pages" : [ {
+    "name" : "c8f435d5",
+    "displayName" : "会員",
+    "layout" : [ {
+      "widget" : {
+        "name" : "59f21b8b",
+        "textbox_spec" : "# CDP顧客分析ダッシュボード"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 6,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "94f9f1ea",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "avg(email_permission_flg)",
+              "expression" : "AVG(`email_permission_flg`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(email_permission_flg)",
+              "displayName" : "Average email_permission_flg"
+            }
+          },
+          "frame" : {
+            "title" : "メール許諾率",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 1,
+        "y" : 6,
+        "width" : 1,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "a94251b1",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "avg(line_notification_allowed_flg)",
+              "expression" : "AVG(`line_notification_allowed_flg`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(line_notification_allowed_flg)",
+              "displayName" : "Average line_notification_allowed_flg"
+            }
+          },
+          "frame" : {
+            "title" : "LINE許諾率",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 3,
+        "y" : 6,
+        "width" : 1,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "829448e4",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "avg(line_is_blocked_flg)",
+              "expression" : "AVG(`line_is_blocked_flg`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(line_is_blocked_flg)",
+              "displayName" : "Average line_is_blocked_flg"
+            }
+          },
+          "frame" : {
+            "title" : "LINEブロック率",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 6,
+        "width" : 1,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "27516500",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "avg(line_is_friend_flg)",
+              "expression" : "AVG(`line_is_friend_flg`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(line_is_friend_flg)",
+              "displayName" : "Average line_is_friend_flg"
+            }
+          },
+          "frame" : {
+            "title" : "LINEお友だち率",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 5,
+        "y" : 6,
+        "width" : 1,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "2bd7797c",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "countdistinct(user_id)",
+              "expression" : "COUNT(DISTINCT `user_id`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "countdistinct(user_id)",
+              "displayName" : "Count of Unique user_id"
+            }
+          },
+          "frame" : {
+            "title" : "顧客数",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 3,
+        "width" : 2,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "35675b56",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "avg(ltv_all_time)",
+              "expression" : "AVG(`ltv_all_time`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(ltv_all_time)",
+              "displayName" : "Average ltv_all_time"
+            }
+          },
+          "frame" : {
+            "title" : "平均LTV",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 3,
+        "width" : 2,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "793b3992",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "avg(line_linked_flg)",
+              "expression" : "AVG(`line_linked_flg`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(line_linked_flg)",
+              "displayName" : "Average line_linked_flg"
+            }
+          },
+          "frame" : {
+            "title" : "LINE ID連携率",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 6,
+        "width" : 1,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "ebd83568",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_age_group_5",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "age_group_5",
+              "expression" : "`age_group_5`"
+            }, {
+              "name" : "age_group_5_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "age_group_5",
+              "displayName" : "age_group_5",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_age_group_5"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "年代"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "368aaa1f",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_email_permission_flg",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "email_permission_flg",
+              "expression" : "`email_permission_flg`"
+            }, {
+              "name" : "email_permission_flg_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "email_permission_flg",
+              "displayName" : "email_permission_flg",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_email_permission_flg"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "メール許諾flg",
+            "showDescription" : false
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "b355478b",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_is_friend_flg",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "line_is_friend_flg",
+              "expression" : "`line_is_friend_flg`"
+            }, {
+              "name" : "line_is_friend_flg_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "line_is_friend_flg",
+              "displayName" : "line_is_friend_flg",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_is_friend_flg"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "LINE友だちflg"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "093dc37b",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "avg(point_balance)",
+              "expression" : "AVG(`point_balance`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(point_balance)",
+              "displayName" : "Average point_balance"
+            }
+          },
+          "frame" : {
+            "title" : "平均ポイント保有数",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 3,
+        "width" : 2,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "05aa0a21",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "measure(active_user_rate)",
+              "expression" : "MEASURE(`active_user_rate`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "measure(active_user_rate)",
+              "displayName" : "active_user_rate"
+            }
+          },
+          "frame" : {
+            "title" : "有効会員比率",
+            "showTitle" : true
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 6,
+        "width" : 1,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "55e19412",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "age_group_5",
+              "expression" : "`age_group_5`"
+            }, {
+              "name" : "m_monetary_segment_all",
+              "expression" : "`m_monetary_segment_all`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "heatmap",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "age_group_5",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "年代"
+            },
+            "y" : {
+              "fieldName" : "m_monetary_segment_all",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "axis" : {
+                "title" : "平均会計単価"
+              },
+              "displayName" : "平均会計単価"
+            },
+            "color" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "legend" : {
+                "hideTitle" : true,
+                "hide" : true
+              },
+              "displayName" : "顧客数"
+            },
+            "label" : {
+              "show" : false
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "会計単価 x 年代ごとの顧客分布"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 9,
+        "width" : 3,
+        "height" : 7
+      }
+    }, {
+      "widget" : {
+        "name" : "8375dc8d",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_linked_flg",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "line_linked_flg",
+              "expression" : "`line_linked_flg`"
+            }, {
+              "name" : "line_linked_flg_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "line_linked_flg",
+              "displayName" : "line_linked_flg",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_linked_flg"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "LINE ID連携flg"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "19846ad6",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_notification_allowed_flg",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "line_notification_allowed_flg",
+              "expression" : "`line_notification_allowed_flg`"
+            }, {
+              "name" : "line_notification_allowed_flg_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "line_notification_allowed_flg",
+              "displayName" : "line_notification_allowed_flg",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_notification_allowed_flg"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "LINE許諾flg"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "8ea6771d",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_is_blocked_flg",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "line_is_blocked_flg",
+              "expression" : "`line_is_blocked_flg`"
+            }, {
+              "name" : "line_is_blocked_flg_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "line_is_blocked_flg",
+              "displayName" : "line_is_blocked_flg",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_line_is_blocked_flg"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "LINEブロックflg"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "23549281",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "f_frequency_segment_all",
+              "expression" : "`f_frequency_segment_all`"
+            }, {
+              "name" : "r_recency_segment_all",
+              "expression" : "`r_recency_segment_all`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "line",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "r_recency_segment_all",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "Recency"
+            },
+            "y" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "顧客数"
+            },
+            "color" : {
+              "fieldName" : "f_frequency_segment_all",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "legend" : {
+                "position" : "right"
+              },
+              "displayName" : "Frequency"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "リーセンシーとフリークエンシーの関係"
+          }
+        }
+      },
+      "position" : {
+        "x" : 3,
+        "y" : 9,
+        "width" : 3,
+        "height" : 7
+      }
+    }, {
+      "widget" : {
+        "name" : "5b8f5c74",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "user_id",
+              "expression" : "`user_id`"
+            }, {
+              "name" : "last_survey_category",
+              "expression" : "`last_survey_category`"
+            }, {
+              "name" : "last_survey_response",
+              "expression" : "`last_survey_response`"
+            }, {
+              "name" : "last_survey_positive_score",
+              "expression" : "`last_survey_positive_score`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 1,
+          "widgetType" : "table",
+          "encodings" : {
+            "columns" : [ {
+              "fieldName" : "user_id",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 0,
+              "title" : "会員ID",
+              "allowSearch" : true,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "user_id"
+            }, {
+              "fieldName" : "last_survey_category",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 63,
+              "title" : "カテゴリ",
+              "allowSearch" : true,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "last_survey_category"
+            }, {
+              "fieldName" : "last_survey_response",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 64,
+              "title" : "アンケート回答",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "last_survey_response"
+            }, {
+              "fieldName" : "last_survey_positive_score",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "decimal",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 65,
+              "title" : "ポジティブスコア",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "last_survey_positive_score"
+            } ]
+          },
+          "invisibleColumns" : [ {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "registration_date",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 1,
+            "title" : "registration_date",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "status",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 2,
+            "title" : "status",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_login_date",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 3,
+            "title" : "last_login_date",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "line_last_accessed_date",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 4,
+            "title" : "line_last_accessed_date",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "line_member_id",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 5,
+            "title" : "line_member_id",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "email_permission_flg",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 6,
+            "title" : "email_permission_flg",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "line_linked_flg",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 7,
+            "title" : "line_linked_flg",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "line_notification_allowed_flg",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 8,
+            "title" : "line_notification_allowed_flg",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "line_is_blocked_flg",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 9,
+            "title" : "line_is_blocked_flg",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "line_is_friend_flg",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 10,
+            "title" : "line_is_friend_flg",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "member_rank",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 11,
+            "title" : "member_rank",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "points_to_next_rank",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 12,
+            "title" : "points_to_next_rank",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "rank_expiration_date",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 13,
+            "title" : "rank_expiration_date",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "point_balance",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 14,
+            "title" : "point_balance",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "point_expiration_date",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 15,
+            "title" : "point_expiration_date",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "name",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 16,
+            "title" : "name",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "gender",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 17,
+            "title" : "gender",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "birth_date",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 18,
+            "title" : "birth_date",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "age",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 19,
+            "title" : "age",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "age_group_5",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 20,
+            "title" : "age_group_5",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "age_group_10",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 21,
+            "title" : "age_group_10",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "pref",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 22,
+            "title" : "pref",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "phone_number",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 23,
+            "title" : "phone_number",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "email",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 24,
+            "title" : "email",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_cart_id",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 25,
+            "title" : "last_cart_id",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_cart_abandoned_date",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 26,
+            "title" : "last_cart_abandoned_date",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "abandoned_cart_available_item_count",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 27,
+            "title" : "abandoned_cart_available_item_count",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "abandoned_cart_item_list",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 28,
+            "title" : "abandoned_cart_item_list",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ltv_all_time",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 29,
+            "title" : "ltv_all_time",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ltv_last_year",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 30,
+            "title" : "ltv_last_year",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ltv_last_two_years",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 31,
+            "title" : "ltv_last_two_years",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_purchase_date_all",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 32,
+            "title" : "last_purchase_date_all",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_purchase_date_pos",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 33,
+            "title" : "last_purchase_date_pos",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_purchase_date_ec",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 34,
+            "title" : "last_purchase_date_ec",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "first_purchase_date_all",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 35,
+            "title" : "first_purchase_date_all",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "first_purchase_date_pos",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 36,
+            "title" : "first_purchase_date_pos",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "dateTimeFormat" : "DD/MM/YY",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "first_purchase_date_ec",
+            "type" : "date",
+            "displayAs" : "datetime",
+            "order" : 37,
+            "title" : "first_purchase_date_ec",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "first_purchase_channel",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 38,
+            "title" : "first_purchase_channel",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_purchase_channel",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 39,
+            "title" : "last_purchase_channel",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "first_purchase_store_pos",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 40,
+            "title" : "first_purchase_store_pos",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "last_purchase_store_pos",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 41,
+            "title" : "last_purchase_store_pos",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "r_days_since_last_purchase_all",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 42,
+            "title" : "r_days_since_last_purchase_all",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "r_days_since_last_purchase_pos",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 43,
+            "title" : "r_days_since_last_purchase_pos",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "r_days_since_last_purchase_ec",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 44,
+            "title" : "r_days_since_last_purchase_ec",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "r_recency_segment_all",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 45,
+            "title" : "r_recency_segment_all",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "r_recency_segment_pos",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 46,
+            "title" : "r_recency_segment_pos",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "r_recency_segment_ec",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 47,
+            "title" : "r_recency_segment_ec",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "f_purchase_count_all",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 48,
+            "title" : "f_purchase_count_all",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "f_purchase_count_pos",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 49,
+            "title" : "f_purchase_count_pos",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "f_purchase_count_ec",
+            "type" : "integer",
+            "displayAs" : "number",
+            "order" : 50,
+            "title" : "f_purchase_count_ec",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "f_frequency_segment_all",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 51,
+            "title" : "f_frequency_segment_all",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "f_frequency_segment_pos",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 52,
+            "title" : "f_frequency_segment_pos",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "f_frequency_segment_ec",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 53,
+            "title" : "f_frequency_segment_ec",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0.00",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "m_average_order_value_all",
+            "type" : "float",
+            "displayAs" : "number",
+            "order" : 54,
+            "title" : "m_average_order_value_all",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0.00",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "m_average_order_value_pos",
+            "type" : "float",
+            "displayAs" : "number",
+            "order" : 55,
+            "title" : "m_average_order_value_pos",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "numberFormat" : "0.00",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "m_average_order_value_ec",
+            "type" : "float",
+            "displayAs" : "number",
+            "order" : 56,
+            "title" : "m_average_order_value_ec",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "m_monetary_segment_all",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 57,
+            "title" : "m_monetary_segment_all",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "m_monetary_segment_pos",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 58,
+            "title" : "m_monetary_segment_pos",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "m_monetary_segment_ec",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 59,
+            "title" : "m_monetary_segment_ec",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "frequent_item_category_all",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 60,
+            "title" : "frequent_item_category_all",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "frequent_item_category_pos",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 61,
+            "title" : "frequent_item_category_pos",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "frequent_item_category_ec",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 62,
+            "title" : "frequent_item_category_ec",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          } ],
+          "allowHTMLByDefault" : false,
+          "itemsPerPage" : 50,
+          "paginationSize" : "default",
+          "condensed" : true,
+          "withRowNumber" : false,
+          "frame" : {
+            "showTitle" : true,
+            "title" : "アンケート回答結果"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 18,
+        "width" : 4,
+        "height" : 8
+      }
+    }, {
+      "widget" : {
+        "name" : "f0305efe",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "last_survey_category",
+              "expression" : "`last_survey_category`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "pie",
+          "encodings" : {
+            "angle" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "アンケート回答人数"
+            },
+            "color" : {
+              "fieldName" : "last_survey_category",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "カテゴリ"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "アンケート回答人数_カテゴリ別"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 18,
+        "width" : 2,
+        "height" : 8
+      }
+    }, {
+      "widget" : {
+        "name" : "16203aef",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_last_survey_positive_score",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "min(last_survey_positive_score)",
+              "expression" : "MIN(`last_survey_positive_score`)"
+            }, {
+              "name" : "max(last_survey_positive_score)",
+              "expression" : "MAX(`last_survey_positive_score`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "range-slider",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "last_survey_positive_score",
+              "displayName" : "last_survey_positive_score",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_last_survey_positive_score"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジティブスコア"
+          }
+        }
+      },
+      "position" : {
+        "x" : 3,
+        "y" : 17,
+        "width" : 3,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "acb492ea",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_last_survey_category",
+          "query" : {
+            "datasetName" : "97884127",
+            "fields" : [ {
+              "name" : "last_survey_category",
+              "expression" : "`last_survey_category`"
+            }, {
+              "name" : "last_survey_category_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "last_survey_category",
+              "displayName" : "last_survey_category",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f015311e131debb6650f5a3e0e46a7_last_survey_category"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "商品カテゴリ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 17,
+        "width" : 3,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "dbcf0301",
+        "textbox_spec" : "## アンケート回答結果"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 16,
+        "width" : 6,
+        "height" : 1
+      }
+    } ]
+  }, {
+    "name" : "2b7666b3",
+    "displayName" : "購買傾向",
+    "layout" : [ {
+      "widget" : {
+        "name" : "9525965d",
+        "textbox_spec" : "# CDP購買傾向分析ダッシュボード"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 6,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "b97ec4dd",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "store_area",
+              "expression" : "`store_area`"
+            }, {
+              "name" : "daily(order_date)",
+              "expression" : "DATE_TRUNC(\"DAY\", `order_date`)"
+            }, {
+              "name" : "sum(subtotal)",
+              "expression" : "SUM(`subtotal`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "line",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "daily(order_date)",
+              "scale" : {
+                "type" : "temporal"
+              },
+              "displayName" : "購買月"
+            },
+            "y" : {
+              "fieldName" : "sum(subtotal)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "売上金額"
+            },
+            "color" : {
+              "fieldName" : "store_area",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "店舗エリア"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "店舗エリア毎の売上推移"
+          }
+        }
+      },
+      "position" : {
+        "x" : 3,
+        "y" : 5,
+        "width" : 3,
+        "height" : 7
+      }
+    }, {
+      "widget" : {
+        "name" : "de4e9869",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f0152ed93c1e8a8083c4c71c7d28fc_line_linked_flg",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "line_linked_flg",
+              "expression" : "`line_linked_flg`"
+            }, {
+              "name" : "line_linked_flg_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "line_linked_flg",
+              "displayName" : "line_linked_flg",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f0152ed93c1e8a8083c4c71c7d28fc_line_linked_flg"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "LINE連携flg"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "86c382aa",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f0152ed93c1e8a8083c4c71c7d28fc_store_area",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "store_area",
+              "expression" : "`store_area`"
+            }, {
+              "name" : "store_area_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "store_area",
+              "displayName" : "store_area",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f0152ed93c1e8a8083c4c71c7d28fc_store_area"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "店舗エリア"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "4d8eb518",
+        "queries" : [ {
+          "name" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f0152ed93c1e8a8083c4c71c7d28fc_category_name",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "category_name",
+              "expression" : "`category_name`"
+            }, {
+              "name" : "category_name_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "category_name",
+              "displayName" : "category_name",
+              "queryName" : "dashboards/01f0152e9597126980fe35ffaafeea64/datasets/01f0152ed93c1e8a8083c4c71c7d28fc_category_name"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "商品カテゴリ名"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "7b8a8d3b",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "sum(subtotal)",
+              "expression" : "SUM(`subtotal`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "sum(subtotal)",
+              "format" : {
+                "type" : "number-plain",
+                "abbreviation" : "compact",
+                "decimalPlaces" : {
+                  "type" : "max",
+                  "places" : 1
+                }
+              },
+              "style" : {
+                "bold" : true
+              },
+              "displayName" : "Sum of subtotal"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "売上金額"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 2,
+        "width" : 2,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "ac262646",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "countdistinct(user_id)",
+              "expression" : "COUNT(DISTINCT `user_id`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "countdistinct(user_id)",
+              "format" : {
+                "type" : "number-plain",
+                "abbreviation" : "compact",
+                "decimalPlaces" : {
+                  "type" : "max",
+                  "places" : 2
+                }
+              },
+              "style" : {
+                "bold" : true
+              },
+              "displayName" : "Count of Unique user_id"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "顧客数"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 2,
+        "width" : 2,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "ea53cafe",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "avg(line_linked_flg)",
+              "expression" : "AVG(`line_linked_flg`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "avg(line_linked_flg)",
+              "format" : {
+                "type" : "number-percent",
+                "decimalPlaces" : {
+                  "type" : "max",
+                  "places" : 2
+                }
+              },
+              "style" : {
+                "bold" : true
+              },
+              "displayName" : "Average line_linked_flg"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "購買者のLINE連携率"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 2,
+        "width" : 2,
+        "height" : 3
+      }
+    }, {
+      "widget" : {
+        "name" : "3ad4792f",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "category_name",
+              "expression" : "`category_name`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "pie",
+          "encodings" : {
+            "angle" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "購買点数"
+            },
+            "color" : {
+              "fieldName" : "category_name",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "カテゴリ名"
+            },
+            "label" : {
+              "show" : true
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "商品カテゴリの購買内訳"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 5,
+        "width" : 3,
+        "height" : 7
+      }
+    }, {
+      "widget" : {
+        "name" : "2da8b1bd",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4432e79f",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "category_name",
+              "expression" : "`category_name`"
+            }, {
+              "name" : "pref",
+              "expression" : "`pref`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "heatmap",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "category_name",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "category_name"
+            },
+            "y" : {
+              "fieldName" : "pref",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "pref"
+            },
+            "color" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "legend" : {
+                "hideTitle" : false,
+                "hide" : false,
+                "title" : "購買点数"
+              },
+              "displayName" : "購買点数"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "居住地域ごと x 商品カテゴリ毎の購買傾向"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 12,
+        "width" : 6,
+        "height" : 7
+      }
+    } ]
+  } ]
+}
