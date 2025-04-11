@@ -1,0 +1,364 @@
+1,1,Beverage Market,Bar,116,1,Alcohol,Cocktails and Domestic Beer,10,null
+1,2,Beverage Market,Bar,118,2,Alcohol,Cocktails and Domestic Beer,10,null
+2,1,Big Boy,Food,108,3,Sandwich,Grilled Chicken Breast Sandwich ,14.5,null
+2,1,Big Boy,Food,108,4,Sandwich,Slim Jim,14,null
+2,1,Big Boy,Food,108,5,Burger,Big Boy Original Double Decker,16.5,null
+2,1,Big Boy,Food,108,6,Fries,Fries,12,null
+2,1,Big Boy,Food,108,7,Non-Alcoholic,Milkshakes,11.5,null
+2,1,Big Boy,Food,108,8,Snack,Cookies,9,null
+2,1,Big Boy,Food,108,9,Alcohol,Domestic Beer,11,null
+2,1,Big Boy,Food,108,10,Non-Alcoholic,Regular or Large Soda,10,null
+2,1,Big Boy,Food,108,11,Water,Bottled Water,10,null
+2,2,Big Boy,Food,127,12,Sandwich,Grilled Chicken Breast Sandwich ,14.5,null
+2,2,Big Boy,Food,127,13,Sandwich,Slim Jim,14,null
+2,2,Big Boy,Food,127,14,Burger,Big Boy Original Double Decker,16.5,null
+2,2,Big Boy,Food,127,15,Fries,Fries,12,null
+2,2,Big Boy,Food,127,16,Non-Alcoholic,Milkshakes,11.5,null
+2,2,Big Boy,Food,127,17,Snack,Cookies,9,null
+2,2,Big Boy,Food,127,18,Alcohol,Domestic Beer,11,null
+2,2,Big Boy,Food,127,19,Non-Alcoholic,Regular or Large Soda,10,null
+2,2,Big Boy,Food,127,20,Water,Bottled Water,10,null
+2,3,Big Boy,Food,230,21,Sandwich,Grilled Chicken Breast Sandwich ,14.5,null
+2,3,Big Boy,Food,230,22,Sandwich,Slim Jim,14,null
+2,3,Big Boy,Food,230,23,Burger,Big Boy Original Double Decker,16.5,null
+2,3,Big Boy,Food,230,24,Fries,Fries,12,null
+2,3,Big Boy,Food,230,25,Non-Alcoholic,Milkshakes,11.5,null
+2,3,Big Boy,Food,230,26,Snack,Cookies,9,null
+2,3,Big Boy,Food,230,27,Alcohol,Domestic Beer,11,null
+2,3,Big Boy,Food,230,28,Non-Alcoholic,Regular or Large Soda,10,null
+2,3,Big Boy,Food,230,29,Water,Bottled Water,10,null
+3,1,Coppercraft Distillery,Bar,106,30,Alcohol,Cocktails and Domestic Beer,10,null
+3,2,Coppercraft Distillery,Bar,121,31,Alcohol,Cocktails and Domestic Beer,10,null
+3,3,Coppercraft Distillery,Bar,125,32,Alcohol,Cocktails and Domestic Beer,10,null
+3,4,Coppercraft Distillery,Bar,212,33,Alcohol,Cocktails and Domestic Beer,10,null
+3,5,Coppercraft Distillery,Bar,222,34,Alcohol,Cocktails and Domestic Beer,10,null
+3,6,Coppercraft Distillery,Bar,228,35,Alcohol,Cocktails and Domestic Beer,10,null
+4,1,Craft Corner,Bar,115,36,Alcohol,Craft Beer,13.5,null
+5,1,Downtown Counter,Food,139,37,Hot Dog,Coney Dog with Chips,13.5,null
+5,1,Downtown Counter,Food,139,38,Hot Dog,Pulled Pork Dog with Chips,16,null
+5,1,Downtown Counter,Food,139,39,Nachos,Pulled Pork Nachos,15.5,null
+5,1,Downtown Counter,Food,139,40,Hot Dog,Hot Dog,13.5,null
+5,1,Downtown Counter,Food,139,41,Snack,Bottomless Souvenir Popcorn,11,null
+5,1,Downtown Counter,Food,139,42,Nachos,Nacho Grande,14,null
+5,1,Downtown Counter,Food,139,43,Snack,Peanuts,7,null
+5,1,Downtown Counter,Food,139,44,Alcohol,Domestic Beer,10,null
+5,1,Downtown Counter,Food,139,45,Non-Alcoholic,Bottomless Souvenir Soda,11,null
+5,1,Downtown Counter,Food,139,46,Non-Alcoholic,Regular or Large Soda,10,null
+5,1,Downtown Counter,Food,139,47,Water,Bottled Water,10,null
+6,1,Goal Post Grill & Pizzeria,Food,119,48,Sandwich,Chicken Tenders with Fries,17,null
+6,1,Goal Post Grill & Pizzeria,Food,119,49,Burger,Cheeseburger with Fries,18,null
+6,1,Goal Post Grill & Pizzeria,Food,119,50,Pizza,Cheese Pizza,13.5,null
+6,1,Goal Post Grill & Pizzeria,Food,119,51,Pizza,Pepperoni Pizza,11,null
+6,1,Goal Post Grill & Pizzeria,Food,119,52,Hot Dog,Hot Dog,13.5,null
+6,1,Goal Post Grill & Pizzeria,Food,119,53,Snack,Peanuts,7,null
+6,1,Goal Post Grill & Pizzeria,Food,119,54,Alcohol,Domestic Beer,11.5,null
+6,1,Goal Post Grill & Pizzeria,Food,119,55,Non-Alcoholic,Regular or Large Soda,10,null
+6,1,Goal Post Grill & Pizzeria,Food,119,56,Water,Bottled Water,10,null
+7,1,Grobbel's Gourmet Deli,Food,250,57,Hot Dog,Value Meal,13,null
+8,1,Honcho,Food,133,58,Hot Dog,Value Meal,13,null
+9,1,Hungry Howie's,Food,111,59,Pizza,Cheese Pizza,12,null
+9,1,Hungry Howie's,Food,111,60,Pizza,Pepperoni Pizza,11,null
+9,1,Hungry Howie's,Food,111,61,Snack,Peanuts,7,null
+9,1,Hungry Howie's,Food,111,62,Alcohol,Domestic Beer,11,null
+9,1,Hungry Howie's,Food,111,63,Non-Alcoholic,Regular or Large Soda,10,null
+9,1,Hungry Howie's,Food,111,64,Water,Bottled Water,10,null
+9,2,Hungry Howie's,Food,123,65,Pizza,Cheese Pizza,12,null
+9,2,Hungry Howie's,Food,123,66,Pizza,Pepperoni Pizza,11,null
+9,2,Hungry Howie's,Food,123,67,Snack,Peanuts,7,null
+9,2,Hungry Howie's,Food,123,68,Alcohol,Domestic Beer,11,null
+9,2,Hungry Howie's,Food,123,69,Non-Alcoholic,Regular or Large Soda,10,null
+9,2,Hungry Howie's,Food,123,70,Water,Bottled Water,10,null
+9,3,Hungry Howie's,Food,131,71,Pizza,Cheese Pizza,12,null
+9,3,Hungry Howie's,Food,131,72,Pizza,Pepperoni Pizza,11,null
+9,3,Hungry Howie's,Food,131,73,Snack,Peanuts,7,null
+9,3,Hungry Howie's,Food,131,74,Alcohol,Domestic Beer,11,null
+9,3,Hungry Howie's,Food,131,75,Non-Alcoholic,Regular or Large Soda,10,null
+9,3,Hungry Howie's,Food,131,76,Water,Bottled Water,10,null
+9,4,Hungry Howie's,Food,226,77,Pizza,Cheese Pizza,12,null
+9,4,Hungry Howie's,Food,226,78,Pizza,Pepperoni Pizza,11,null
+9,4,Hungry Howie's,Food,226,79,Snack,Peanuts,7,null
+9,4,Hungry Howie's,Food,226,80,Alcohol,Domestic Beer,11,null
+9,4,Hungry Howie's,Food,226,81,Non-Alcoholic,Regular or Large Soda,10,null
+9,4,Hungry Howie's,Food,226,82,Water,Bottled Water,10,null
+10,1,The Kroger Cooler,Food,112,83,Snack,Popcorn,8,null
+10,2,The Kroger Cooler,Food,234,84,Snack,Popcorn,8,null
+11,1,Lefty's Cheesesteaks,Food,103,85,Sandwich,Lefty's Cheesteak,16,null
+11,1,Lefty's Cheesesteaks,Food,103,86,Sandwich,Big Poppa,14,null
+11,1,Lefty's Cheesesteaks,Food,103,87,Sandwich,Southpaw,12,null
+11,1,Lefty's Cheesesteaks,Food,103,88,Sandwich,Chicken Hoagie,15,null
+11,2,Lefty's Cheesesteaks,Food,135,89,Sandwich,Lefty's Cheesteak,16,null
+11,2,Lefty's Cheesesteaks,Food,135,90,Sandwich,Big Poppa,14,null
+11,2,Lefty's Cheesesteaks,Food,135,91,Sandwich,Southpaw,12,null
+11,2,Lefty's Cheesesteaks,Food,135,92,Sandwich,Chicken Hoagie,15,null
+12,1,Paradise Deli,Food,105,93,Sandwich,Chicken Hoagie,15,null
+13,1,Poletown Sausage,Food,103,94,Hot Dog,Value Meal,13,null
+14,1,Pretzel Hastings Palace,Food,105,95,Pretzels,Pretzel,8,null
+15,1,Slows To Go BBQ,Food,115,96,Sandwich,Big Poppa,14,null
+15,2,Slows To Go BBQ,Food,210,97,Sandwich,Big Poppa,14,null
+16,1,Snack Zone,Food,117,98,Hot Dog,Value Meal,13,null
+16,1,Snack Zone,Food,117,99,Nachos,Nacho Grande,14,null
+16,1,Snack Zone,Food,117,100,Hot Dog,Hot Dog,13.5,null
+16,1,Snack Zone,Food,117,101,Snack,Popcorn,7,null
+16,1,Snack Zone,Food,117,102,Pretzels,Pretzel,8,null
+16,1,Snack Zone,Food,117,103,Snack,Peanuts,7,null
+16,1,Snack Zone,Food,117,104,Snack,Cheese Chips,9,null
+16,1,Snack Zone,Food,117,105,Alcohol,Domestic Beer,11,null
+16,1,Snack Zone,Food,117,106,Non-Alcoholic,Regular or Large Soda,10,null
+16,1,Snack Zone,Food,117,107,Water,Bottled Water,10,null
+16,1,Snack Zone,Food,117,108,Non-Alcoholic,Gatorade,9,null
+17,1,Streats of Detroit,Food,109,109,Hot Dog,Value Meal,13,null
+17,1,Streats of Detroit,Food,109,110,Nachos,Nacho Grande,14,null
+17,1,Streats of Detroit,Food,109,111,Hot Dog,Hot Dog,13.5,null
+17,1,Streats of Detroit,Food,109,112,Snack,Popcorn,8,null
+17,1,Streats of Detroit,Food,109,113,Pretzels,Pretzel,7,null
+17,1,Streats of Detroit,Food,109,114,Snack,Peanuts,8,null
+17,1,Streats of Detroit,Food,109,115,Snack,Cheese Cups,10.5,null
+17,1,Streats of Detroit,Food,109,116,Alcohol,Domestic Beer,11,null
+17,1,Streats of Detroit,Food,109,117,Non-Alcoholic,Regular or Large Soda,10,null
+17,1,Streats of Detroit,Food,109,118,Water,Bottled Water,10,null
+17,1,Streats of Detroit,Food,109,119,Non-Alcoholic,Gatorade,9,null
+17,2,Streats of Detroit,Food,120,120,Hot Dog,Value Meal,13,null
+17,2,Streats of Detroit,Food,120,121,Nachos,Nacho Grande,14,null
+17,2,Streats of Detroit,Food,120,122,Hot Dog,Hot Dog,13.5,null
+17,2,Streats of Detroit,Food,120,123,Snack,Popcorn,7,null
+17,2,Streats of Detroit,Food,120,124,Pretzels,Pretzel,8,null
+17,2,Streats of Detroit,Food,120,125,Snack,Peanuts,8,null
+17,2,Streats of Detroit,Food,120,126,Snack,Cheese Cups,10.5,null
+17,2,Streats of Detroit,Food,120,127,Alcohol,Domestic Beer,11,null
+17,2,Streats of Detroit,Food,120,128,Non-Alcoholic,Regular or Large Soda,10,null
+17,2,Streats of Detroit,Food,120,129,Water,Bottled Water,10,null
+17,2,Streats of Detroit,Food,120,130,Non-Alcoholic,Gatorade,9,null
+17,3,Streats of Detroit,Food,124,131,Hot Dog,Value Meal,13,null
+17,3,Streats of Detroit,Food,124,132,Nachos,Nacho Grande,14,null
+17,3,Streats of Detroit,Food,124,133,Hot Dog,Hot Dog,13.5,null
+17,3,Streats of Detroit,Food,124,134,Snack,Popcorn,7,null
+17,3,Streats of Detroit,Food,124,135,Pretzels,Pretzel,8,null
+17,3,Streats of Detroit,Food,124,136,Snack,Peanuts,8,null
+17,3,Streats of Detroit,Food,124,137,Snack,Cheese Cups,10.5,null
+17,3,Streats of Detroit,Food,124,138,Alcohol,Domestic Beer,11,null
+17,3,Streats of Detroit,Food,124,139,Non-Alcoholic,Regular or Large Soda,10,null
+17,3,Streats of Detroit,Food,124,140,Water,Bottled Water,10,null
+17,3,Streats of Detroit,Food,124,141,Non-Alcoholic,Gatorade,9,null
+17,4,Streats of Detroit,Food,126,142,Hot Dog,Value Meal,13,null
+17,4,Streats of Detroit,Food,126,143,Nachos,Nacho Grande,14,null
+17,4,Streats of Detroit,Food,126,144,Hot Dog,Hot Dog,13.5,null
+17,4,Streats of Detroit,Food,126,145,Snack,Popcorn,7,null
+17,4,Streats of Detroit,Food,126,146,Pretzels,Pretzel,8,null
+17,4,Streats of Detroit,Food,126,147,Snack,Peanuts,8,null
+17,4,Streats of Detroit,Food,126,148,Snack,Cheese Cups,10.5,null
+17,4,Streats of Detroit,Food,126,149,Alcohol,Domestic Beer,11,null
+17,4,Streats of Detroit,Food,126,150,Non-Alcoholic,Regular or Large Soda,10,null
+17,4,Streats of Detroit,Food,126,151,Water,Bottled Water,10,null
+17,4,Streats of Detroit,Food,126,152,Non-Alcoholic,Gatorade,9,null
+17,5,Streats of Detroit,Food,130,153,Hot Dog,Value Meal,13,null
+17,5,Streats of Detroit,Food,130,154,Nachos,Nacho Grande,14,null
+17,5,Streats of Detroit,Food,130,155,Hot Dog,Hot Dog,13.5,null
+17,5,Streats of Detroit,Food,130,156,Snack,Popcorn,7,null
+17,5,Streats of Detroit,Food,130,157,Pretzels,Pretzel,8,null
+17,5,Streats of Detroit,Food,130,158,Snack,Peanuts,8,null
+17,5,Streats of Detroit,Food,130,159,Snack,Cheese Cups,10.5,null
+17,5,Streats of Detroit,Food,130,160,Alcohol,Domestic Beer,11,null
+17,5,Streats of Detroit,Food,130,161,Non-Alcoholic,Regular or Large Soda,10,null
+17,5,Streats of Detroit,Food,130,162,Water,Bottled Water,10,null
+17,5,Streats of Detroit,Food,130,163,Non-Alcoholic,Gatorade,9,null
+17,6,Streats of Detroit,Food,137,164,Hot Dog,Value Meal,13,null
+17,6,Streats of Detroit,Food,137,165,Nachos,Nacho Grande,14,null
+17,6,Streats of Detroit,Food,137,166,Hot Dog,Hot Dog,13.5,null
+17,6,Streats of Detroit,Food,137,167,Snack,Popcorn,7,null
+17,6,Streats of Detroit,Food,137,168,Pretzels,Pretzel,8,null
+17,6,Streats of Detroit,Food,137,169,Snack,Peanuts,8,null
+17,6,Streats of Detroit,Food,137,170,Snack,Cheese Cups,10.5,null
+17,6,Streats of Detroit,Food,137,171,Alcohol,Domestic Beer,11,null
+17,6,Streats of Detroit,Food,137,172,Non-Alcoholic,Regular or Large Soda,10,null
+17,6,Streats of Detroit,Food,137,173,Water,Bottled Water,10,null
+17,6,Streats of Detroit,Food,137,174,Non-Alcoholic,Gatorade,9,null
+17,7,Streats of Detroit,Food,217,175,Hot Dog,Value Meal,13,null
+17,7,Streats of Detroit,Food,217,176,Nachos,Nacho Grande,14,null
+17,7,Streats of Detroit,Food,217,177,Hot Dog,Hot Dog,13.5,null
+17,7,Streats of Detroit,Food,217,178,Snack,Popcorn,7,null
+17,7,Streats of Detroit,Food,217,179,Pretzels,Pretzel,8,null
+17,7,Streats of Detroit,Food,217,180,Snack,Peanuts,8,null
+17,7,Streats of Detroit,Food,217,181,Snack,Cheese Cups,10.5,null
+17,7,Streats of Detroit,Food,217,182,Alcohol,Domestic Beer,11,null
+17,7,Streats of Detroit,Food,217,183,Non-Alcoholic,Regular or Large Soda,10,null
+17,7,Streats of Detroit,Food,217,184,Water,Bottled Water,10,null
+17,7,Streats of Detroit,Food,217,185,Non-Alcoholic,Gatorade,9,null
+17,8,Streats of Detroit,Food,223,186,Hot Dog,Value Meal,13,null
+17,8,Streats of Detroit,Food,223,187,Nachos,Nacho Grande,14,null
+17,8,Streats of Detroit,Food,223,188,Hot Dog,Hot Dog,13.5,null
+17,8,Streats of Detroit,Food,223,189,Snack,Popcorn,7,null
+17,8,Streats of Detroit,Food,223,190,Pretzels,Pretzel,8,null
+17,8,Streats of Detroit,Food,223,191,Snack,Peanuts,8,null
+17,8,Streats of Detroit,Food,223,192,Snack,Cheese Cups,10.5,null
+17,8,Streats of Detroit,Food,223,193,Alcohol,Domestic Beer,11,null
+17,8,Streats of Detroit,Food,223,194,Non-Alcoholic,Regular or Large Soda,10,null
+17,8,Streats of Detroit,Food,223,195,Water,Bottled Water,10,null
+17,8,Streats of Detroit,Food,223,196,Non-Alcoholic,Gatorade,9,null
+17,9,Streats of Detroit,Food,227,197,Hot Dog,Value Meal,13,null
+17,9,Streats of Detroit,Food,227,198,Nachos,Nacho Grande,14,null
+17,9,Streats of Detroit,Food,227,199,Hot Dog,Hot Dog,13.5,null
+17,9,Streats of Detroit,Food,227,200,Snack,Popcorn,7,null
+17,9,Streats of Detroit,Food,227,201,Pretzels,Pretzel,8,null
+17,9,Streats of Detroit,Food,227,202,Snack,Peanuts,8,null
+17,9,Streats of Detroit,Food,227,203,Snack,Cheese Cups,10.5,null
+17,9,Streats of Detroit,Food,227,204,Alcohol,Domestic Beer,11,null
+17,9,Streats of Detroit,Food,227,205,Non-Alcoholic,Regular or Large Soda,10,null
+17,9,Streats of Detroit,Food,227,206,Water,Bottled Water,10,null
+17,9,Streats of Detroit,Food,227,207,Non-Alcoholic,Gatorade,9,null
+17,10,Streats of Detroit,Food,238,208,Hot Dog,Value Meal,13,null
+17,10,Streats of Detroit,Food,238,209,Nachos,Nacho Grande,14,null
+17,10,Streats of Detroit,Food,238,210,Hot Dog,Hot Dog,13.5,null
+17,10,Streats of Detroit,Food,238,211,Snack,Popcorn,7,null
+17,10,Streats of Detroit,Food,238,212,Pretzels,Pretzel,8,null
+17,10,Streats of Detroit,Food,238,213,Snack,Peanuts,8,null
+17,10,Streats of Detroit,Food,238,214,Snack,Cheese Cups,10.5,null
+17,10,Streats of Detroit,Food,238,215,Alcohol,Domestic Beer,11,null
+17,10,Streats of Detroit,Food,238,216,Non-Alcoholic,Regular or Large Soda,10,null
+17,10,Streats of Detroit,Food,238,217,Water,Bottled Water,10,null
+17,10,Streats of Detroit,Food,238,218,Non-Alcoholic,Gatorade,9,null
+17,11,Streats of Detroit,Food,229,219,Hot Dog,Value Meal,13,null
+17,11,Streats of Detroit,Food,229,220,Nachos,Nacho Grande,14,null
+17,11,Streats of Detroit,Food,229,221,Hot Dog,Hot Dog,13.5,null
+17,11,Streats of Detroit,Food,229,222,Snack,Popcorn,7,null
+17,11,Streats of Detroit,Food,229,223,Pretzels,Pretzel,8,null
+17,11,Streats of Detroit,Food,229,224,Snack,Peanuts,8,null
+17,11,Streats of Detroit,Food,229,225,Snack,Cheese Cups,10.5,null
+17,11,Streats of Detroit,Food,229,226,Alcohol,Domestic Beer,11,null
+17,11,Streats of Detroit,Food,229,227,Non-Alcoholic,Regular or Large Soda,10,null
+17,11,Streats of Detroit,Food,229,228,Water,Bottled Water,10,null
+17,11,Streats of Detroit,Food,229,229,Non-Alcoholic,Gatorade,9,null
+17,12,Streats of Detroit,Food,244,230,Hot Dog,Value Meal,13,null
+17,12,Streats of Detroit,Food,244,231,Nachos,Nacho Grande,14,null
+17,12,Streats of Detroit,Food,244,232,Hot Dog,Hot Dog,13.5,null
+17,12,Streats of Detroit,Food,244,233,Snack,Popcorn,7,null
+17,12,Streats of Detroit,Food,244,234,Pretzels,Pretzel,8,null
+17,12,Streats of Detroit,Food,244,235,Snack,Peanuts,8,null
+17,12,Streats of Detroit,Food,244,236,Snack,Cheese Cups,10.5,null
+17,12,Streats of Detroit,Food,244,237,Alcohol,Domestic Beer,11,null
+17,12,Streats of Detroit,Food,244,238,Non-Alcoholic,Regular or Large Soda,10,null
+17,12,Streats of Detroit,Food,244,239,Water,Bottled Water,10,null
+17,12,Streats of Detroit,Food,244,240,Non-Alcoholic,Gatorade,9,null
+18,1,The Dash,Food,117,241,Snack,Peanuts,8,null
+19,1,Tailgate Grill,Food,120,242,Sandwich,Chicken Tenders with Fries,17,null
+19,1,Tailgate Grill,Food,120,243,Burger,Cheeseburger with Fries,18,null
+19,1,Tailgate Grill,Food,120,244,Hot Dog,Hot Dog,13.5,null
+19,1,Tailgate Grill,Food,120,245,Snack,Peanuts,8,null
+19,1,Tailgate Grill,Food,120,246,Alcohol,Domestic Beer,11,null
+19,1,Tailgate Grill,Food,120,247,Non-Alcoholic,Regular or Large Soda,10,null
+19,1,Tailgate Grill,Food,120,248,Water,Bottled Water,10,null
+19,2,Tailgate Grill,Food,135,249,Sandwich,Chicken Tenders with Fries,17,null
+19,2,Tailgate Grill,Food,135,250,Burger,Cheeseburger with Fries,18,null
+19,2,Tailgate Grill,Food,135,251,Pizza,Cheese Pizza,13.5,null
+19,2,Tailgate Grill,Food,135,252,Pizza,Pepperoni Pizza,12,null
+19,2,Tailgate Grill,Food,135,253,Hot Dog,Hot Dog,13.5,null
+19,2,Tailgate Grill,Food,135,254,Snack,Peanuts,8,null
+19,2,Tailgate Grill,Food,135,255,Alcohol,Domestic Beer,11,null
+19,2,Tailgate Grill,Food,135,256,Non-Alcoholic,Regular or Large Soda,10,null
+19,2,Tailgate Grill,Food,135,257,Water,Bottled Water,10,null
+19,3,Tailgate Grill,Food,219,258,Sandwich,Chicken Tenders with Fries,17,null
+19,3,Tailgate Grill,Food,219,259,Burger,Cheeseburger with Fries,18,null
+19,3,Tailgate Grill,Food,219,260,Hot Dog,Hot Dog,13.5,null
+19,3,Tailgate Grill,Food,219,261,Snack,Peanuts,8,null
+19,3,Tailgate Grill,Food,219,262,Alcohol,Domestic Beer,11,null
+19,3,Tailgate Grill,Food,219,263,Non-Alcoholic,Regular or Large Soda,10,null
+19,3,Tailgate Grill,Food,219,264,Water,Bottled Water,10,null
+19,4,Tailgate Grill,Food,235,265,Sandwich,Chicken Tenders with Fries,17,null
+19,4,Tailgate Grill,Food,235,266,Burger,Cheeseburger with Fries,18,null
+19,4,Tailgate Grill,Food,235,267,Hot Dog,Hot Dog,13.5,null
+19,4,Tailgate Grill,Food,235,268,Snack,Peanuts,8,null
+19,4,Tailgate Grill,Food,235,269,Alcohol,Domestic Beer,11,null
+19,4,Tailgate Grill,Food,235,270,Non-Alcoholic,Regular or Large Soda,10,null
+19,4,Tailgate Grill,Food,235,271,Water,Bottled Water,10,null
+19,5,Tailgate Grill,Food,242,272,Sandwich,Chicken Tenders with Fries,17,null
+19,5,Tailgate Grill,Food,242,273,Burger,Cheeseburger with Fries,18,null
+19,5,Tailgate Grill,Food,242,274,Hot Dog,Hot Dog,13.5,null
+19,5,Tailgate Grill,Food,242,275,Snack,Peanuts,8,null
+19,5,Tailgate Grill,Food,242,276,Alcohol,Domestic Beer,11,null
+19,5,Tailgate Grill,Food,242,277,Non-Alcoholic,Regular or Large Soda,10,null
+19,5,Tailgate Grill,Food,242,278,Water,Bottled Water,10,null
+20,1,Turf Tavern,Bar,105,279,Alcohol,Domestic Beer,11,null
+20,1,Turf Tavern,Bar,105,280,Water,Bottled Water,10,null
+20,1,Turf Tavern,Bar,105,281,Snack,Peanuts,8,null
+20,2,Turf Tavern,Bar,128,282,Alcohol,Domestic Beer,11,null
+20,2,Turf Tavern,Bar,128,283,Water,Bottled Water,10,null
+20,2,Turf Tavern,Bar,128,284,Snack,Peanuts,8,null
+20,3,Turf Tavern,Bar,132,285,Alcohol,Domestic Beer,11,null
+20,3,Turf Tavern,Bar,132,286,Water,Bottled Water,10,null
+20,3,Turf Tavern,Bar,132,287,Snack,Peanuts,8,null
+20,3,Turf Tavern,Bar,236,288,Alcohol,Domestic Beer,11,null
+20,3,Turf Tavern,Bar,236,289,Water,Bottled Water,10,null
+20,3,Turf Tavern,Bar,236,290,Snack,Peanuts,8,null
+21,1,Corridor Sausage Co.,Food,204,291,Sandwich,Deli Style Corned Beef & Swiss,16,null
+22,1,Detroit Bloody Mary Bar,Bar,210,292,Alcohol,Bloody Mary,16,null
+22,1,Detroit Bloody Mary Bar,Bar,210,293,Alcohol,Well Cocktail,11,null
+22,1,Detroit Bloody Mary Bar,Bar,210,294,Alcohol,Premium Cocktail,15,null
+22,1,Detroit Bloody Mary Bar,Bar,210,295,Alcohol,Domestic Beer,11,null
+22,1,Detroit Bloody Mary Bar,Bar,210,296,Alcohol,Craft Beer,15.5,null
+22,1,Detroit Bloody Mary Bar,Bar,210,297,Alcohol,Wine,10,null
+22,1,Detroit Bloody Mary Bar,Bar,210,298,Non-Alcoholic,Regular or Large Soda,10,null
+22,1,Detroit Bloody Mary Bar,Bar,210,299,Water,Bottled Water,10,null
+23,1,Kickoff Classics,Food,208,300,Hot Dog,Value Meal,13,null
+23,1,Kickoff Classics,Food,208,301,Sandwich,Vegan Buffalo Cauliflower Wrap,13.5,null
+23,1,Kickoff Classics,Food,208,302,Sandwich,Korean Philly Cheesesteak,16.5,null
+23,1,Kickoff Classics,Food,208,303,Nachos,Nacho Grande,14,null
+23,1,Kickoff Classics,Food,208,304,Nachos,Loaded Nacho Supreme,15,null
+23,1,Kickoff Classics,Food,208,305,Hot Dog,Hot Dog,13.5,null
+23,1,Kickoff Classics,Food,208,306,Snack,Waffle Taco Duo,12,null
+23,1,Kickoff Classics,Food,208,307,Sandwich,Deli Style Corned Beef & Swiss,16,null
+23,1,Kickoff Classics,Food,208,308,Sandwich,Smoked Turkey Club Sandwich,13.5,null
+23,1,Kickoff Classics,Food,208,309,Snack,Bottomless Souvenir Popcorn,11,null
+23,1,Kickoff Classics,Food,208,310,Pretzels,Pretzels,8,null
+23,1,Kickoff Classics,Food,208,311,Snack,Peanuts,7,null
+23,1,Kickoff Classics,Food,208,312,Sandwich,Chicken Tender Basket,14.5,null
+23,1,Kickoff Classics,Food,208,313,Fries,Fries,12,null
+24,1,Novella's Pizza,Food,212,314,Pizza,Pepperoni Pizza,12,null
+24,1,Novella's Pizza,Food,212,315,Pizza,Cheese Pizza,13.5,null
+24,1,Novella's Pizza,Food,212,316,Pizza,Sausage and Peppers Pizza,13,null
+24,1,Novella's Pizza,Food,212,317,Alcohol,Domestic Beer,11,null
+24,1,Novella's Pizza,Food,212,318,Non-Alcoholic,Bottomless Souvenir Soda,11,null
+24,1,Novella's Pizza,Food,212,319,Non-Alcoholic,Regular or Large Soda,10,null
+24,1,Novella's Pizza,Food,212,320,Water,Bottled Water,10,null
+25,1,Sonny's Hamburgers,Food,208,321,Burger,Double Cheeseburger with Fries,17,null
+25,1,Sonny's Hamburgers,Food,208,322,Burger,Large Cheeseburger with Fries,17,null
+25,1,Sonny's Hamburgers,Food,208,323,Hot Dog,Hot Dog,13.5,null
+25,1,Sonny's Hamburgers,Food,208,324,Sandwich,Wing Dings with Fries,17,null
+25,1,Sonny's Hamburgers,Food,208,325,Fries,Fries,12,null
+25,1,Sonny's Hamburgers,Food,208,326,Alcohol,Domestic Beer,11,null
+25,1,Sonny's Hamburgers,Food,208,327,Non-Alcoholic,Bottomless Souvenir Soda,11,null
+25,1,Sonny's Hamburgers,Food,208,328,Non-Alcoholic,Regular or Large Soda,10,null
+25,1,Sonny's Hamburgers,Food,208,329,Water,Bottled Water,10,null
+25,1,Sonny's Hamburgers,Food,208,330,Non-Alcoholic,Fresh Lemonade,8,null
+26,1,South East Pub,Bar,206,331,Alcohol,Well Cocktail,11,null
+26,1,South East Pub,Bar,206,332,Alcohol,Premium Cocktail,15,null
+26,1,South East Pub,Bar,206,333,Alcohol,Bloody Mary,16,null
+26,1,South East Pub,Bar,206,334,Non-Alcoholic,Regular or Large Soda,10,null
+26,1,South East Pub,Bar,206,335,Water,Bottled Water,10,null
+26,1,South East Pub,Bar,206,336,Alcohol,Domestic Beer,11,null
+26,1,South East Pub,Bar,206,337,Alcohol,Craft Beer,14,null
+26,1,South East Pub,Bar,206,338,Alcohol,Seltzer,12,null
+26,1,South East Pub,Bar,206,339,Alcohol,Wine,10,null
+26,2,South East Pub,Bar,214,340,Alcohol,Well Cocktail,11,null
+26,2,South East Pub,Bar,214,341,Alcohol,Premium Cocktail,15,null
+26,2,South East Pub,Bar,214,342,Alcohol,Bloody Mary,16,null
+26,2,South East Pub,Bar,214,343,Non-Alcoholic,Regular or Large Soda,10,null
+26,2,South East Pub,Bar,214,344,Water,Bottled Water,10,null
+26,2,South East Pub,Bar,214,345,Alcohol,Domestic Beer,11,null
+26,2,South East Pub,Bar,214,346,Alcohol,Craft Beer,14,null
+26,2,South East Pub,Bar,214,347,Alcohol,Seltzer,12,null
+26,2,South East Pub,Bar,214,348,Alcohol,Wine,10,null
+27,1,South Club Cafe,Food,214,349,Pretzels,Pretzels,8,null
+27,1,South Club Cafe,Food,214,350,Snack,Cake Slice,8,null
+27,1,South Club Cafe,Food,214,351,Snack,Cake Cup,7,null
+27,1,South Club Cafe,Food,214,352,Snack,Brownie,8,null
+27,1,South Club Cafe,Food,214,353,Snack,Cookie,9,null
+27,1,South Club Cafe,Food,214,354,Alcohol,Domestic Beer,11,null
+27,1,South Club Cafe,Food,214,355,Non-Alcoholic,Regular or Large Soda,10,null
+27,1,South Club Cafe,Food,214,356,Water,Bottled Water,10,null
+27,1,South Club Cafe,Food,214,357,Non-Alcoholic,Coffee,7,null
+27,1,South Club Cafe,Food,214,358,Non-Alcoholic,Espresso,8,null
+28,1,Uncle Joe's Chicken,Food,208,359,Sandwich,Chicken Fingers with Fries,15,null
+28,1,Uncle Joe's Chicken,Food,208,360,Fries,Fries,12,null
+28,1,Uncle Joe's Chicken,Food,208,361,Alcohol,Domestic Beer,11,null
+28,1,Uncle Joe's Chicken,Food,208,362,Non-Alcoholic,Bottomless Souvenir Soda,11,null
+28,1,Uncle Joe's Chicken,Food,208,363,Non-Alcoholic,Regular or Large Soda,10,null
+28,1,Uncle Joe's Chicken,Food,208,364,Water,Bottled Water,10,null
