@@ -90,3 +90,22 @@ DBDemos.download_file_from_git(
     repo="komae_dbdemos",
     path="/product_recommendation_20250411/_data/vendors/"
 )
+
+# COMMAND ----------
+
+# DBTITLE 1,MLがうまくいかなかった時用の代替策
+# gd_final_recommendationsをダウンロード
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_final_recommendations",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/product_recommendation_20250411/_data/_tmp/gd_final_recommendations/"
+)
+
+# gold_recommendationsをダウンロード
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_recommendations",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/product_recommendation_20250411/_data/_tmp/gd_recommendations/"
+)

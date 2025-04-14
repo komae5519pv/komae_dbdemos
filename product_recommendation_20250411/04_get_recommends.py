@@ -163,19 +163,74 @@ display(sections_recommendations_df.limit(100))
 
 # COMMAND ----------
 
-file_name_gd_final_recommendations = f"gd_final_recommendations.csv"
-file_name_gd_recommendations = f"gd_recommendations.csv"
+# DBTITLE 1,gd_recommendations
+from pyspark.sql.types import StructType, StructField, LongType, StringType, FloatType
 
-# gd_final_recommendations
-df = spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
-df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_final_recommendations.csv", index=False)
-print(f"ファイル出力完了: /Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_final_recommendations.csv")
+schema_items = StructType([
+    StructField("customer_id", LongType(), False),            # 会員ID
+    StructField("customer_name", StringType(), False),        # 会員氏名
+    StructField("phone_number", StringType(), False),         # 会員電話番号
+    StructField("item_id", LongType(), False),                # 商品ID
+    StructField("rating", FloatType(), False),                # ALSレコメンドレート
+    StructField("vendor_id", LongType(), False),              # ベンダーID
+    StructField("vendor_location_number", LongType(), False), # ベンダーロケーション番号
+    StructField("vendor_name", StringType(), False),          # ベンダー名
+    StructField("vendor_scope", StringType(), False),         # ベンダースコープ
+    StructField("section", LongType(), False),                # セクション
+    StructField("item_type", StringType(), False),            # 商品タイプ
+    StructField("item", StringType(), False),                 # 商品名
+    StructField("price", FloatType(), False),                 # 価格
+    StructField("error", StringType(), True),                 # エラー
+    StructField("item_img_url", StringType(), True),          # 画像URL
+])
 
-# gd_recommendations
-df = spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recommendations")
-df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_recommendations.csv", index=False)
-print(f"ファイル出力完了: /Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_recommendations.csv")
+gd_recommend_df = spark.read.csv(
+    f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_recommendations/gd_recommendations.csv",
+    header=True,
+    schema=schema_items)
 
+# create table
+# spark.sql(f"DROP TABLE IF EXISTS {MY_CATALOG}.{MY_SCHEMA}.gd_recommendations")
+# gd_recommend_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recommendations")
+gd_recommend_df.write.saveAsTable(f"komae_demo_v2.{MY_SCHEMA}.gd_recommendations")
+
+print(gd_recommend_df.count())
+print(gd_recommend_df.columns)
+display(gd_recommend_df.limit(100))
+
+# COMMAND ----------
+
+# DBTITLE 1,gd_final_recommendations
+from pyspark.sql.types import StructType, StructField, LongType, StringType, FloatType
+
+schema_items = StructType([
+    StructField("customer_id", LongType(), False),            # 会員ID
+    StructField("customer_name", StringType(), False),        # 会員氏名
+    StructField("phone_number", StringType(), False),         # 会員電話番号
+    StructField("vendor_name", StringType(), False),          # ベンダー名
+    StructField("item_id", LongType(), False),                # 商品ID
+    StructField("item", StringType(), False),                 # 商品名
+    StructField("item_img_url", StringType(), True),          # 画像URL
+    StructField("rating", FloatType(), False),                # ALSレコメンドレート
+    StructField("section", LongType(), False),                # セクション
+    StructField("section_number", LongType(), False),         # セクション番号
+    StructField("distance", LongType(), False),               # 距離
+    StructField("rnk", StringType(), True),                   # ランク
+])
+
+gd_final_df = spark.read.csv(
+    f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_final_recommendations/gd_final_recommendations.csv",
+    header=True,
+    schema=schema_items)
+
+# create table
+# spark.sql(f"DROP TABLE IF EXISTS {MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
+# gd_final_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
+gd_final_df.write.saveAsTable(f"komae_demo_v2.{MY_SCHEMA}.gd_final_recommendations")
+
+print(gd_final_df.count())
+print(gd_final_df.columns)
+display(gd_final_df.limit(100))
 
 # COMMAND ----------
 
