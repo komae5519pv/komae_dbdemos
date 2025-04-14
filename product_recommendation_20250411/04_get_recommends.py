@@ -45,6 +45,7 @@
 
 # COMMAND ----------
 
+import mlflow
 #                                                               　           Alias for production
 #                                        Model name                              |
 #                                             |                                  |
