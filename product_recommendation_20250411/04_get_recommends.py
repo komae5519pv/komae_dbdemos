@@ -228,8 +228,7 @@ gd_recommend_df = spark.read.csv(
 
 # create table
 # spark.sql(f"DROP TABLE IF EXISTS {MY_CATALOG}.{MY_SCHEMA}.gd_recommendations")
-# gd_recommend_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recommendations")
-gd_recommend_df.write.saveAsTable(f"komae_demo_v2.{MY_SCHEMA}.gd_recommendations")
+gd_recommend_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recommendations")
 
 print(gd_recommend_df.count())
 print(gd_recommend_df.columns)
@@ -262,8 +261,7 @@ gd_final_df = spark.read.csv(
 
 # create table
 # spark.sql(f"DROP TABLE IF EXISTS {MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
-# gd_final_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
-gd_final_df.write.saveAsTable(f"komae_demo_v2.{MY_SCHEMA}.gd_final_recommendations")
+gd_final_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
 
 print(gd_final_df.count())
 print(gd_final_df.columns)
