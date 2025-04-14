@@ -159,7 +159,44 @@ display(sections_recommendations_df.limit(100))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ↓デモ用に`03_train_model`ノートブックがうまくいかない場合のチート
+# MAGIC ### 2-3. 顧客毎の距離の最も近いベストアイテムを特定
+# MAGIC レコメンドアイテムTOP10のうち、お客様の席から最も近いお店のアイテムをベストアイテムとして抽出します。
+
+# COMMAND ----------
+
+final_recommendations_df = spark.sql(f"""
+SELECT * FROM (
+    SELECT
+      -- *,
+      customer_id,
+      customer_name,
+      phone_number,
+      vendor_name,
+      item_id,
+      item,
+      item_img_url,
+      rating,
+      section,
+      section_number,
+      distance,
+      RANK() OVER (PARTITION BY customer_id ORDER BY distance ASC) AS rnk
+    FROM {MY_CATALOG}.{MY_SCHEMA}.gd_sections_recommendations
+  ) WHERE rnk = 1
+""")
+
+# create table
+spark.sql(f"DROP TABLE IF EXISTS {MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
+final_recommendations_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
+
+print(final_recommendations_df.count())
+print(final_recommendations_df.columns)
+display(final_recommendations_df.limit(10))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 2-4. 番外編：MLがうまくいかない場合の救済策
+# MAGIC デモ用に`03_train_model`ノートブックがうまくいかない場合のチート
 
 # COMMAND ----------
 
@@ -231,39 +268,3 @@ gd_final_df.write.saveAsTable(f"komae_demo_v2.{MY_SCHEMA}.gd_final_recommendatio
 print(gd_final_df.count())
 print(gd_final_df.columns)
 display(gd_final_df.limit(100))
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### 2-3. 顧客毎の距離の最も近いベストアイテムを特定
-# MAGIC レコメンドアイテムTOP10のうち、お客様の席から最も近いお店のアイテムをベストアイテムとして抽出します。
-
-# COMMAND ----------
-
-final_recommendations_df = spark.sql(f"""
-SELECT * FROM (
-    SELECT
-      -- *,
-      customer_id,
-      customer_name,
-      phone_number,
-      vendor_name,
-      item_id,
-      item,
-      item_img_url,
-      rating,
-      section,
-      section_number,
-      distance,
-      RANK() OVER (PARTITION BY customer_id ORDER BY distance ASC) AS rnk
-    FROM {MY_CATALOG}.{MY_SCHEMA}.gd_sections_recommendations
-  ) WHERE rnk = 1
-""")
-
-# create table
-spark.sql(f"DROP TABLE IF EXISTS {MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
-final_recommendations_df.write.saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
-
-print(final_recommendations_df.count())
-print(final_recommendations_df.columns)
-display(final_recommendations_df.limit(10))
