@@ -1,6 +1,6 @@
 # Databricks notebook source
 # カタログ
-MY_CATALOG = "komae_demo_v3" # 使用したいカタログ名に変更してください
+MY_CATALOG = "komae_demo_v1" # 使用したいカタログ名に変更してください
 
 # スキーマ
 MY_SCHEMA = "demand_forecast"
@@ -11,6 +11,9 @@ MY_VOLUME_IMPORT = "raw_data"
 # モデル名
 MODEL_NAME = "demand_forecast"
 MODEL_NAME_AUTOML = "demand_forecast_automl"
+
+# ワークフロー名
+WORKFLOW_NAME = "komae_demand_forecasting_wf"
 
 # COMMAND ----------
 
@@ -45,5 +48,6 @@ print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/vending_machine_loc
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/date_master")
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/image")
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/origin_data")
-# print(f"モデル名: {MODEL_NAME}")
 print(f"モデル名（AutoML）: {MODEL_NAME_AUTOML}")
+print(f"ワークフロー名: {WORKFLOW_NAME}")
+
