@@ -1,7 +1,7 @@
 resources:
   jobs:
-    komae_item_recommend_wf_2:
-      name: komae_item_recommend_wf_2
+    komae_item_recommend_wf:
+      name: komae_item_recommend_wf
       tasks:
       - task_key: load_data
         notebook_task:
