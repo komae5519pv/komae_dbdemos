@@ -18,7 +18,7 @@ WORKFLOW_NAME = "komae_demand_forecasting_wf"
 # COMMAND ----------
 
 # カタログ、スキーマ、ボリューム作成
-spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
+# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_IMPORT}")
 
@@ -35,9 +35,9 @@ dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/image")
 dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/origin_data")
 
 # SQLで使う変数設定
-spark.conf.set("c.catalog", MY_CATALOG)
-spark.conf.set("c.schema", MY_SCHEMA)
-spark.conf.set("c.volume", MY_VOLUME_IMPORT)
+# spark.conf.set("c.catalog", MY_CATALOG)
+# spark.conf.set("c.schema", MY_SCHEMA)
+# spark.conf.set("c.volume", MY_VOLUME_IMPORT)
 
 print(f"カタログ: {MY_CATALOG}")
 print(f"スキーマ: {MY_CATALOG}.{MY_SCHEMA}")
