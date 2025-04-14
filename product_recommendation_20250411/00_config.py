@@ -1,6 +1,6 @@
 # Databricks notebook source
 # カタログ、スキーマ、ボリューム名
-MY_CATALOG = "komae_demo_v3"        # 使用したいカタログ名に変更してください
+MY_CATALOG = "komae_demo_v1"        # 使用したいカタログ名に変更してください
 MY_SCHEMA = "product_recommendation_stadium"
 MY_VOLUME = "data"
 MY_VOLUME_TMP = "tmp"
@@ -9,13 +9,13 @@ MY_VOLUME_TMP = "tmp"
 MODEL_NAME = "als_recommender_model"
 
 # ワークフロー名
-WORKFLOW_NAME = "komae_item_recommend_wf_2"
+WORKFLOW_NAME = "komae_item_recommend_wf"
 
 # COMMAND ----------
 
 # DBTITLE 1,カタログ設定
 # カタログ、スキーマ、ボリューム作成
-# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_TMP};")

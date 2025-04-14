@@ -6,6 +6,11 @@
 
 # COMMAND ----------
 
+# MAGIC %pip install pyyaml
+# MAGIC dbutils.library.restartPython()
+
+# COMMAND ----------
+
 # MAGIC %run ./00_config
 
 # COMMAND ----------
@@ -43,7 +48,7 @@ print(f"{current_dir}")
 
 # COMMAND ----------
 
-CLUSTER_ID = "0203-124810-rmnsgflh"    # ここにクラスタIDを貼り付けてください
+CLUSTER_ID = "0414-122938-8hxxcqyf"    # ここにクラスタIDを貼り付けてください
 
 # COMMAND ----------
 
