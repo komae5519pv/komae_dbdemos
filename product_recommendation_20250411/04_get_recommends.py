@@ -159,6 +159,27 @@ display(sections_recommendations_df.limit(100))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ↓デモ用に`03_train_model`ノートブックがうまくいかない場合のチート
+
+# COMMAND ----------
+
+file_name_gd_final_recommendations = f"gd_final_recommendations.csv"
+file_name_gd_recommendations = f"gd_recommendations.csv"
+
+# gd_final_recommendations
+df = spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.gd_final_recommendations")
+df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_final_recommendations.csv", index=False)
+print(f"ファイル出力完了: /Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_final_recommendations.csv")
+
+# gd_recommendations
+df = spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recommendations")
+df.coalesce(1).toPandas().to_csv(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_recommendations.csv", index=False)
+print(f"ファイル出力完了: /Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_TMP}/gd_recommendations.csv")
+
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ### 2-3. 顧客毎の距離の最も近いベストアイテムを特定
 # MAGIC レコメンドアイテムTOP10のうち、お客様の席から最も近いお店のアイテムをベストアイテムとして抽出します。
 

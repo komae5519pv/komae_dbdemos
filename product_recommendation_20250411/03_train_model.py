@@ -59,9 +59,6 @@ with mlflow.start_run() as run:
   # モデルのトレーニング
   model = als.fit(df)
 
-  # モデルをログ
-  mlflow.spark.log_model(model, "spark-model")
-
   # サンプルデータでシグネチャーを推測
   sample_input = df.select("customer_id", "item_id").limit(10)
   predictions = model.transform(sample_input)
@@ -75,7 +72,10 @@ with mlflow.start_run() as run:
   # 別のセルからこの実行の他の数値を追加する必要があるため、実行IDを取得しておく
   run_id = run.info.run_id
 
-  # モデルをログします
+  # # モデルをログ
+  # mlflow.spark.log_model(model, "spark-model")
+
+  # モデルをログ
   mlflow.spark.log_model(
     model,
     f"spark-model-{run_id}",   # 実行IDを使って一意のパスを生成

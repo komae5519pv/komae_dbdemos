@@ -35,6 +35,7 @@ print(f"{current_dir}")
 
 # MAGIC %md
 # MAGIC ## 2. クラスタIDを設定
+# MAGIC ここは手動での作業が必要です！  
 # MAGIC クラスター -> 該当クラスタ -> 画面右上の３点リーダー -> JSONを表示 -> cluster_idの値をコピー
 # MAGIC
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/product_recommendation_20250411/_images/step1_get_cluster_json.png?raw=true' width='88%'/>
