@@ -18,7 +18,7 @@ WORKFLOW_NAME = "komae_demand_forecasting_wf"
 # COMMAND ----------
 
 # カタログ、スキーマ、ボリューム作成
-# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_IMPORT}")
 
