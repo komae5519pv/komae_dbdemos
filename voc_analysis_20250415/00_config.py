@@ -8,11 +8,12 @@ MY_VOLUME_IMAGE = "images"
 # ボリュームディレクトリ
 VOLUME_EN = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/EN"
 VOLUME_JA = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/JP"
+VOLUME_EXTRACTED = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/extracted"
 
 # COMMAND ----------
 
 # カタログ、スキーマ、ボリューム作成
-# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME}")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_IMAGE}")
@@ -20,6 +21,7 @@ spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_IMAG
 # ボリュームのサブディレクトリ作成
 dbutils.fs.mkdirs(VOLUME_EN)
 dbutils.fs.mkdirs(VOLUME_JA)
+dbutils.fs.mkdirs(VOLUME_EXTRACTED)
 
 spark.sql(f"USE CATALOG {MY_CATALOG}")
 spark.sql(f"USE SCHEMA {MY_SCHEMA}")
@@ -31,3 +33,4 @@ print(f"MY_VOLUME_IMAGE: {MY_VOLUME_IMAGE}")
 print(f"ボリュームパス")
 print(VOLUME_EN)
 print(VOLUME_JA)
+print(VOLUME_EXTRACTED)
