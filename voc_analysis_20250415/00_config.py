@@ -7,7 +7,7 @@ MY_VOLUME_IMAGE = "images"
 
 # ボリュームディレクトリ
 VOLUME_EN = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/EN"
-VOLUME_JA = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/JA"
+VOLUME_JA = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/JP"
 
 # COMMAND ----------
 

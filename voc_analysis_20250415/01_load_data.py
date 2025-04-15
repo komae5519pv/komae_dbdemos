@@ -38,6 +38,22 @@ class DBDemos:
 
 # COMMAND ----------
 
+# 顧客レビュ（英語）をダウンロード
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/EN",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/voc_analysis_20250415/_data/_EN/"
+)
+
+# 顧客レビュ（日本語）をダウンロード
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/JP",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/voc_analysis_20250415/_data/_JP/"
+)
+
 # ポジネガアイコンをダウンロード
 DBDemos.download_file_from_git(
     dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMAGE}/images",
