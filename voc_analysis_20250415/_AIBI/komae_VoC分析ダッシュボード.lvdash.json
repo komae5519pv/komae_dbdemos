@@ -1,0 +1,3272 @@
+{
+  "datasets" : [ {
+    "name" : "4fe5aa42",
+    "displayName" : "reviews_summaries",
+    "query" : "SELECT *\nFROM komae_demo_v3.airline_reviews.gd_reviews_exstracted_by_categories_all"
+  }, {
+    "name" : "80646bd0",
+    "displayName" : "review_individual",
+    "query" : "WITH category_group AS (\n  SELECT\n    Aircraft,\n    DateFlown,\n    sentiment,\n    review_category,\n    review_details AS review_extructed_summaries,\n    AVG(OverallRating) AS AvgRating\n  FROM komae_demo_v3.airline_reviews.gd_reviews_exstracted_by_categories_all\n  WHERE\n    Aircraft IN (Aircraft)\n  GROUP BY ALL\n)\nSELECT \n    Aircraft,\n    DateFlown,\n    sentiment,\n    AvgRating,\n    review_category,\n    review_extructed_summaries\nFROM category_group\nORDER BY\n  Aircraft,\n  review_category\n"
+  } ],
+  "pages" : [ {
+    "name" : "30af16be",
+    "displayName" : "概要",
+    "layout" : [ {
+      "widget" : {
+        "name" : "2467263e",
+        "textbox_spec" : "# VoC分析ダッシュボード概要"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 6,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "2e05a9e8",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "Feedback件数"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "cd3d59f6",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "filters" : [ {
+              "expression" : "`sentiment` IN ('positive')"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジティブ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "06f8555b",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "filters" : [ {
+              "expression" : "`sentiment` IN ('negative')"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ネガティブ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "b3e257da",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "OverallRating",
+              "expression" : "`OverallRating`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "pie",
+          "encodings" : {
+            "angle" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "Count of Records"
+            },
+            "color" : {
+              "fieldName" : "OverallRating",
+              "scale" : {
+                "type" : "categorical",
+                "sort" : {
+                  "by" : "custom-order",
+                  "orderedValues" : [ "1", "10", "2", "3", "4", "5", "6", "7", "8", "9" ]
+                }
+              },
+              "legend" : {
+                "position" : "right"
+              },
+              "displayName" : "OverallRating"
+            },
+            "label" : {
+              "show" : true
+            }
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 5,
+        "width" : 2,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "af8f7f1c",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            } ],
+            "filters" : [ {
+              "expression" : "`sentiment` IN (`sentiment`) OR TRUE"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "review_category",
+              "scale" : {
+                "type" : "categorical",
+                "sort" : {
+                  "by" : "x-reversed"
+                }
+              },
+              "displayName" : "review_category"
+            },
+            "color" : {
+              "fieldName" : "sentiment",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "sentiment"
+            },
+            "label" : {
+              "show" : true
+            }
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 5,
+        "width" : 4,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "590d714a",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "Name",
+              "expression" : "`Name`"
+            }, {
+              "name" : "Datetime",
+              "expression" : "`Datetime`"
+            }, {
+              "name" : "OverallRating",
+              "expression" : "`OverallRating`"
+            }, {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            }, {
+              "name" : "review_details",
+              "expression" : "`review_details`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 1,
+          "widgetType" : "table",
+          "encodings" : {
+            "columns" : [ {
+              "fieldName" : "sentiment",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "https://adb-984752964297111.11.azuredatabricks.net/ajax-api/2.0/fs/files/Volumes/komae_demo_v3/airline_reviews/images/images/{{sentiment}}.png",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "30",
+              "imageHeight" : "30",
+              "linkUrlTemplate" : "https://adb-984752964297111.11.azuredatabricks.net/ajax-api/2.0/fs/files/Volumes/komae_demo_v3/airline_reviews/images/{{sentiment}}.png",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "image",
+              "visible" : true,
+              "order" : 0,
+              "title" : "ポジネガ",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "cellFormat" : {
+                "default" : {
+                  "foregroundColor" : null
+                },
+                "rules" : [ ]
+              },
+              "displayName" : "sentiment"
+            }, {
+              "fieldName" : "Name",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 2,
+              "title" : "名前",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "Name"
+            }, {
+              "fieldName" : "Datetime",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "date",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 3,
+              "title" : "投稿日",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "Datetime"
+            }, {
+              "fieldName" : "OverallRating",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "integer",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 4,
+              "title" : "OverallRating",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "OverallRating"
+            }, {
+              "fieldName" : "review_category",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 8,
+              "title" : "review_category",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "review_category"
+            }, {
+              "fieldName" : "review_details",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 9,
+              "title" : "review_details",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "review_details"
+            } ]
+          },
+          "invisibleColumns" : [ {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "No",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 1,
+            "title" : "No",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "VerifiedReview",
+            "type" : "boolean",
+            "displayAs" : "string",
+            "order" : 5,
+            "title" : "VerifiedReview",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ReviewHeader",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 6,
+            "title" : "ReviewHeader",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ReviewBody",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 7,
+            "title" : "ReviewBody",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "TypeOfTraveller",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 10,
+            "title" : "TypeOfTraveller",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "SeatType",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 11,
+            "title" : "SeatType",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "Route",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 12,
+            "title" : "Route",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "DateFlown",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 13,
+            "title" : "DateFlown",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "SeatComfort",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 14,
+            "title" : "SeatComfort",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "CabinStaffService",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 15,
+            "title" : "CabinStaffService",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "GroundService",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 16,
+            "title" : "GroundService",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ValueForMoney",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 17,
+            "title" : "ValueForMoney",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "Recommended",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 18,
+            "title" : "Recommended",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "Aircraft",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 19,
+            "title" : "Aircraft",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "FoodandBeverages",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 20,
+            "title" : "FoodandBeverages",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "InflightEntertainment",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 21,
+            "title" : "InflightEntertainment",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "WifiandConnectivity",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 22,
+            "title" : "WifiandConnectivity",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          } ],
+          "allowHTMLByDefault" : false,
+          "itemsPerPage" : 25,
+          "paginationSize" : "default",
+          "condensed" : true,
+          "withRowNumber" : false
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 12,
+        "width" : 6,
+        "height" : 13
+      }
+    }, {
+      "widget" : {
+        "name" : "1878bb32",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "sentiment_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "sentiment",
+              "displayName" : "sentiment",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジネガ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 11,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "f9317051",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_review_category",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            }, {
+              "name" : "review_category_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "review_category",
+              "displayName" : "review_category",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_review_category"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "カテゴリ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 11,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "aea2027f",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_No",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "No",
+              "expression" : "`No`"
+            }, {
+              "name" : "No_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "No",
+              "displayName" : "No",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_No"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "会員ID"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 11,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "952d2e60",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_DateFlown",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "DateFlown",
+              "expression" : "`DateFlown`"
+            }, {
+              "name" : "DateFlown_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "DateFlown",
+              "displayName" : "DateFlown",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_DateFlown"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "フライト日付"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "93b3cd53",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "sentiment_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "sentiment",
+              "displayName" : "sentiment",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジネガ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "5aa684d3",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_OverallRating",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "OverallRating",
+              "expression" : "`OverallRating`"
+            }, {
+              "name" : "OverallRating_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "OverallRating",
+              "displayName" : "OverallRating",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_OverallRating"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "全体レビュー"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "1bbb720b",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Route",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "Route",
+              "expression" : "`Route`"
+            }, {
+              "name" : "Route_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "Route",
+              "displayName" : "Route",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Route"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "フライトルート"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "f75831b3",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_TypeOfTraveller",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "TypeOfTraveller",
+              "expression" : "`TypeOfTraveller`"
+            }, {
+              "name" : "TypeOfTraveller_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "TypeOfTraveller",
+              "displayName" : "TypeOfTraveller",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_TypeOfTraveller"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "旅行者タイプ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "e6c756a2",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Aircraft",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "Aircraft",
+              "expression" : "`Aircraft`"
+            }, {
+              "name" : "Aircraft_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "Aircraft",
+              "displayName" : "Aircraft",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Aircraft"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "航空機"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    } ]
+  }, {
+    "name" : "b41b1f36",
+    "displayName" : "項目別",
+    "layout" : [ {
+      "widget" : {
+        "name" : "1646b73c",
+        "textbox_spec" : "# VoC分析ダッシュボード｜Feedback項目別"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 6,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "8434d643",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "Feedback件数"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "52626e42",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "filters" : [ {
+              "expression" : "`sentiment` IN ('positive')"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジティブ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "579c6827",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "filters" : [ {
+              "expression" : "`sentiment` IN ('negative')"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ネガティブ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "7ee85b36",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "Name",
+              "expression" : "`Name`"
+            }, {
+              "name" : "Datetime",
+              "expression" : "`Datetime`"
+            }, {
+              "name" : "OverallRating",
+              "expression" : "`OverallRating`"
+            }, {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            }, {
+              "name" : "review_details",
+              "expression" : "`review_details`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 1,
+          "widgetType" : "table",
+          "encodings" : {
+            "columns" : [ {
+              "fieldName" : "sentiment",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "https://adb-984752964297111.11.azuredatabricks.net/ajax-api/2.0/fs/files/Volumes/komae_demo_v3/airline_reviews/images/images/{{sentiment}}.png",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "30",
+              "imageHeight" : "30",
+              "linkUrlTemplate" : "https://adb-984752964297111.11.azuredatabricks.net/ajax-api/2.0/fs/files/Volumes/komae_demo_v3/airline_reviews/images/{{sentiment}}.png",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "image",
+              "visible" : true,
+              "order" : 0,
+              "title" : "ポジネガ",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "cellFormat" : {
+                "default" : {
+                  "foregroundColor" : null
+                },
+                "rules" : [ ]
+              },
+              "displayName" : "sentiment"
+            }, {
+              "fieldName" : "Name",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 2,
+              "title" : "名前",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "Name"
+            }, {
+              "fieldName" : "Datetime",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "date",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 3,
+              "title" : "投稿日",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "Datetime"
+            }, {
+              "fieldName" : "OverallRating",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "integer",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 4,
+              "title" : "OverallRating",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "OverallRating"
+            }, {
+              "fieldName" : "review_category",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 8,
+              "title" : "review_category",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "review_category"
+            }, {
+              "fieldName" : "review_details",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 9,
+              "title" : "review_details",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "review_details"
+            } ]
+          },
+          "invisibleColumns" : [ {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "No",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 1,
+            "title" : "No",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "VerifiedReview",
+            "type" : "boolean",
+            "displayAs" : "string",
+            "order" : 5,
+            "title" : "VerifiedReview",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ReviewHeader",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 6,
+            "title" : "ReviewHeader",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ReviewBody",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 7,
+            "title" : "ReviewBody",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "TypeOfTraveller",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 10,
+            "title" : "TypeOfTraveller",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "SeatType",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 11,
+            "title" : "SeatType",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "Route",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 12,
+            "title" : "Route",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "DateFlown",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 13,
+            "title" : "DateFlown",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "SeatComfort",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 14,
+            "title" : "SeatComfort",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "CabinStaffService",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 15,
+            "title" : "CabinStaffService",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "GroundService",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 16,
+            "title" : "GroundService",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "ValueForMoney",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 17,
+            "title" : "ValueForMoney",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "Recommended",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 18,
+            "title" : "Recommended",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "Aircraft",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 19,
+            "title" : "Aircraft",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "FoodandBeverages",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 20,
+            "title" : "FoodandBeverages",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "InflightEntertainment",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 21,
+            "title" : "InflightEntertainment",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "WifiandConnectivity",
+            "type" : "integer",
+            "displayAs" : "string",
+            "order" : 22,
+            "title" : "WifiandConnectivity",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          } ],
+          "allowHTMLByDefault" : false,
+          "itemsPerPage" : 25,
+          "paginationSize" : "default",
+          "condensed" : true,
+          "withRowNumber" : false
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 42,
+        "width" : 6,
+        "height" : 13
+      }
+    }, {
+      "widget" : {
+        "name" : "cf01928d",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "sentiment_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "sentiment",
+              "displayName" : "sentiment",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジネガ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 41,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "767d39b2",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_review_category",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            }, {
+              "name" : "review_category_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "review_category",
+              "displayName" : "review_category",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_review_category"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "カテゴリ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 41,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "fd228435",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_No",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "No",
+              "expression" : "`No`"
+            }, {
+              "name" : "No_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "No",
+              "displayName" : "No",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_No"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "会員ID"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 41,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "284e4438",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_DateFlown",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "DateFlown",
+              "expression" : "`DateFlown`"
+            }, {
+              "name" : "DateFlown_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "DateFlown",
+              "displayName" : "DateFlown",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_DateFlown"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "フライト年月"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "f465d4e0",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "sentiment_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "sentiment",
+              "displayName" : "sentiment",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_sentiment"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジネガ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "d59e4a9b",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_OverallRating",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "OverallRating",
+              "expression" : "`OverallRating`"
+            }, {
+              "name" : "OverallRating_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-single-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "OverallRating",
+              "displayName" : "OverallRating",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_OverallRating"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "全体レビュー"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "dd72ad08",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "SeatComfort",
+              "expression" : "`SeatComfort`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "SeatType",
+              "expression" : "`SeatType`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "axis" : {
+                "hideLabels" : false,
+                "hideTitle" : true
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "SeatType",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "座席タイプ"
+            },
+            "color" : {
+              "fieldName" : "SeatComfort",
+              "scale" : {
+                "type" : "categorical",
+                "mappings" : [ {
+                  "value" : null,
+                  "color" : "#919191"
+                }, {
+                  "value" : 5,
+                  "color" : "#FF3621"
+                }, {
+                  "value" : 4,
+                  "color" : "#ff5d21"
+                }, {
+                  "value" : 2,
+                  "color" : "#ffca21"
+                }, {
+                  "value" : 3,
+                  "color" : "#ff9d21"
+                }, {
+                  "value" : 1,
+                  "color" : "#f9efb7"
+                } ]
+              },
+              "displayName" : "5段階評価"
+            },
+            "label" : {
+              "show" : true
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "座席の快適さの評価（1:悪い、2:少し悪い、3:普通、4:良い、5:とても良い）",
+            "showDescription" : false,
+            "description" : ""
+          },
+          "mark" : {
+            "layout" : "stack"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 11,
+        "width" : 6,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "a67439b4",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Route",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "Route",
+              "expression" : "`Route`"
+            }, {
+              "name" : "Route_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "Route",
+              "displayName" : "Route",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Route"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "フライトルート"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "e161d3f5",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_TypeOfTraveller",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "TypeOfTraveller",
+              "expression" : "`TypeOfTraveller`"
+            }, {
+              "name" : "TypeOfTraveller_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "TypeOfTraveller",
+              "displayName" : "TypeOfTraveller",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_TypeOfTraveller"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "旅行者タイプ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "39cc8dc7",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Aircraft",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "Aircraft",
+              "expression" : "`Aircraft`"
+            }, {
+              "name" : "Aircraft_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "Aircraft",
+              "displayName" : "Aircraft",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019c6ab78117d89bc26836cd1847a_Aircraft"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "航空機"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "50e881ad",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "CabinStaffService",
+              "expression" : "`CabinStaffService`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "SeatType",
+              "expression" : "`SeatType`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "axis" : {
+                "hideTitle" : true,
+                "hideLabels" : false
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "SeatType",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "座席タイプ"
+            },
+            "color" : {
+              "fieldName" : "CabinStaffService",
+              "scale" : {
+                "type" : "categorical",
+                "mappings" : [ {
+                  "value" : null,
+                  "color" : "#919191"
+                }, {
+                  "value" : 5,
+                  "color" : "#3a0de6"
+                }, {
+                  "value" : 4,
+                  "color" : "#1280de"
+                }, {
+                  "value" : 3,
+                  "color" : "#10b8df"
+                }, {
+                  "value" : 2,
+                  "color" : "#15e1e2"
+                }, {
+                  "value" : 1,
+                  "color" : "#e4f3f3"
+                } ]
+              },
+              "displayName" : "5段階評価"
+            },
+            "label" : {
+              "show" : true
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "客室スタッフサービスのの評価（1:悪い、2:少し悪い、3:普通、4:良い、5:とても良い）",
+            "showDescription" : false,
+            "description" : ""
+          },
+          "mark" : {
+            "layout" : "stack"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 5,
+        "width" : 6,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "51e72b74",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "FoodandBeverages",
+              "expression" : "`FoodandBeverages`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "SeatType",
+              "expression" : "`SeatType`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "SeatType",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "座席タイプ"
+            },
+            "color" : {
+              "fieldName" : "FoodandBeverages",
+              "scale" : {
+                "type" : "categorical",
+                "mappings" : [ {
+                  "value" : null,
+                  "color" : "#919191"
+                }, {
+                  "value" : 5,
+                  "color" : "#2cb588"
+                }, {
+                  "value" : 4,
+                  "color" : "#48d4a6"
+                }, {
+                  "value" : 3,
+                  "color" : "#99DDB4"
+                }, {
+                  "value" : 2,
+                  "color" : "#c5f0d6"
+                }, {
+                  "value" : 1,
+                  "color" : "#e8f9ee"
+                } ]
+              },
+              "displayName" : "5段階評価"
+            },
+            "label" : {
+              "show" : true
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "飲食サービスの評価（1:悪い、2:少し悪い、3:普通、4:良い、5:とても良い）",
+            "showDescription" : false,
+            "description" : ""
+          },
+          "mark" : {
+            "layout" : "percent-stack"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 17,
+        "width" : 6,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "47973a85",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "GroundService",
+              "expression" : "`GroundService`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "SeatType",
+              "expression" : "`SeatType`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "SeatType",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "座席タイプ"
+            },
+            "color" : {
+              "fieldName" : "GroundService",
+              "scale" : {
+                "type" : "categorical",
+                "mappings" : [ {
+                  "value" : null,
+                  "color" : "#919191"
+                }, {
+                  "value" : 5,
+                  "color" : "#AB4057"
+                }, {
+                  "value" : 4,
+                  "color" : "#d0627a"
+                }, {
+                  "value" : 3,
+                  "color" : "#dd8b9d"
+                }, {
+                  "value" : 2,
+                  "color" : "#e9a3b1"
+                }, {
+                  "value" : 1,
+                  "color" : "#ffe4e9"
+                } ]
+              },
+              "displayName" : "5段階評価"
+            },
+            "label" : {
+              "show" : true
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "地上サービスの評価（1:悪い、2:少し悪い、3:普通、4:良い、5:とても良い）",
+            "showDescription" : false,
+            "description" : ""
+          },
+          "mark" : {
+            "layout" : "percent-stack"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 23,
+        "width" : 6,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "fc9e12d3",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "InflightEntertainment",
+              "expression" : "`InflightEntertainment`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "SeatType",
+              "expression" : "`SeatType`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "SeatType",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "座席タイプ"
+            },
+            "color" : {
+              "fieldName" : "InflightEntertainment",
+              "scale" : {
+                "type" : "categorical",
+                "mappings" : [ {
+                  "value" : null,
+                  "color" : "#919191"
+                }, {
+                  "value" : 5,
+                  "color" : "#077A9D"
+                }, {
+                  "value" : 4,
+                  "color" : "#2399bd"
+                }, {
+                  "value" : 3,
+                  "color" : "#4bb7d8"
+                }, {
+                  "value" : 2,
+                  "color" : "#9edef2"
+                }, {
+                  "value" : 1,
+                  "color" : "#e4f3f3"
+                } ]
+              },
+              "displayName" : "5段階評価"
+            },
+            "label" : {
+              "show" : true
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "機内エンターテイメントの評価（1:悪い、2:少し悪い、3:普通、4:良い、5:とても良い）",
+            "showDescription" : false,
+            "description" : ""
+          },
+          "mark" : {
+            "layout" : "percent-stack"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 29,
+        "width" : 6,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "80367cbb",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "4fe5aa42",
+            "fields" : [ {
+              "name" : "WifiandConnectivity",
+              "expression" : "`WifiandConnectivity`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "SeatType",
+              "expression" : "`SeatType`"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "SeatType",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "座席タイプ"
+            },
+            "color" : {
+              "fieldName" : "WifiandConnectivity",
+              "scale" : {
+                "type" : "categorical",
+                "mappings" : [ {
+                  "value" : null,
+                  "color" : "#919191"
+                }, {
+                  "value" : 5,
+                  "color" : "#048e3b"
+                }, {
+                  "value" : 4,
+                  "color" : "#08b84e"
+                }, {
+                  "value" : 3,
+                  "color" : "#2dd971"
+                }, {
+                  "value" : 2,
+                  "color" : "#9dedbd"
+                }, {
+                  "value" : 1,
+                  "color" : "#d7f5e3"
+                } ]
+              },
+              "displayName" : "5段階評価"
+            },
+            "label" : {
+              "show" : true
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "WiFi接続の評価（1:悪い、2:少し悪い、3:普通、4:良い、5:とても良い）",
+            "showDescription" : false,
+            "description" : ""
+          },
+          "mark" : {
+            "layout" : "percent-stack"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 35,
+        "width" : 6,
+        "height" : 6
+      }
+    } ]
+  }, {
+    "name" : "28fea621",
+    "displayName" : "機体別",
+    "layout" : [ {
+      "widget" : {
+        "name" : "0114c491",
+        "textbox_spec" : "# VoC分析ダッシュボード｜航空機別"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 6,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "375a312d",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "Feedback件数"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "f856059b",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジティブ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "9f0a520b",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "count(*)",
+              "displayName" : "Count of Records"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ネガティブ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 3,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "e0691fff",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_DateFlown",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "DateFlown",
+              "expression" : "`DateFlown`"
+            }, {
+              "name" : "DateFlown_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "DateFlown",
+              "displayName" : "DateFlown",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_DateFlown"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "フライト年月"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "75b13743",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_sentiment",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "sentiment_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "sentiment",
+              "displayName" : "sentiment",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_sentiment"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "ポジネガ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "a7332859",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_AvgRating",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "min(AvgRating)",
+              "expression" : "MIN(`AvgRating`)"
+            }, {
+              "name" : "max(AvgRating)",
+              "expression" : "MAX(`AvgRating`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "range-slider",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "AvgRating",
+              "displayName" : "AvgRating",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_AvgRating"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "レビュー平均"
+          }
+        }
+      },
+      "position" : {
+        "x" : 3,
+        "y" : 2,
+        "width" : 3,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "4c2a87a8",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_review_category",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            }, {
+              "name" : "review_category_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "review_category",
+              "displayName" : "review_category",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_review_category"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "レビューカテゴリ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 2,
+        "width" : 3,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "4fcfd540",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "DateFlown",
+              "expression" : "`DateFlown`"
+            }, {
+              "name" : "Aircraft",
+              "expression" : "`Aircraft`"
+            }, {
+              "name" : "sentiment",
+              "expression" : "`sentiment`"
+            }, {
+              "name" : "AvgRating",
+              "expression" : "`AvgRating`"
+            }, {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            }, {
+              "name" : "review_extructed_summaries",
+              "expression" : "`review_extructed_summaries`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 1,
+          "widgetType" : "table",
+          "encodings" : {
+            "columns" : [ {
+              "fieldName" : "DateFlown",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 0,
+              "title" : "DateFlown",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "DateFlown"
+            }, {
+              "fieldName" : "Aircraft",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 1,
+              "title" : "Aircraft",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "Aircraft"
+            }, {
+              "fieldName" : "sentiment",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "https://adb-984752964297111.11.azuredatabricks.net/ajax-api/2.0/fs/files/Volumes/komae_demo_v3/airline_reviews/images/images/{{sentiment}}.png",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "30",
+              "imageHeight" : "30",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "image",
+              "visible" : true,
+              "order" : 2,
+              "title" : "sentiment",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "sentiment"
+            }, {
+              "fieldName" : "AvgRating",
+              "numberFormat" : "0.00",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "float",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 3,
+              "title" : "AvgRating",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "AvgRating"
+            }, {
+              "fieldName" : "review_category",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 4,
+              "title" : "review_category",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "review_category"
+            }, {
+              "fieldName" : "review_extructed_summaries",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 5,
+              "title" : "review_extructed_summaries",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "review_extructed_summaries"
+            } ]
+          },
+          "invisibleColumns" : [ ],
+          "allowHTMLByDefault" : false,
+          "itemsPerPage" : 25,
+          "paginationSize" : "default",
+          "condensed" : true,
+          "withRowNumber" : false,
+          "frame" : {
+            "showTitle" : true,
+            "title" : "レビュー詳細"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 25,
+        "width" : 6,
+        "height" : 17
+      }
+    }, {
+      "widget" : {
+        "name" : "a58e5cd4",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "review_category",
+              "expression" : "`review_category`"
+            }, {
+              "name" : "count(*)",
+              "expression" : "COUNT(`*`)"
+            }, {
+              "name" : "Aircraft",
+              "expression" : "`Aircraft`"
+            } ],
+            "filters" : [ {
+              "expression" : "`sentiment` IN (`sentiment`) OR TRUE"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "bar",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "count(*)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "Count of Records"
+            },
+            "y" : {
+              "fieldName" : "Aircraft",
+              "scale" : {
+                "type" : "categorical",
+                "sort" : {
+                  "by" : "x-reversed"
+                }
+              },
+              "displayName" : "Aircraft"
+            },
+            "color" : {
+              "fieldName" : "review_category",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "review_category"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "機体別｜カテゴリ別のFeedback数内訳"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 5,
+        "width" : 6,
+        "height" : 20
+      }
+    }, {
+      "widget" : {
+        "name" : "c8a4c517",
+        "queries" : [ {
+          "name" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_Aircraft",
+          "query" : {
+            "datasetName" : "80646bd0",
+            "fields" : [ {
+              "name" : "Aircraft",
+              "expression" : "`Aircraft`"
+            }, {
+              "name" : "Aircraft_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "Aircraft",
+              "displayName" : "Aircraft",
+              "queryName" : "dashboards/01f019c6950c19d5a946b8a9399d7a00/datasets/01f019e9204412a99a40ae7e3b90ceee_Aircraft"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "航空機"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    } ]
+  } ]
+}
