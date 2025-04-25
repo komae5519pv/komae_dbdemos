@@ -12,18 +12,35 @@
 # MAGIC %md
 # MAGIC
 # MAGIC # 概要
-# MAGIC - 1. 最初に、`00_config`を単独実行してカタログを作成しておいてください
-# MAGIC - 2. パイプライン（旧 Delta Live Tables）作成
-# MAGIC - 3. ワークフロー作成
+# MAGIC - 1. クラスタ作成
+# MAGIC - 2. `00_config`を単独実行してカタログを作成しておいてください
+# MAGIC - 3. パイプライン（旧 Delta Live Tables）作成
+# MAGIC - 4. ワークフロー作成
 # MAGIC
 # MAGIC # 手順詳細
-# MAGIC #### 1. カタログ、スキーマ、ボリュームの作成
+# MAGIC #### 1. クラスタの作成
+# MAGIC - クラスター（汎用コンピュート）の作成
+# MAGIC   - 一般
+# MAGIC     - コンピュート名：`<名前>_DBR 16.2 ML`
+# MAGIC   - パフォーマンス
+# MAGIC     - 機械学習：`ON`
+# MAGIC     - Databricks Runtime：`16.2 (includes Apache Spark 3.5.2, Scala 2.12)`
+# MAGIC   - ワーカータイプ：`rd-fleet.xlarge(メモリ32GB、4 個のコア)`
+# MAGIC     - 最小: `2`
+# MAGIC     - 最大: `8`
+# MAGIC   - Advenced
+# MAGIC     - Spark構成
+# MAGIC       - `spark.databricks.delta.formatCheck.enabled: false`
+# MAGIC       - `spark.scheduler.mode FAIR`
+# MAGIC       - `spark.sql.shuffle.partitions 300`
+# MAGIC
+# MAGIC #### 2. カタログ、スキーマ、ボリュームの作成
 # MAGIC - ノートブック`00_config`を開いてカタログ名を自分用に変更してください（**ここで指定したカタログ名でカタログを作成することになります**）
 # MAGIC - `00_config`を上から下まで実行してカタログ、スキーマ、ボリュームを作成します
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/fine_grain_forecast_20241013/Customized_e2e_demand_forecasting/_image_for_notebook/01_config.png?raw=true' width='1200'/>
 # MAGIC
 # MAGIC
-# MAGIC #### 2. パイプライン（旧 Delta Live Tables）作成
+# MAGIC #### 3. パイプライン（旧 Delta Live Tables）作成
 # MAGIC - General
 # MAGIC   - パイプライン名: `demand_forecasting_dlt` 任意の名前でOKです
 # MAGIC   - Product edition: `Advanced`
@@ -41,7 +58,7 @@
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/fine_grain_forecast_20241013/Customized_e2e_demand_forecasting/_image_for_notebook/pipeline_setting.png?raw=true' width='1200'/>
 # MAGIC
 # MAGIC
-# MAGIC #### 3. ワークフロー作成
+# MAGIC #### 4. ワークフロー作成
 # MAGIC - ワークフロー名: `komae_demand_forecasting_wf` 任意の名前でOKです
 # MAGIC   - config
 # MAGIC     - 種類: `ノートブック`
@@ -94,6 +111,6 @@
 # MAGIC     - 依存先: `model_train_and_predict`
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/fine_grain_forecast_20241013/Customized_e2e_demand_forecasting/_image_for_notebook/workflow_setting.png?raw=true' width='1200'/>
 # MAGIC
-# MAGIC #### 4. ワークフロー実行開始
+# MAGIC #### 5. ワークフロー実行開始
 # MAGIC - 3まででワークフロー作成完了です。画面右上「今すぐ実行」をクリックしてください
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/fine_grain_forecast_20241013/Customized_e2e_demand_forecasting/_image_for_notebook/workflow_run.png?raw=true' width='1200'/>

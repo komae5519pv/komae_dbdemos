@@ -34,7 +34,7 @@ dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/date_ma
 dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/image")
 dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/origin_data")
 
-# SQLで使う変数設定
+# # SQLで使う変数設定
 # spark.conf.set("c.catalog", MY_CATALOG)
 # spark.conf.set("c.schema", MY_SCHEMA)
 # spark.conf.set("c.volume", MY_VOLUME_IMPORT)
@@ -48,6 +48,6 @@ print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/vending_machine_loc
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/date_master")
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/image")
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_IMPORT}/origin_data")
+# print(f"モデル名: {MODEL_NAME}")
 print(f"モデル名（AutoML）: {MODEL_NAME_AUTOML}")
-print(f"ワークフロー名: {WORKFLOW_NAME}")
-
+print(f"WORKFLOW_NAME: {WORKFLOW_NAME}")

@@ -47,7 +47,7 @@ print(f"{current_dir}")
 
 # COMMAND ----------
 
-CLUSTER_ID = "0414-122938-8hxxcqyf"    # ここにクラスタIDを貼り付けてください
+CLUSTER_ID = "0425-101015-kqla2eb4"    # ここにクラスタIDを貼り付けてください
 
 # COMMAND ----------
 
@@ -131,15 +131,15 @@ def generate_workflow_yaml():
                             },
                             "existing_cluster_id": CLUSTER_ID
                         },
-                        {
-                            "task_key": "batch_scoring",
-                            "depends_on": [{"task_key": "AutoML"}],
-                            "notebook_task": {
-                                "notebook_path": f"{current_dir}/08_batch_scoring",
-                                "source": "WORKSPACE"
-                            },
-                            "existing_cluster_id": CLUSTER_ID
-                        },
+                        # {
+                        #     "task_key": "batch_scoring",
+                        #     "depends_on": [{"task_key": "AutoML"}],
+                        #     "notebook_task": {
+                        #         "notebook_path": f"{current_dir}/08_batch_scoring",
+                        #         "source": "WORKSPACE"
+                        #     },
+                        #     "existing_cluster_id": CLUSTER_ID
+                        # },
                         {
                             "task_key": "model_serving",
                             "depends_on": [{"task_key": "AutoML"}],

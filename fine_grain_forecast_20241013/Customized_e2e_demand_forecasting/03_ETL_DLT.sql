@@ -211,7 +211,7 @@ AS SELECT *,
 -- Step2：CDC処理と重複排除を適用
 CREATE OR REFRESH STREAMING LIVE TABLE silver_items (
   item_id INT COMMENT "商品ID、ユニーク（主キー）",
-  item_name STRING COMMENT "商品名、例: Cola",
+  item_name STRING COMMENT "商品名、例: Coffee",
   category_name STRING COMMENT "カテゴリー名、例: Soft Drink",
   unit_price INT COMMENT "商品単価（円）、例: 100",
   unit_cost INT COMMENT "商品原価（円）、例: 60",
@@ -272,7 +272,7 @@ CREATE OR REFRESH LIVE TABLE silver_analysis (
     order_date DATE COMMENT "日付、YYYY-MM-DDフォーマット（主キー、外部キー）",
     vending_machine_id DOUBLE COMMENT "自動販売機ID（主キー）",
     item_id DOUBLE COMMENT "商品ID（外部キー）",
-    item_name STRING COMMENT "商品名、例: Cola",
+    item_name STRING COMMENT "商品名、例: Cofee",
     category_name STRING COMMENT "カテゴリー名、例: Soft Drink",
     actual_sales LONG COMMENT "売上実績",
     unit_price INT COMMENT "商品単価",
