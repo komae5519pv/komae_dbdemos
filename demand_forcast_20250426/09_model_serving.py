@@ -104,6 +104,8 @@ SELECT
     )
   ).yhat AS prediction
 FROM {MY_CATALOG}.{MY_SCHEMA}.silver_inference_input
+WHERE
+  ds > '2016-12-31'
 ''')
 
 # COMMAND ----------
@@ -129,3 +131,5 @@ FROM {MY_CATALOG}.{MY_SCHEMA}.silver_inference_input
 #     )
 #   ).yhat AS prediction
 # FROM komae_demo_v2.demand_forecast.silver_inference_input
+# WHERE
+#   ds > '2016-12-31'
