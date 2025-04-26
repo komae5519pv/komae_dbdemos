@@ -1,0 +1,1282 @@
+{
+  "datasets" : [ {
+    "name" : "temp_dataset_name",
+    "displayName" : "gold_analysis",
+    "query" : "select * from komae_demo_v1.demand_forecast.gold_analysis\norder by order_date desc"
+  }, {
+    "name" : "06187f66",
+    "displayName" : "forecast_today",
+    "query" : "SELECT SUM(forecast_sales_quantity) \nFROM komae_demo_v1.demand_forecast.gold_analysis\n-- WHERE order_date = CURRENT_DATE()\nWHERE order_date = '2017-12-20'\n"
+  }, {
+    "name" : "377b7d08",
+    "displayName" : "yesterday_vs_today",
+    "query" : "-- Step1 当日予測（今日の予測販売数量）\nWITH today AS (\n  SELECT SUM(forecast_sales_quantity) as today_forecast\n  FROM komae_demo_v1.demand_forecast.gold_analysis \n  -- WHERE order_date = CURRENT_DATE\n  WHERE order_date = '2017-12-20'\n),\n-- Step2 前日実績（前日の実績販売数量）\nyesterday AS (\n  SELECT SUM(actual_sales_quantity) as yesterday_actual\n  FROM komae_demo_v1.demand_forecast.gold_analysis \n  -- WHERE order_date = CURRENT_DATE - 1\n  WHERE order_date = date_sub(CAST('2017-12-20' AS DATE), 1)\n)\n-- Step3 前日実績に対する当日予測の変化率\nSELECT \n  CASE \n    WHEN yesterday.yesterday_actual = 0 THEN NULL\n    ELSE (today.today_forecast / yesterday.yesterday_actual)\n  END as daily_change_percent\nFROM today, yesterday"
+  }, {
+    "name" : "56c6cfe7",
+    "displayName" : "yesterday_actual",
+    "query" : "SELECT SUM(actual_sales_quantity)\nFROM komae_demo_v1.demand_forecast.gold_analysis\n-- WHERE order_date = CURRENT_DATE - 1\nWHERE order_date = DATE_SUB('2017-12-20', 1)\n"
+  }, {
+    "name" : "5fb8fd1b",
+    "displayName" : "current_dataset",
+    "query" : "SELECT\n    HOST_URL,\n    MY_CATALOG,\n    MY_SCHEMA,\n    MY_VOLUME,\n    vending_machine_id,\n    item_id,\n    item_name,\n    address,\n    pref,\n    city,\n    latitude,\n    longitude,\n    restock_flag,\n    stock_warn,\n    stock_quantity,\n    demand_fulfillment_rate\nFROM komae_demo_v1.demand_forecast.gold_analysis\nWHERE order_date = '2017-12-20'\n-- WHERE order_date = (\n--     SELECT MAX(order_date) \n--     FROM komae.demand_forecast.gold_analysis\n-- )"
+  } ],
+  "pages" : [ {
+    "name" : "temp_page_name",
+    "displayName" : "在庫トレンド",
+    "layout" : [ {
+      "widget" : {
+        "name" : "temp_bar_chart_name",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "377b7d08",
+            "fields" : [ {
+              "name" : "daily_change_percent",
+              "expression" : "`daily_change_percent`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "daily_change_percent",
+              "format" : {
+                "type" : "number-percent",
+                "decimalPlaces" : {
+                  "type" : "max",
+                  "places" : 2
+                }
+              },
+              "displayName" : "daily_change_percent"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "showDescription" : false,
+            "title" : "前日比",
+            "description" : ""
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 1,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "temp_text_box_name",
+        "textbox_spec" : "## Vending Machine Analysis - Stock Trend"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 6,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "temp_table_name",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "06187f66",
+            "fields" : [ {
+              "name" : "sum(forecast_sales_quantity)",
+              "expression" : "`sum(forecast_sales_quantity)`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "sum(forecast_sales_quantity)",
+              "format" : {
+                "type" : "number-plain",
+                "abbreviation" : "none",
+                "decimalPlaces" : {
+                  "type" : "max",
+                  "places" : 2
+                }
+              },
+              "displayName" : "sum(forecast_sales_quantity)"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "showDescription" : false,
+            "title" : "当日予測"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 1,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "96e39ff5",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "56c6cfe7",
+            "fields" : [ {
+              "name" : "sum(actual_sales_quantity)",
+              "expression" : "`sum(actual_sales_quantity)`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "counter",
+          "encodings" : {
+            "value" : {
+              "fieldName" : "sum(actual_sales_quantity)",
+              "format" : {
+                "type" : "number-plain",
+                "abbreviation" : "none",
+                "decimalPlaces" : {
+                  "type" : "max",
+                  "places" : 2
+                }
+              },
+              "displayName" : "sum(actual_sales_quantity)"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "showDescription" : false,
+            "title" : "前日実績",
+            "description" : ""
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 1,
+        "width" : 2,
+        "height" : 2
+      }
+    }, {
+      "widget" : {
+        "name" : "c1f4a6fe",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "temp_dataset_name",
+            "fields" : [ {
+              "name" : "day_of_week",
+              "expression" : "`day_of_week`"
+            }, {
+              "name" : "sum(actual_sales_quantity)",
+              "expression" : "SUM(`actual_sales_quantity`)"
+            }, {
+              "name" : "sum(forecast_sales_quantity)",
+              "expression" : "SUM(`forecast_sales_quantity`)"
+            } ],
+            "filters" : [ {
+              "expression" : "`day_of_week` IN ('Friday', 'Monday', 'Saturday', 'Sunday', 'Thursday', 'Tuesday', 'Wednesday')"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "line",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "day_of_week",
+              "scale" : {
+                "type" : "categorical"
+              },
+              "displayName" : "曜日"
+            },
+            "y" : {
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "fields" : [ {
+                "fieldName" : "sum(actual_sales_quantity)",
+                "displayName" : "実績販売数"
+              }, {
+                "fieldName" : "sum(forecast_sales_quantity)",
+                "displayName" : "予測販売数"
+              } ]
+            },
+            "color" : {
+              "legend" : {
+                "position" : "bottom"
+              }
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "showDescription" : false,
+            "title" : "曜日別推移｜販売数の実績",
+            "description" : ""
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 4,
+        "width" : 3,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "75300770",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "temp_dataset_name",
+            "fields" : [ {
+              "name" : "vending_machine_id",
+              "expression" : "`vending_machine_id`"
+            }, {
+              "name" : "monthly(order_date)",
+              "expression" : "DATE_TRUNC(\"MONTH\", `order_date`)"
+            }, {
+              "name" : "sum(actual_sales_quantity)",
+              "expression" : "SUM(`actual_sales_quantity`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 3,
+          "widgetType" : "line",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "monthly(order_date)",
+              "scale" : {
+                "type" : "temporal"
+              },
+              "displayName" : "年月"
+            },
+            "y" : {
+              "fieldName" : "sum(actual_sales_quantity)",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "実績販売数"
+            },
+            "color" : {
+              "fieldName" : "vending_machine_id",
+              "scale" : {
+                "type" : "quantitative",
+                "reverse" : false,
+                "colorRamp" : {
+                  "mode" : "scheme",
+                  "scheme" : "redyellowblue"
+                }
+              },
+              "legend" : {
+                "hide" : true
+              },
+              "format" : {
+                "type" : "number-plain",
+                "abbreviation" : "compact",
+                "decimalPlaces" : {
+                  "type" : "max",
+                  "places" : 2
+                }
+              },
+              "displayName" : "自販機ID"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "showDescription" : false,
+            "title" : "年月推移｜販売数の実績",
+            "description" : ""
+          }
+        }
+      },
+      "position" : {
+        "x" : 3,
+        "y" : 4,
+        "width" : 3,
+        "height" : 6
+      }
+    }, {
+      "widget" : {
+        "name" : "ec23a04c",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efab48eb7c16f2ab5be507b4d5599f_item_id",
+          "query" : {
+            "datasetName" : "temp_dataset_name",
+            "fields" : [ {
+              "name" : "item_id",
+              "expression" : "`item_id`"
+            }, {
+              "name" : "item_id_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "item_id",
+              "displayName" : "item_id",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efab48eb7c16f2ab5be507b4d5599f_item_id"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "商品ID"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 3,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "36765106",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efab48eb7c16f2ab5be507b4d5599f_vending_machine_id",
+          "query" : {
+            "datasetName" : "temp_dataset_name",
+            "fields" : [ {
+              "name" : "vending_machine_id",
+              "expression" : "`vending_machine_id`"
+            }, {
+              "name" : "vending_machine_id_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "vending_machine_id",
+              "displayName" : "vending_machine_id",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efab48eb7c16f2ab5be507b4d5599f_vending_machine_id"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "自販機ID"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 3,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "46a31cbf",
+        "queries" : [ {
+          "name" : "dashboards/01efaf7a34361a1b97d2a2001285589a/datasets/01efaf7a34361f1f99afea51493571b1_order_date",
+          "query" : {
+            "datasetName" : "temp_dataset_name",
+            "fields" : [ {
+              "name" : "order_date",
+              "expression" : "`order_date`"
+            }, {
+              "name" : "order_date_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-date-range-picker",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "order_date",
+              "displayName" : "order_date",
+              "queryName" : "dashboards/01efaf7a34361a1b97d2a2001285589a/datasets/01efaf7a34361f1f99afea51493571b1_order_date"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "showDescription" : false,
+            "title" : "受注日"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 3,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "e309460f",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "temp_dataset_name",
+            "fields" : [ {
+              "name" : "monthly(order_date)",
+              "expression" : "DATE_TRUNC(\"MONTH\", `order_date`)"
+            }, {
+              "name" : "sum(excess_inventory)",
+              "expression" : "SUM(`excess_inventory`)"
+            }, {
+              "name" : "sum(actual_sales_quantity)",
+              "expression" : "SUM(`actual_sales_quantity`)"
+            }, {
+              "name" : "sum(safety_stock)",
+              "expression" : "SUM(`safety_stock`)"
+            }, {
+              "name" : "sum(stock_quantity)",
+              "expression" : "SUM(`stock_quantity`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 1,
+          "widgetType" : "combo",
+          "encodings" : {
+            "x" : {
+              "fieldName" : "monthly(order_date)",
+              "scale" : {
+                "type" : "temporal"
+              },
+              "displayName" : "受注日"
+            },
+            "label" : {
+              "show" : false
+            },
+            "color" : { },
+            "y" : {
+              "primary" : {
+                "fields" : [ {
+                  "fieldName" : "sum(excess_inventory)",
+                  "displayName" : "過剰在庫"
+                } ]
+              },
+              "secondary" : {
+                "fields" : [ {
+                  "fieldName" : "sum(actual_sales_quantity)",
+                  "displayName" : "需要実績"
+                }, {
+                  "fieldName" : "sum(safety_stock)",
+                  "displayName" : "安全在庫"
+                }, {
+                  "fieldName" : "sum(stock_quantity)",
+                  "displayName" : "在庫実績"
+                } ]
+              },
+              "scale" : {
+                "type" : "quantitative"
+              }
+            }
+          },
+          "mark" : {
+            "colors" : [ "#FF3621", "#a400ff", "#2eefb0", "#FFAB00", "#AB4057", "#99DDB4", "#FCA4A1", "#919191", "#BF7080" ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "headerAlignment" : "center",
+            "title" : "安全在庫トレンド"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 10,
+        "width" : 6,
+        "height" : 7
+      }
+    } ]
+  }, {
+    "name" : "085eb195",
+    "displayName" : "在庫マップ",
+    "layout" : [ {
+      "widget" : {
+        "name" : "40c292d4",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "restock_flag",
+              "expression" : "`restock_flag`"
+            }, {
+              "name" : "latitude",
+              "expression" : "`latitude`"
+            }, {
+              "name" : "longitude",
+              "expression" : "`longitude`"
+            }, {
+              "name" : "stock_quantity",
+              "expression" : "`stock_quantity`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "symbol-map",
+          "encodings" : {
+            "coordinates" : {
+              "latitude" : {
+                "fieldName" : "latitude",
+                "displayName" : "latitude"
+              },
+              "longitude" : {
+                "fieldName" : "longitude",
+                "displayName" : "longitude"
+              }
+            },
+            "color" : {
+              "fieldName" : "restock_flag",
+              "scale" : {
+                "type" : "quantitative",
+                "colorRamp" : {
+                  "mode" : "scheme",
+                  "scheme" : "reds"
+                }
+              },
+              "displayName" : "restock_flag"
+            },
+            "size" : {
+              "fieldName" : "stock_quantity",
+              "scale" : {
+                "type" : "quantitative"
+              },
+              "displayName" : "stock_quantity"
+            }
+          },
+          "frame" : {
+            "showTitle" : true,
+            "headerAlignment" : "center",
+            "title" : "在庫確認マップ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 3,
+        "width" : 6,
+        "height" : 9
+      }
+    }, {
+      "widget" : {
+        "name" : "dfe5c64f",
+        "queries" : [ {
+          "name" : "main_query",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "vending_machine_id",
+              "expression" : "`vending_machine_id`"
+            }, {
+              "name" : "item_id",
+              "expression" : "`item_id`"
+            }, {
+              "name" : "item_name",
+              "expression" : "`item_name`"
+            }, {
+              "name" : "stock_warn",
+              "expression" : "`stock_warn`"
+            }, {
+              "name" : "stock_quantity",
+              "expression" : "`stock_quantity`"
+            }, {
+              "name" : "demand_fulfillment_rate",
+              "expression" : "`demand_fulfillment_rate`"
+            }, {
+              "name" : "address",
+              "expression" : "`address`"
+            }, {
+              "name" : "latitude",
+              "expression" : "`latitude`"
+            }, {
+              "name" : "longitude",
+              "expression" : "`longitude`"
+            }, {
+              "name" : "HOST_URL",
+              "expression" : "`HOST_URL`"
+            }, {
+              "name" : "MY_CATALOG",
+              "expression" : "`MY_CATALOG`"
+            }, {
+              "name" : "MY_SCHEMA",
+              "expression" : "`MY_SCHEMA`"
+            }, {
+              "name" : "MY_VOLUME",
+              "expression" : "`MY_VOLUME`"
+            } ],
+            "disaggregated" : true
+          }
+        } ],
+        "spec" : {
+          "version" : 1,
+          "widgetType" : "table",
+          "encodings" : {
+            "columns" : [ {
+              "fieldName" : "vending_machine_id",
+              "numberFormat" : "0",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "integer",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 0,
+              "title" : "自販機ID",
+              "allowSearch" : true,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "vending_machine_id"
+            }, {
+              "fieldName" : "item_id",
+              "numberFormat" : "0",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "integer",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 1,
+              "title" : "商品ID",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "item_id"
+            }, {
+              "fieldName" : "item_name",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 2,
+              "title" : "商品名",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "item_name"
+            }, {
+              "fieldName" : "stock_warn",
+              "numberFormat" : "0",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{HOST_URL}}/ajax-api/2.0/fs/files/Volumes/{{MY_CATALOG}}/{{MY_SCHEMA}}/{{MY_VOLUME}}/image/{{stock_warn}}.png",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "20",
+              "imageHeight" : "20",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "integer",
+              "displayAs" : "image",
+              "visible" : true,
+              "order" : 3,
+              "title" : "在庫警告",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "stock_warn"
+            }, {
+              "fieldName" : "stock_quantity",
+              "numberFormat" : "0",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "integer",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 4,
+              "title" : "在庫数",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "cellFormat" : {
+                "default" : {
+                  "foregroundColor" : null
+                },
+                "rules" : [ ]
+              },
+              "displayName" : "stock_quantity"
+            }, {
+              "fieldName" : "demand_fulfillment_rate",
+              "numberFormat" : "0.0%",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "float",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 5,
+              "title" : "需要充足率",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "cellFormat" : {
+                "default" : {
+                  "foregroundColor" : null
+                },
+                "rules" : [ ]
+              },
+              "description" : "",
+              "displayName" : "demand_fulfillment_rate"
+            }, {
+              "fieldName" : "address",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "string",
+              "displayAs" : "string",
+              "visible" : true,
+              "order" : 7,
+              "title" : "住所",
+              "allowSearch" : false,
+              "alignContent" : "left",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "address"
+            }, {
+              "fieldName" : "latitude",
+              "numberFormat" : "0.00",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "float",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 10,
+              "title" : "緯度",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "displayName" : "latitude"
+            }, {
+              "fieldName" : "longitude",
+              "numberFormat" : "0.00",
+              "booleanValues" : [ "false", "true" ],
+              "imageUrlTemplate" : "{{ @ }}",
+              "imageTitleTemplate" : "{{ @ }}",
+              "imageWidth" : "",
+              "imageHeight" : "",
+              "linkUrlTemplate" : "{{ @ }}",
+              "linkTextTemplate" : "{{ @ }}",
+              "linkTitleTemplate" : "{{ @ }}",
+              "linkOpenInNewTab" : true,
+              "type" : "float",
+              "displayAs" : "number",
+              "visible" : true,
+              "order" : 11,
+              "title" : "経度",
+              "allowSearch" : false,
+              "alignContent" : "right",
+              "allowHTML" : false,
+              "highlightLinks" : false,
+              "useMonospaceFont" : false,
+              "preserveWhitespace" : false,
+              "description" : "",
+              "displayName" : "longitude"
+            } ]
+          },
+          "invisibleColumns" : [ {
+            "numberFormat" : "0",
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "restock_flag",
+            "type" : "integer",
+            "displayAs" : "boolean",
+            "order" : 6,
+            "title" : "restock_flag",
+            "allowSearch" : false,
+            "alignContent" : "right",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "pref",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 8,
+            "title" : "pref",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "city",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 9,
+            "title" : "city",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "HOST_URL",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 100000,
+            "title" : "HOST_URL",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "MY_CATALOG",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 100001,
+            "title" : "MY_CATALOG",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "MY_SCHEMA",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 100002,
+            "title" : "MY_SCHEMA",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          }, {
+            "booleanValues" : [ "false", "true" ],
+            "imageUrlTemplate" : "{{ @ }}",
+            "imageTitleTemplate" : "{{ @ }}",
+            "imageWidth" : "",
+            "imageHeight" : "",
+            "linkUrlTemplate" : "{{ @ }}",
+            "linkTextTemplate" : "{{ @ }}",
+            "linkTitleTemplate" : "{{ @ }}",
+            "linkOpenInNewTab" : true,
+            "name" : "MY_VOLUME",
+            "type" : "string",
+            "displayAs" : "string",
+            "order" : 100003,
+            "title" : "MY_VOLUME",
+            "allowSearch" : false,
+            "alignContent" : "left",
+            "allowHTML" : false,
+            "highlightLinks" : false,
+            "useMonospaceFont" : false,
+            "preserveWhitespace" : false
+          } ],
+          "allowHTMLByDefault" : false,
+          "itemsPerPage" : 25,
+          "paginationSize" : "default",
+          "condensed" : true,
+          "withRowNumber" : false,
+          "frame" : {
+            "showTitle" : true,
+            "headerAlignment" : "center",
+            "title" : "在庫状況の詳細"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 12,
+        "width" : 6,
+        "height" : 9
+      }
+    }, {
+      "widget" : {
+        "name" : "c41815f7",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_vending_machine_id",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "vending_machine_id",
+              "expression" : "`vending_machine_id`"
+            }, {
+              "name" : "vending_machine_id_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "vending_machine_id",
+              "displayName" : "vending_machine_id",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_vending_machine_id"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "自販機ID"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "eae0959e",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_stock_warn",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "stock_warn",
+              "expression" : "`stock_warn`"
+            }, {
+              "name" : "stock_warn_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "stock_warn",
+              "displayName" : "stock_warn",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_stock_warn"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "在庫警告"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "b8dce64e",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_restock_flag",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "restock_flag",
+              "expression" : "`restock_flag`"
+            }, {
+              "name" : "restock_flag_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "restock_flag",
+              "displayName" : "restock_flag",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_restock_flag"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "補充フラグ"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "a854706e",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_pref",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "pref",
+              "expression" : "`pref`"
+            }, {
+              "name" : "pref_associativity",
+              "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "filter-multi-select",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "pref",
+              "displayName" : "pref",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_pref"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "都道府県"
+          }
+        }
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 1,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "c41a40de",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_demand_fulfillment_rate",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "min(demand_fulfillment_rate)",
+              "expression" : "MIN(`demand_fulfillment_rate`)"
+            }, {
+              "name" : "max(demand_fulfillment_rate)",
+              "expression" : "MAX(`demand_fulfillment_rate`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "range-slider",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "demand_fulfillment_rate",
+              "displayName" : "demand_fulfillment_rate",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_demand_fulfillment_rate"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "需要充足率（%）"
+          }
+        }
+      },
+      "position" : {
+        "x" : 2,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "c4cfa181",
+        "queries" : [ {
+          "name" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_stock_quantity",
+          "query" : {
+            "datasetName" : "5fb8fd1b",
+            "fields" : [ {
+              "name" : "min(stock_quantity)",
+              "expression" : "MIN(`stock_quantity`)"
+            }, {
+              "name" : "max(stock_quantity)",
+              "expression" : "MAX(`stock_quantity`)"
+            } ],
+            "disaggregated" : false
+          }
+        } ],
+        "spec" : {
+          "version" : 2,
+          "widgetType" : "range-slider",
+          "encodings" : {
+            "fields" : [ {
+              "fieldName" : "stock_quantity",
+              "displayName" : "stock_quantity",
+              "queryName" : "dashboards/01efab48eb7a1afd8c7edb0d1e3877bf/datasets/01efad9dc6f518668a77c46212d58c82_stock_quantity"
+            } ]
+          },
+          "frame" : {
+            "showTitle" : true,
+            "title" : "在庫数"
+          }
+        }
+      },
+      "position" : {
+        "x" : 4,
+        "y" : 2,
+        "width" : 2,
+        "height" : 1
+      }
+    }, {
+      "widget" : {
+        "name" : "4488ee1f",
+        "textbox_spec" : "## Vending Machine Analysis - Stock Map"
+      },
+      "position" : {
+        "x" : 0,
+        "y" : 0,
+        "width" : 6,
+        "height" : 1
+      }
+    } ]
+  } ]
+}
