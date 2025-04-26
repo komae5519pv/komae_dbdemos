@@ -57,7 +57,7 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,Azureストレージからcsvデータをロード
+'''Azureストレージからcsvデータをロード'''
 # # WASBプロトコル定義
 # container = "komae"                                       # Azure コンテナ名
 # storage_account = "sajpstorage"                           # Azure ストレージアカウント名
