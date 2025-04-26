@@ -59,6 +59,10 @@
 # MAGIC
 # MAGIC
 # MAGIC #### 4. ワークフロー作成
+# MAGIC <JSONで一括設定する場合>
+# MAGIC - [12_yaml_for_workflow]($12_yaml_for_workflow)の通りにワークフローを作成してください
+# MAGIC
+# MAGIC <マニュアルで設定する場合>
 # MAGIC - ワークフロー名: `komae_demand_forecasting_wf` 任意の名前でOKです
 # MAGIC   - config
 # MAGIC     - 種類: `ノートブック`
@@ -89,11 +93,6 @@
 # MAGIC     - パス: <`06_AutoML`のノートブックパスを選択してください>
 # MAGIC     - クラスタ: <`Runtime 15.4 ML LTS以上`のクラスタを選択してください>
 # MAGIC     - 依存先: `ETL_for_ai_query`
-# MAGIC   - batch_scoring
-# MAGIC     - 種類: `ノートブック`
-# MAGIC     - パス: <`08_batch_scoring`のノートブックパスを選択してください>
-# MAGIC     - クラスタ: <`Runtime 15.4 ML LTS以上`のクラスタを選択してください>
-# MAGIC     - 依存先: `AutoML`
 # MAGIC   - model_serving
 # MAGIC     - 種類: `ノートブック`
 # MAGIC     - パス: <`09_model_serving`のノートブックパスを選択してください>
@@ -112,5 +111,5 @@
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/demand_forcast_20250426/_image_for_notebook/workflow_setting.png?raw=true' width='90%'/>
 # MAGIC
 # MAGIC #### 5. ワークフロー実行開始
-# MAGIC - 3まででワークフロー作成完了です。画面右上「今すぐ実行」をクリックしてください
+# MAGIC - 4まででワークフロー作成完了です。画面右上「今すぐ実行」をクリックしてください
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/demand_forcast_20250426/_image_for_notebook/workflow_run.png?raw=true' width='90%'/>
