@@ -1,0 +1,50 @@
+/* ===== 画面を左右 2 分割するコンテナ ===== */
+.page-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;                      /* 画面全体を埋める */
+    background-color: #06222eff;        /* 全体背景を黒に設定 */
+}
+
+/* ===== 左サイドバー（20 %） ===== */
+.sidebar {
+    flex: 0 0 20%;                      /* 幅 20% 固定 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;            /* 縦中央寄り */
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;                /* 薄いグレー背景 */
+    border-right: 1px solid #dee2e6;
+}
+
+/* ===== 右メインエリア（80 %） ===== */
+.main-area {
+    flex: 1;                            /* 残り全部を占める */
+    display: flex;
+    flex-direction: column;             /* 追加：上から下に並べる */
+    justify-content: center;            /* 横中央 */
+    align-items: stretch;               /* 変更：縦中央 */
+    overflow: auto;                     /* はみ出したらスクロール */
+    padding: 20px;
+}
+
+/* ===== .recommend-outer ===== */
+.recommend-outer {
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* ===== グリッド部分 ===== */
+.tile-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3列で配置 */
+    grid-template-rows: repeat(2, 1fr);     /* 2行で配置 */
+    gap: 12px;
+    width: 100%;
+    min-height: 0;
+}

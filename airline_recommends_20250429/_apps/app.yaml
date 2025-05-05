@@ -1,0 +1,26 @@
+command: [
+  "python",
+  "app.py"
+]
+
+env:
+  - name: "SERVING_ENDPOINT"
+    value: "get-airline-recommendations"
+
+  - name: "DATABRICKS_HOST"
+    value: <ご自身の環境に合わせて設定してください 例 "https://adb-XXXXXXXXXXXXXXX.XX.azuredatabricks.net>
+
+  - name: "DATABRICKS_TOKEN"
+    value: "<ご自身のPersonal Access Tokenを設定してください 例 "dapiXXXXXXXXXXXXXXXXXXXXXXXXXXXX>"
+
+  - name: "DATABRICKS_SERVER_HOSTNAME"
+    value: "<ご自身の環境に合わせて設定してください 例 adb-XXXXXXXXXXXXXXX.XX.azuredatabricks.net>"
+
+  - name: "DATABRICKS_HTTP_PATH"
+    value: "/sql/1.0/warehouses/<ご自身の環境SQLウェアハウスのIDを設定してください>"
+
+  - name: "SURVEY_TABLE"
+    value: "<ご自身で設定したカタログ名>.airline_recommends.bz_pre_survey"
+
+  - name: "RECOMMEND_TABLE"
+    value: "<ご自身で設定したカタログ名>.airline_recommends.gd_recom_top6"
