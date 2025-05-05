@@ -43,5 +43,5 @@ DBDemos.download_file_from_git(
     dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_CONTNETS}",
     owner="komae5519pv",
     repo="komae_dbdemos",
-    path="/airline_recommends_20250429/_images/"
+    path="/airline_recommends_20250429/_images/_contents/"
 )
