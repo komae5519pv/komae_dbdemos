@@ -1,6 +1,5 @@
 import pandas as pd
-import time
-from dash import Dash, html, dcc, Input, Output, State
+from dash import Dash, html, dcc, Input, Output
 import dash_bootstrap_components as dbc
 from _push.push_notifications import generate_push_message  # メッセージ生成処理
 from _recommends.feature_client import FeatureClient
@@ -17,69 +16,44 @@ smartphone_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/a
 # ---------- レイアウト ----------
 app.layout = html.Div([
 
-    dcc.Store(id='previous-customer-id', data=None),  # previous-customer-id を追加
-
     # タブ切り替え
     dcc.Tabs([
         # ---------- アプリプッシュメッセージ ----------
         dcc.Tab(label="アプリプッシュメッセージ", children=[
-            html.Div(  # .page-container
-                [
-                    # --------- 左側 (サイドバー) ---------
-                    html.Div(
-                        [
-                            html.H4("会員IDを選択してください", className="mb-3 text-center", style={"color": "black"}),  # 文字色を黒に
-                            dcc.Dropdown(
-                                id="user-dropdown-push",  # ここでプッシュ通知用の会員IDを選択
-                                options=[],
-                                placeholder="会員IDを選択",
-                                style={"width": "100%"},
-                            ),
-                        ],
-                        className="sidebar",
-                        style={"flex": "0 0 20%"}  # 左側を20%に指定
-                    ),
-
-                    # --------- 右側 (メイン) ---------
-                    html.Div(
-                        [
-                            # スマホ画像の表示
-                            html.Div(
-                                style={
-                                    'position': 'relative',
-                                    'display': 'inline-block',
-                                    'width': '100%',
-                                    'height': '100vh',  # 画面縦のサイズに合わせる
-                                    'max-width': '450px'  # スマホサイズに収める
-                                },
-                                children=[
-                                    # スマホフレーム画像（背景）
-                                    html.Img(
-                                        src=smartphone_image_url,
-                                        style={
-                                            'width': '100%',
-                                            'height': '100%',  # 高さも100%に設定して、縦に合わせる
-                                            'position': 'relative',
-                                            'zIndex': '1',
-                                            'pointerEvents': 'none'  # 画像のクリックを無効化
-                                        }
-                                    ),
-                                ]
-                            ),
-                        ],
-                        className="main-area",
-                        style={"flex": "1 1 80%"}  # 右側を80%に指定
-                    ),
-                ],
-                className="page-container",
-                style={'background-color': '#121212'}  # 背景を黒く変更
-            ),
-
-            # プッシュ通知表示部分
-            html.Div(id="push-notification-display"),
-
-            # プッシュ通知ボックス部分）
-            html.Div(id="notification-box", className="notification-box"),
+            html.Div([
+                # プッシュ通知用フィルタ
+                html.H4("会員IDを選択してください", style={"color": "white"}),  # 文字色を白に
+                dcc.Dropdown(
+                    id="user-dropdown-push",  # ここでプッシュ通知用の会員IDを選択
+                    options=[],
+                    placeholder="会員IDを選択",
+                    style={"width": "100%"},
+                ),
+                # プッシュ通知表示部分
+                html.Div(id="push-notification-display"),  
+                # スマホ画像の表示
+                html.Div(
+                    style={
+                        'position': 'relative',
+                        'display': 'inline-block',
+                        'width': '450px',
+                        'height': 'auto'
+                    },
+                    children=[
+                        # スマホフレーム画像（背景）
+                        html.Img(
+                            src=smartphone_image_url,
+                            style={
+                                'width': '100%',
+                                'height': 'auto',
+                                'position': 'relative',
+                                'zIndex': '1',
+                                'pointerEvents': 'none'  # 画像のクリックを無効化
+                            }
+                        ),
+                    ]
+                )
+            ], className="push-tab-container", style={'background-color': '#121212'})  # プッシュメッセージ部分の背景を黒に変更
         ]),
 
         # ---------- 機内レコメンド ----------
@@ -89,7 +63,7 @@ app.layout = html.Div([
                     # --------- 左側 (サイドバー) ---------
                     html.Div(
                         [
-                            html.H4("会員IDを選択してください", className="mb-3 text-center"),
+                            html.H4("会員ID選択してください", className="mb-3 text-center"),
                             dcc.Dropdown(
                                 id="user-dropdown",
                                 options=[],
@@ -116,30 +90,7 @@ app.layout = html.Div([
     ])
 ])
 
-# ------------ プッシュメッセージを表示するコールバック ------------
-# 最初にクラス名をリセット（アニメーションをリセット）
-@app.callback(
-    Output('notification-box', 'className'),
-    Output('previous-customer-id', 'data'),
-    Input('user-dropdown-push', 'value'),
-    State('previous-customer-id', 'data'),
-    prevent_initial_call=True
-)
-def reset_animation(customer_id, previous_id):
-    if customer_id == previous_id:
-        return dash.no_update, dash.no_update
-    return "", customer_id  # リセット後にアニメーションを開始
-
-# アニメーションの表示
-@app.callback(
-    Output('notification-box', 'className', allow_duplicate=True),
-    Input('previous-customer-id', 'data'),
-    prevent_initial_call=True
-)
-def show_notification(_):
-    time.sleep(0.1)   # 少し遅延を入れることでアニメーションがスムーズに
-    return "show"     # showクラスを追加して表示
-
+# ------------ プッシュ配信用のコールバック ------------
 # フィルタの選択肢（会員ID）更新
 @app.callback(
     Output("user-dropdown-push", "options"),
@@ -173,7 +124,6 @@ def display_push_notification(user_id):
     """
     会員ID選択後にプッシュ通知を生成して表示
     """
-    print(f"Selected User ID: {user_id}")  # デバッグ用に出力
     if not user_id:
         return None
     

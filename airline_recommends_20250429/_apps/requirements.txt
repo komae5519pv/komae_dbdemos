@@ -5,3 +5,4 @@ pandas>=2.0.0                     # データ処理用（デフォルト未イ�
 databricks-sdk>=0.33.0            # Databricks連携用
 mlflow-skinny>=2.16.2             # モデル管理用（軽量版）
 gunicorn==23.0.0                  # 本番環境用WSGIサーバー
+qrcode

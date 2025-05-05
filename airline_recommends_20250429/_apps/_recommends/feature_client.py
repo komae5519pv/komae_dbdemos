@@ -2,6 +2,11 @@ import os
 import requests
 from databricks import sql
 from typing import Dict, List, Optional
+
+# 親ディレクトリからインポート
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # 親ディレクトリをsys.pathに追加
 from config import Config
 
 class FeatureClient:

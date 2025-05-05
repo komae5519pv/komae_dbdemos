@@ -3,6 +3,11 @@ from PIL import Image
 import io
 import base64
 from databricks.sdk import WorkspaceClient
+
+# 親ディレクトリからインポート
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # 親ディレクトリをsys.pathに追加
 from config import Config
 
 class RecommendationGrid:
