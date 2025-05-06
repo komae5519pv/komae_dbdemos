@@ -5,6 +5,7 @@ MY_SCHEMA = "airline_recommends"
 MY_VOLUME = "raw_data"
 MY_VOLUME_QR = "qr_code_img"
 MY_VOLUME_CONTNETS = "contents_img"
+MY_VOLUME_MLFLOW = "mlflow_artifacts"
 
 # モデル名
 MODEL_NAME = "als_recommender_model"                    # ALSモデル
@@ -20,11 +21,12 @@ WORKFLOW_NAME = "komae_airline_recommends_wf"
 
 # DBTITLE 1,カタログ設定
 # カタログ、スキーマ、ボリューム作成
-# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_QR};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_CONTNETS};")
+spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_MLFLOW};")
 
 # USE設定
 spark.sql(f"USE CATALOG {MY_CATALOG};")
@@ -47,6 +49,8 @@ print(f"MY_VOLUME_QR")
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_QR}")
 print(f"MY_VOLUME_CONTNETS")
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_CONTNETS}")
+print(f"MY_VOLUME_MLFLOW")
+print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_MLFLOW}")
 print(f"MODEL_NAME: {MODEL_NAME}")
 print(f"MODEL_NAME_GET_RECOMMENDS: {MODEL_NAME_GET_RECOMMENDS}")
 print(f"WAREHOUSE_ID: {WAREHOUSE_ID}")
