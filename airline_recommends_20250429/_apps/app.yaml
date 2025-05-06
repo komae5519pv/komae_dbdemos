@@ -19,8 +19,8 @@ env:
   - name: "DATABRICKS_HTTP_PATH"
     value: "/sql/1.0/warehouses/<ご自身の環境SQLウェアハウスのIDを設定してください>"
 
-  - name: "SURVEY_TABLE"
-    value: "<ご自身で設定したカタログ名>.airline_recommends.bz_pre_survey"
+  - name: "MY_CATALOG"
+    value: "<ご自身で設定したカタログ名>"
 
-  - name: "RECOMMEND_TABLE"
-    value: "<ご自身で設定したカタログ名>.airline_recommends.gd_recom_top6"
+  - name: "MY_SCHEMA"
+    value: "airline_recommends"

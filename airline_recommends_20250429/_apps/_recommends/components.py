@@ -3,12 +3,15 @@ from PIL import Image
 import io
 import base64
 from databricks.sdk import WorkspaceClient
+from config import Config
 
 # 親ディレクトリからインポート
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # 親ディレクトリをsys.pathに追加
-from config import Config
+
+# Databricks接続設定
+cfg = Config()
 
 class RecommendationGrid:
     @staticmethod
@@ -20,9 +23,9 @@ class RecommendationGrid:
         try:
             # WorkspaceClientのインスタンス作成（PAT認証）
             w = WorkspaceClient(
-                host=Config.DATABRICKS_HOST,
-                token=Config.DATABRICKS_TOKEN,
-                auth_type="pat"         # 明示的に認証方式を指定
+                host=cfg.DATABRICKS_HOST,
+                token=cfg.DATABRICKS_TOKEN,  # トークンを取得
+                auth_type="pat"                                                # 明示的に認証方式を指定
             )
 
             # 画像が格納されているパスのファイルをダウンロード

@@ -66,8 +66,13 @@ def load_recommendation(user_id: int, user_token: str) -> dict:
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
 feature_client = FeatureClient()
 
-# QRコード画像URLのパターン（最初に表示するQRコードを固定）
-qr_code_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_qr_codes/1.png?raw=true'
+# QRコード画像URLのパターン
+qr_code_urls = [
+    "https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_qr_codes/1.png?raw=true",
+    "https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_qr_codes/2.png?raw=true",
+    "https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_qr_codes/3.png?raw=true",
+    "https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_qr_codes/4.png?raw=true"
+]
 
 # スマホ画像URL
 smartphone_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_phone_screen/phone_screen.png?raw=true'
@@ -100,60 +105,45 @@ app.layout = html.Div([
 
                     # --------- 右側 (メイン) ---------
                     html.Div(
-                        style={
-                            'display': 'flex',
-                            'width': '80%',                         # 右側を80%に設定
-                            'height': '100vh',                      # 画面縦のサイズに合わせる
-                            'justifyContent': 'center',             # 画像を中央寄せ
-                        },
-                        children=[
-                            # スマホ画像コンテナ
+                        [
+                            # スマホ画像とQRコードを横並びに配置
                             html.Div(
                                 style={
-                                    'flex': 'none',                 # 幅を均等に分ける
-                                    'display': 'flex',
-                                    'justifyContent': 'flex-end',   # 右寄せに変更
-                                    'alignItems': 'center',         # 垂直方向にも中央寄せ
-                                    'paddingRight': '20px'          # 右側に余白
+                                    'display': 'flex',          # Flexboxで並べる
+                                    'justifyContent': 'center', # 中央寄せ
+                                    'alignItems': 'center',     # 縦方向にも中央寄せ
+                                    'width': '100%',
+                                    'height': '100vh',          # 画面縦のサイズに合わせる
                                 },
                                 children=[
-                                    # スマホ画像
+                                    # スマホフレーム画像（背景）
                                     html.Img(
                                         src=smartphone_image_url,
                                         style={
-                                            'height': '80%',        # 高さ80%に設定
-                                            'width': 'auto',        # 幅は自動調整
-                                            'maxWidth': '100%'      # 画像のはみ出し防止
+                                            'height': '80%',           # 高さ80%に設定
+                                            'width': 'auto',           # 幅は自動調整
+                                            'zIndex': '1',
+                                            'pointerEvents': 'none',   # 画像のクリックを無効化
                                         }
-                                    )
-                                ]
-                            ),
-                            # QRコード画像コンテナ
-                            html.Div(
-                                style={
-                                    'flex': '0 0 400px',            # 固定幅に設定（QRコードの幅）
-                                    'display': 'flex',
-                                    'justifyContent': 'flex-start', # QRコードを左寄せ
-                                    'alignItems': 'center',         # 垂直方向にも中央寄せ
-                                    'marginLeft': '0',              # マージン削除
-                                    'paddingLeft': '20px'           # 左側に余白
-                                },
-                                children=[
-                                    # QRコード画像
+                                    ),
+                                    # QRコードの表示（スマホ画像の右隣）
                                     html.Div(
                                         id="qr-code",
                                         style={
-                                            'width': '100%',        # 幅100%に設定
-                                            'height': 'auto',       # 高さ自動調整
-                                            'display': 'block',     # QRコードが表示される時にのみ表示
+                                            'width': '400px',           # QRコードの幅
+                                            'height': '400px',          # QRコードの高さ
+                                            'marginLeft': '20px',       # QRコードとスマホ画像の間に隙間を作る
+                                            'display': 'block',         # 初期状態で表示する
                                         },
                                         children=[
-                                            html.Img(id="qr-code-img", src=qr_code_url, style={"width": "100%", "height": "100%"})
+                                            html.Img(id="qr-code-img", src="", style={"width": "100%", "height": "100%"})
                                         ]
-                                    )
+                                    ),
                                 ]
                             ),
-                        ]
+                        ],
+                        className="main-area",
+                        style={"flex": "1 1 80%", "display": "flex", "justifyContent": "center"}  # 右側を80%に指定
                     ),
                 ],
                 className="page-container",
@@ -251,6 +241,18 @@ def display_push_notification(user_id):
     
     # メッセージを生成して表示
     return generate_push_message(user_id)
+
+
+# ------------ 会員ID選択時にQRコードをランダムで更新 & 表示 ------------
+@app.callback(
+    Output("qr-code-img", "src"),
+    Output("qr-code", "style"),
+    Input("user-dropdown-push", "value")  # 会員IDが選択された場合にQRコードが変更される
+)
+def show_random_qr_code(user_id):
+    # 初期状態でもランダムなQRコードを表示
+    qr_code_url = random.choice(qr_code_urls)
+    return qr_code_url, {'display': 'block'}  # QRコード画像を表示
 
 # ------------ 機内レコメンド用のコールバック ------------
 @app.callback(

@@ -1,52 +1,26 @@
 import qrcode
 import requests
-import base64
 from dash import html
 from PIL import Image
 from io import BytesIO
 from databricks import sql
 from config import Config
 
-# 画像URLをBase64にエンコードする関数
-def encode_image_to_base64(image_url, quality=50, new_width=300):
-    try:
-        # 画像をURLから取得
-        response = requests.get(image_url)
-
-        # URLが正しく取得できているか確認
-        if response.status_code != 200:
-            print(f"Error: Unable to download image from {image_url}")
-            return None
-
-        # 画像を開いてBase64にエンコード
-        img = Image.open(BytesIO(response.content))
-
-        # サイズ変更
-        width_percent = (new_width / float(img.size[0]))
-        new_height = int((float(img.size[1]) * float(width_percent)))
-        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-
-        # Base64エンコード
-        buffered = BytesIO()
-        img.save(buffered, format="PNG", quality=quality)
-        b64_string = base64.b64encode(buffered.getvalue()).decode('utf-8')
-        return f"data:image/png;base64,{b64_string}"
-    
-    except Exception as e:
-        print(f"画像エンコードエラー: {e}")
-        return None
+# Databricks接続設定
+cfg = Config()
 
 # SQLクエリを汎用的に実行するメソッド
 def _execute_sql(query: str, params: list) -> list:
     """汎用SQL実行メソッド"""
     with sql.connect(
-        server_hostname=Config.DATABRICKS_SERVER_HOSTNAME,
-        http_path=Config.DATABRICKS_HTTP_PATH,
-        access_token=Config.DATABRICKS_TOKEN
+        server_hostname=cfg.DATABRICKS_SERVER_HOSTNAME,
+        http_path=cfg.DATABRICKS_HTTP_PATH,
+        access_token=cfg.DATABRICKS_TOKEN
     ) as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
             return cursor.fetchall()
+
 
 # プッシュ通知カードの表示関数
 def send_push_notification(title, subject, thumb_url, icon_url="",
@@ -63,7 +37,7 @@ def send_push_notification(title, subject, thumb_url, icon_url="",
                 className="thumb-container",  # 外部CSSクラスを適用
                 children=[
                     html.Img(
-                        src=thumb_url,
+                        src=thumb_url,  # 画像URLをそのまま使用
                         style={
                             "width": "100%",
                             "borderRadius": "5px",
@@ -88,13 +62,14 @@ def send_push_notification(title, subject, thumb_url, icon_url="",
         ]
     )
 
+# プッシュ通知メッセージを生成する関数
 def generate_push_message(user_id):
-    """
-    会員IDを基にプッシュ通知メッセージの内容を生成
-    """
     try:
         print(f"Generating push message for user_id: {user_id}")
+        
+        # フライトIDを取得
         flight_id = get_flight_id(user_id)
+        print(f"Flight ID: {flight_id}")  # デバッグ用に出力
         if not flight_id:
             print("Flight ID not found")
             return send_push_notification(
@@ -103,7 +78,9 @@ def generate_push_message(user_id):
                 thumb_url='https://example.com/error-image.jpg'
             )
         
+        # レコメンド情報を取得
         recommendation = get_recommendations(user_id, flight_id)
+        print(f"Recommendation: {recommendation}")  # デバッグ用に出力
         if not recommendation:
             print("No recommendations found")
             return send_push_notification(
@@ -127,12 +104,10 @@ def generate_push_message(user_id):
         image_filename = image_path.split('/')[-1]  
         github_image_url = f"{github_base_url}{image_filename}?raw=true"
 
-        base64_img = encode_image_to_base64(github_image_url, quality=50, new_width=300)
-
         return send_push_notification(
             title=title,
             subject=subject,
-            thumb_url=base64_img, 
+            thumb_url=github_image_url,  # GitHubの画像URLをそのまま使用
             title_size=16,
             body_size=14
         )
@@ -153,7 +128,7 @@ def get_flight_id(user_id):
     """
     query = f"""
         SELECT flight_id
-        FROM {Config.RECOMMEND_TABLE}
+        FROM {cfg.MY_CATALOG}.{cfg.MY_SCHEMA}.gd_recom_top6
         WHERE user_id = ?
         LIMIT 1
     """
@@ -170,7 +145,7 @@ def get_recommendations(user_id, flight_id):
             contents_list.content_category[0] AS cat,
             contents_list.content_img_url[0] AS img,
             size(contents_list.content_category) AS total
-        FROM {Config.RECOMMEND_TABLE}
+        FROM {cfg.MY_CATALOG}.{cfg.MY_SCHEMA}.gd_recom_top6
         WHERE user_id = ? AND flight_id = ?
         LIMIT 1
     """

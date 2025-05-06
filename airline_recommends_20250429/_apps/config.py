@@ -9,11 +9,14 @@ class Config:
     DATABRICKS_SERVER_HOSTNAME = os.getenv("DATABRICKS_SERVER_HOSTNAME")
     DATABRICKS_HTTP_PATH = os.getenv("DATABRICKS_HTTP_PATH")
     DATABRICKS_TOKEN = os.getenv("DATABRICKS_TOKEN")
-    RECOMMEND_TABLE = os.getenv("RECOMMEND_TABLE")
 
     # Feature Servingエンドポイント設定
     DATABRICKS_HOST = os.getenv("DATABRICKS_HOST")
     SERVING_ENDPOINT = os.getenv("SERVING_ENDPOINT")
+
+    # カタログ、スキーマ
+    MY_CATALOG = os.getenv("MY_CATALOG")
+    MY_SCHEMA = os.getenv("MY_SCHEMA")
 
     # アプリケーション固有設定
     APP_TITLE = "機内エンタメレコメンド"
@@ -35,7 +38,6 @@ class Config:
             cls.DATABRICKS_SERVER_HOSTNAME,
             cls.DATABRICKS_HTTP_PATH,
             cls.DATABRICKS_TOKEN,
-            cls.RECOMMEND_TABLE,
             cls.DATABRICKS_HOST,
             cls.SERVING_ENDPOINT,
         ]

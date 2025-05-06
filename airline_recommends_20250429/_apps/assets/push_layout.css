@@ -4,7 +4,7 @@ body {
     margin: 0; /* 余白をなくす */
 }
 
-/* ========== プッシュメッセージ用のスタイル（影響を限定） ========== */
+/* ========== プッシュメッセージ用のスタイル ========== */
 .push-tab-container {
     background-color: #fff; /* プッシュメッセージの背景色 (白) */
     padding: 20px; /* 内側のパディング */
@@ -12,10 +12,10 @@ body {
 
 /* ========== プッシュ通知カード ========== */
 .push-notification-card {
-    background-color: #adeaff; /* 通知の背景色 */
+    background-color: rgba(255, 255, 255, 0.9);  /* 半透明の白背景 */
     border-radius: 10px;
     padding: 10px;
-    width: 400px; /* 通知カードの幅 */
+    width: 320px; /* 通知カードの幅 */
     box-shadow: 2px 2px 2px #f7f7f7; /* ボックスシャドウ (通知カード) */
     margin-bottom: 3px;
     display: flex;
@@ -43,34 +43,38 @@ body {
 
 .push-notification-card .text-container .title {
     padding-bottom: 5px;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 600; /* タイトルの太字 */
 }
 
 .push-notification-card .text-container .subject {
-    font-size: 14px; /* 本文の文字サイズ */
+    font-size: 13px; /* 本文の文字サイズ */
 }
 
 /* 通知ボックスの初期状態（非表示） */
-#notification-box {
+#push-notification-box {
     opacity: 0;
     transform: translateY(-50px); /* 上からスライドイン */
+    background-color: rgba(255, 255, 255, 0.9);  /* 半透明の白背景 */
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* 影を追加 */
 }
 
 /* アニメーションを表示時に適用 */
-#notification-box.show {
+#push-notification-box.show {
     opacity: 1;
     transform: translateY(0); /* スライドアップ */
 }
 
-/* 通知表示部分のスタイル */
+/* プッシュ通知の表示位置 */
 #push-notification-display {
     position: absolute;
-    top: 20px; /* 画面上部に配置 */
-    left: 50%;
+    top: 200px; /* 画面上部に配置 */
+    left: 49%;
     transform: translateX(-50%); /* 中央に配置 */
-    z-index: 100;
+    z-index: 9999;  /* 高いz-indexで他の要素の上に表示 */
     width: 100%;
     display: flex;
     justify-content: center;

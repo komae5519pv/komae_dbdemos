@@ -9,18 +9,22 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # 親ディレクトリをsys.pathに追加
 from config import Config
 
+# Databricks接続設定
+cfg = Config()
+
 class FeatureClient:
     def __init__(self):
-        self.host = Config.DATABRICKS_HOST
-        self.token = Config.DATABRICKS_TOKEN
-        self.endpoint = Config.SERVING_ENDPOINT
-        self.recommend_table = Config.RECOMMEND_TABLE
+        self.host = cfg.DATABRICKS_HOST
+        self.token = cfg.DATABRICKS_TOKEN
+        self.endpoint = cfg.SERVING_ENDPOINT
+        self.catalog = cfg.MY_CATALOG
+        self.schema = cfg.MY_SCHEMA
 
     def _execute_sql(self, query: str, params: list) -> list:
         """汎用SQL実行メソッド"""
         with sql.connect(
-            server_hostname=Config.DATABRICKS_SERVER_HOSTNAME,
-            http_path=Config.DATABRICKS_HTTP_PATH,
+            server_hostname=cfg.DATABRICKS_SERVER_HOSTNAME,
+            http_path=cfg.DATABRICKS_HTTP_PATH,
             access_token=self.token
         ) as conn:
             with conn.cursor() as cursor:
@@ -30,7 +34,7 @@ class FeatureClient:
     def get_flight_id(self, user_id: int) -> Optional[str]:
         """フライトID取得"""
         # 会員IDに紐づくフライトIDを一件のみ取得（デモ用の処理）
-        query = f"SELECT flight_id FROM {self.recommend_table} WHERE user_id = ? LIMIT 1"
+        query = f"SELECT flight_id FROM {self.catalog}.{self.schema}.gd_recom_top6 WHERE user_id = ? LIMIT 1"
         result = self._execute_sql(query, [user_id])
         return result[0].flight_id if result else None  # プロパティ形式でアクセス
 
