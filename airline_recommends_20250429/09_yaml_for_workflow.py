@@ -53,7 +53,19 @@ CLUSTER_ID = "0203-124810-rmnsgflh"    # ここにクラスタIDを貼り付け�
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 3. Workflow設定用のYamlファイルを作成
+# MAGIC ## 3. パイプラインIDを設定
+# MAGIC ここは手動での作業が必要です！  
+# MAGIC パイプライン -> 該当パイプライン -> 画面右上「JSON」 -> idの値をコピー
+# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/pipeline_id.png?raw=true' width='90%'/>
+
+# COMMAND ----------
+
+PIPELINE_ID = "e6d67be5-71c4-4b58-965f-689107459126"
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 4. Workflow設定用のYamlファイルを作成
 # MAGIC 次のセルを実行すると、同じディレクトリ内にworkflow.yamlというファイルができます  
 # MAGIC workflowsを設定する際には、手動のほか、Yaml形式で一括設定できます
 
@@ -90,11 +102,10 @@ def generate_workflow_yaml():
                         {
                             "task_key": "ETL",
                             "depends_on": [{"task_key": "set_csv"}],
-                            "notebook_task": {
-                                "notebook_path": f"{current_dir}/03_ETL_DLT",
-                                "source": "WORKSPACE"
-                            },
-                            "existing_cluster_id": f"{CLUSTER_ID}"
+                            "pipeline_task": {
+                                "pipeline_id": PIPELINE_ID,
+                                "full_refresh": False
+                            }
                         },
                         {
                             "task_key": "train_model",
