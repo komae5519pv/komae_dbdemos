@@ -48,7 +48,7 @@ print(f"{current_dir}")
 
 # COMMAND ----------
 
-CLUSTER_ID = "0320-051651-n2nzs40k"    # ここにクラスタIDを貼り付けてください
+CLUSTER_ID = "0203-124810-rmnsgflh"    # ここにクラスタIDを貼り付けてください
 
 # COMMAND ----------
 
@@ -71,9 +71,18 @@ def generate_workflow_yaml():
                     "name": f"{WORKFLOW_NAME}",
                     "tasks": [
                         {
-                            "task_key": "set_csv",
+                            "task_key": "load_data",
                             "notebook_task": {
-                                "notebook_path": f"{current_dir}/01_set_csv",
+                                "notebook_path": f"{current_dir}/01_load_data",
+                                "source": "WORKSPACE"
+                            },
+                            "existing_cluster_id": f"{CLUSTER_ID}"
+                        },
+                        {
+                            "task_key": "set_csv",
+                            "depends_on": [{"task_key": "load_data"}],
+                            "notebook_task": {
+                                "notebook_path": f"{current_dir}/02_set_csv",
                                 "source": "WORKSPACE"
                             },
                             "existing_cluster_id": f"{CLUSTER_ID}"
@@ -82,7 +91,7 @@ def generate_workflow_yaml():
                             "task_key": "ETL",
                             "depends_on": [{"task_key": "set_csv"}],
                             "notebook_task": {
-                                "notebook_path": f"{current_dir}/02_ETL_DLT",
+                                "notebook_path": f"{current_dir}/03_ETL_DLT",
                                 "source": "WORKSPACE"
                             },
                             "existing_cluster_id": f"{CLUSTER_ID}"
@@ -91,7 +100,7 @@ def generate_workflow_yaml():
                             "task_key": "train_model",
                             "depends_on": [{"task_key": "ETL"}],
                             "notebook_task": {
-                                "notebook_path": f"{current_dir}/03_train_model",
+                                "notebook_path": f"{current_dir}/04_train_model",
                                 "source": "WORKSPACE"
                             },
                             "existing_cluster_id": f"{CLUSTER_ID}"
@@ -100,7 +109,16 @@ def generate_workflow_yaml():
                             "task_key": "get_recommends",
                             "depends_on": [{"task_key": "train_model"}],
                             "notebook_task": {
-                                "notebook_path": f"{current_dir}/04_get_recommends",
+                                "notebook_path": f"{current_dir}/05_get_recommends",
+                                "source": "WORKSPACE"
+                            },
+                            "existing_cluster_id": f"{CLUSTER_ID}"
+                        },
+                        {
+                            "task_key": "feature_serving",
+                            "depends_on": [{"task_key": "get_recommends"}],
+                            "notebook_task": {
+                                "notebook_path": f"{current_dir}/07_feature_serving",
                                 "source": "WORKSPACE"
                             },
                             "existing_cluster_id": f"{CLUSTER_ID}"

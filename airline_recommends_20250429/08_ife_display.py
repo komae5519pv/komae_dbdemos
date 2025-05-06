@@ -1,10 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # 機内コンテンツレコメンドテーブルのサービング
-# MAGIC - 機内コンテンツレコメンド（`gd_recom_top6`）をREST API経由でモデルサービング環境に提供します。
-# MAGIC   - モデルサービング内ではSpark Sessionがサポートされず、spark sessionを介してUnity Catalogへの読み書きができません。
-# MAGIC   - 代わりにオンラインテーブルをバックエンドとして利用し、低レイテンシーで特徴量を提供します。
-# MAGIC   - 結果、会員IDとフライトIDに紐づく機内エンタメコンテンツのレコメンドリストを低レイテンシで取得できます。
+# MAGIC # 機内コンテンツのレコメンド一覧を表示してみる
+# MAGIC - Feature Serving エンドポイントにリクエストして機内コンテンツを表示してみます。
 # MAGIC - サーバレス or DBR 16.0ML以降
 
 # COMMAND ----------
@@ -71,106 +68,7 @@ for rec in response['outputs']:
 
 # COMMAND ----------
 
-# DBTITLE 1,bk
-# from IPython.display import display, HTML
-
-# html_template = """
-# <style>
-# .recommend-block {{
-#     background: #000;
-#     border-radius: 10px;
-#     max-width: 1240px;
-#     margin: 30px auto 30px auto;
-#     padding: 25px 15px 35px 15px;
-#     box-sizing: border-box;
-# }}
-# .user-header {{
-#     color: #fff;
-#     font-size: 22px;
-#     margin-bottom: 22px;
-#     margin-top: 0;
-#     font-weight: bold;
-#     text-align: left;
-#     letter-spacing: 1px;
-# }}
-# .tile-container {{
-#     display: grid;
-#     grid-template-columns: repeat(3, 1fr);
-#     gap: 20px;
-#     max-width: 1200px;
-#     margin: auto;
-#     padding: 0;
-#     background: transparent;
-#     border-radius: 10px;
-# }}
-# .tile {{
-#     background: #34495e;
-#     border-radius: 8px;
-#     overflow: hidden;
-#     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-#     transition: transform 0.3s ease;
-# }}
-# .tile:hover {{
-#     transform: translateY(-5px);
-# }}
-# .square-img-box {{
-#     width: 100%;
-#     aspect-ratio: 1/1;
-#     position: relative;
-#     background: #222;
-#     border-bottom: 3px solid #3498db;
-# }}
-# .tile-image {{
-#     position: absolute;
-#     top: 0; left: 0;
-#     width: 100%;
-#     height: 100%;
-#     object-fit: cover;
-#     object-position: top;
-#     display: block;
-# }}
-# .tile-category {{
-#     padding: 15px;
-#     text-align: center;
-#     color: #fff;
-#     font-family: Arial, sans-serif;
-#     font-size: 16px;
-#     background: #2c3e50;
-# }}
-# </style>
-
-# {content}
-# """
-
-# def generate_user_tiles(response):
-#     all_html = ""
-#     for rec in response['outputs']:
-#         user_html = f"""
-#         <div class="recommend-block">
-#             <div class="user-header">お客様[ 会員ID: {rec['user_id']} | フライトID: {rec['flight_id']} ]だけのおすすめ情報♪</div>
-#             <div class="tile-container">
-#         """
-#         for cat, img in zip(rec['contents_list']['content_category'], rec['contents_list']['content_img_url']):
-#             tile = f"""
-#                 <div class="tile">
-#                     <div class="square-img-box">
-#                         <img src="{img}" class="tile-image" alt="{cat}">
-#                     </div>
-#                     <div class="tile-category">{cat}</div>
-#                 </div>
-#             """
-#             user_html += tile
-#         user_html += "</div></div>"
-#         all_html += user_html
-#     return all_html
-
-# user_tiles_content = generate_user_tiles(response)
-# full_html = html_template.format(content=user_tiles_content)
-# display(HTML(full_html))
-
-# COMMAND ----------
-
-# DBTITLE 1,テスト
+# DBTITLE 1,テスト表示
 from PIL import Image
 import io
 import base64
@@ -296,22 +194,31 @@ display(HTML(full_html))
 
 # COMMAND ----------
 
-# import base64
-# from databricks.sdk import WorkspaceClient
-# from IPython.core.display import display, HTML
+# MAGIC %md
+# MAGIC Volumeに保存された画像を表示してみる（デモ用コード）  
+# MAGIC Githubに保存した画像URLへのアクセスだと、HTTPSアクセスで表示が不安定になるため、Databricks Appsでは、Databricks SDKのWorkspaceクライアントを用いて、Volumeに保存した画像にアクセスし、Base64でエンコードしてレコメンド一覧をHTML表示します。  
+# MAGIC
+# MAGIC この処理に時間がかかるため、Feature Servingでレコメンド情報を高速に取得しているメリットを受けにくいですが、デモなので諦めます。
 
-# # WorkspaceClientインスタンスを作成
-# w = WorkspaceClient()
+# COMMAND ----------
 
-# # Volumeパス（ご使用のパスに置き換えてください）
-# volume_path = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_CONTNETS}/1.png"
+# DBTITLE 1,Volume画像表示
+import base64
+from databricks.sdk import WorkspaceClient
+from IPython.core.display import display, HTML
 
-# # ファイルをダウンロード
-# file_data = w.files.download(volume_path).contents.read()
+# WorkspaceClientインスタンスを作成
+w = WorkspaceClient()
 
-# # base64にエンコード
-# image_base64 = base64.b64encode(file_data).decode("utf-8")
+# Volumeパス（ご使用のパスに置き換えてください）
+volume_path = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_CONTNETS}/1.png"
 
-# # HTMLとして画像を表示
-# html_content = f'<img src="data:image/jpeg;base64,{image_base64}" alt="Image"/>'
-# display(HTML(html_content))
+# ファイルをダウンロード
+file_data = w.files.download(volume_path).contents.read()
+
+# base64にエンコード
+image_base64 = base64.b64encode(file_data).decode("utf-8")
+
+# HTMLとして画像を表示
+html_content = f'<img src="data:image/jpeg;base64,{image_base64}" alt="Image"/>'
+display(HTML(html_content))
