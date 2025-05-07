@@ -162,37 +162,74 @@ fe.create_feature_spec(                             # 新規作成
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 既存のエンドポイントがあると失敗します。その場合は、先にエンドポイントを削除してから実行してください。
+
+# COMMAND ----------
+
 # DBTITLE 1,新規デプロイ
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntityInput
-from databricks.sdk.errors import ResourceConflict
 
 w = WorkspaceClient()
 
+# エンドポイント名
 endpoint_name = MODEL_NAME_GET_RECOMMENDS
 
-def create_endpoint_if_not_exists():
-    try:
-      # エンドポイント作成
-      status = w.serving_endpoints.create_and_wait(
-        name=endpoint_name,
-        config = EndpointCoreConfigInput(
-          served_entities=[
-            ServedEntityInput(
-              entity_name=feature_spec_name,
-              scale_to_zero_enabled=True,
-              workload_size="Small"
-            )
-          ]
-        )
-      )
-      print(status)
+try:
+ status = w.serving_endpoints.create_and_wait(
+   name=endpoint_name,
+   config = EndpointCoreConfigInput(
+     served_entities=[
+       ServedEntityInput(
+         entity_name=feature_spec_name,
+         scale_to_zero_enabled=True,
+         workload_size="Small"
+       )
+     ]
+   )
+ )
+ print(status)
+except Exception as e:  # exceptブロックを追加
+    print(f"エラーが発生しました: {str(e)}")
+    raise
+
+# エンドポイントステータス取得
+status = w.serving_endpoints.get(name=endpoint_name)
+print(status)
+
+# COMMAND ----------
+
+# from databricks.sdk import WorkspaceClient
+# from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntityInput
+# from databricks.sdk.errors import ResourceConflict
+
+# w = WorkspaceClient()
+
+# endpoint_name = MODEL_NAME_GET_RECOMMENDS
+
+# def create_endpoint_if_not_exists():
+#     try:
+#       # エンドポイント作成
+#       status = w.serving_endpoints.create_and_wait(
+#         name=endpoint_name,
+#         config = EndpointCoreConfigInput(
+#           served_entities=[
+#             ServedEntityInput(
+#               entity_name=feature_spec_name,
+#               scale_to_zero_enabled=True,
+#               workload_size="Small"
+#             )
+#           ]
+#         )
+#       )
+#       print(status)
         
-    except ResourceConflict as e:
-        # 既に存在する場合の処理
-        print(f"※ エンドポイント '{ENDPOINT_NAME}' は既に存在します")
-        print(f"※ デプロイはスキップします")
+#     except ResourceConflict as e:
+#         # 既に存在する場合の処理
+#         print(f"※ エンドポイント '{ENDPOINT_NAME}' は既に存在します")
+#         print(f"※ デプロイはスキップします")
 
 
-# デプロイ
-create_endpoint_if_not_exists()
+# # デプロイ
+# create_endpoint_if_not_exists()
