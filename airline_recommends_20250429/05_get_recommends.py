@@ -88,7 +88,7 @@ if als_model is None:
 
 # COMMAND ----------
 
-# 顧客毎の上位20件のレコメンデーションアイテムを取得する
+# 顧客毎の上位30件のレコメンデーションアイテムを取得する
 recommendations = als_model.recommendForAllUsers(30)
 
 # create table
@@ -221,7 +221,7 @@ movie_drama_recommendations AS (
     COALESCE(ild.content_img_url, ci.content_img_url) AS content_img_url,
     ROW_NUMBER() OVER (PARTITION BY ui.user_id ORDER BY ui.rating DESC) AS rn
   FROM   flight_booking      fb
-  INNER  JOIN latest_pre_survey lps ON fb.user_id = lps.user_id          -- 回答必須
+  INNER  JOIN latest_pre_survey lps ON fb.user_id = lps.user_id          -- 渡航前アンケート回答必須
   INNER  JOIN user_items         ui ON fb.user_id = ui.user_id           -- ALS 必須
   LEFT   JOIN content_info       ci ON ui.content_id = ci.content_id
   LEFT   JOIN (
@@ -249,8 +249,8 @@ non_movie_drama_recommendations AS (
     COALESCE(ild.content_img_url, ci.content_img_url) AS content_img_url,
     ROW_NUMBER() OVER (PARTITION BY ui.user_id ORDER BY ui.rating DESC) AS rn
   FROM   flight_booking      fb
-  INNER  JOIN latest_pre_survey lps ON fb.user_id = lps.user_id
-  INNER  JOIN user_items         ui ON fb.user_id = ui.user_id
+  INNER  JOIN latest_pre_survey lps ON fb.user_id = lps.user_id          -- 渡航前アンケート回答必須
+  INNER  JOIN user_items         ui ON fb.user_id = ui.user_id           -- ALS 必須
   LEFT   JOIN content_info       ci ON ui.content_id = ci.content_id
   LEFT   JOIN (
            SELECT user_id, content_id, content_img_url
@@ -347,34 +347,96 @@ df.write.format("delta")\
   .mode("overwrite")\
   .saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6")
 
-# NOT NULL制約の追加
-columns_to_set_not_null = ['user_id', 'flight_id']
-for column in columns_to_set_not_null:
-  spark.sql(f"""
-  ALTER TABLE {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6
-  ALTER COLUMN {column} SET NOT NULL;
-""")
-
-# 主キーの設定
-spark.sql(f"""
-ALTER TABLE {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6
-ADD CONSTRAINT gd_recom_top6_pk PRIMARY KEY(user_id, flight_id);
-""")
-
-# CDFの有効化
-spark.sql(f"""
-ALTER TABLE {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6 
-SET TBLPROPERTIES (delta.enableChangeDataFeed = true);
-""")
-
-# OPTIMIZE(推奨)：大規模テーブルでOPTIMIZEを実行しない場合、オンラインテーブルとの初回同期に時間がかかる可能性があるため
-spark.sql(f"""
-OPTIMIZE {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6;
-""")
-
-
 # 結果を表示
 print("レコード数:", df.count())
 print("カラム名:", df.columns)
 display(df.limit(100))
 
+
+# COMMAND ----------
+
+# DBTITLE 1,主キー設定
+# 変数定義
+TABLE_PATH = f'{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6'                 # テーブルパス
+PK_CONSTRAINT_NAME = f'pk_gd_recom_top6'                               # 主キー
+
+# NOT NULL制約の追加
+columns_to_set_not_null = [
+    'user_id',
+    'flight_id']
+
+for column in columns_to_set_not_null:
+    spark.sql(f"""
+    ALTER TABLE {TABLE_PATH}
+    ALTER COLUMN {column} SET NOT NULL;
+    """)
+
+# 主キー設定
+spark.sql(f'''
+ALTER TABLE {TABLE_PATH}
+DROP CONSTRAINT IF EXISTS {PK_CONSTRAINT_NAME};
+''')
+
+spark.sql(f'''
+ALTER TABLE {TABLE_PATH}
+ADD CONSTRAINT {PK_CONSTRAINT_NAME} PRIMARY KEY (user_id, flight_id);
+''')
+
+# CDFの有効化
+spark.sql(f"""
+ALTER TABLE {TABLE_PATH}
+SET TBLPROPERTIES (delta.enableChangeDataFeed = true);
+""")
+
+# OPTIMIZE(推奨)
+# 大規模テーブルでOPTIMIZEを実行しない場合、オンラインテーブルとの初回同期に時間がかかる可能性があるため
+spark.sql(f"OPTIMIZE {TABLE_PATH}")
+
+
+# # チェック
+# display(
+#     spark.sql(f'''
+#     DESCRIBE EXTENDED {TABLE_PATH}
+#     '''))
+
+# COMMAND ----------
+
+# DBTITLE 1,認定済みタグの追加
+certified_tag = 'system.Certified'
+
+try:
+    spark.sql(f"ALTER TABLE {TABLE_PATH} SET TAGS ('{certified_tag}')")
+    print(f"認定済みタグ '{certified_tag}' の追加が完了しました。")
+
+except Exception as e:
+    print(f"認定済みタグ '{certified_tag}' の追加中にエラーが発生しました: {str(e)}")
+    print("このエラーはタグ機能に対応していないワークスペースで実行した場合に発生する可能性があります。")
+
+# COMMAND ----------
+
+# DBTITLE 1,コメント追加
+# テーブル名
+table_name = f'{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6'
+
+# テーブルコメント
+comment = """
+テーブル名：`gd_recom_top6 / 機内レコメンドTOP6（施策用マート）`  
+説明：航空サービスの機内エンタメコンテンツのレコメンドコンテンツTOP6です。  
+過去視聴ログを学習したALSモデルで会員ごとに機内コンテンツレコメンドを予測。さらに渡航前アンケートの回答に一致するコンテンツに絞った上で、TOP6コンテンツをレコメンドリストとして登録。プッシュ配信や機内ディスプレイに表示するコンテンツ一覧の元データとして利用します。
+"""
+spark.sql(f'COMMENT ON TABLE {table_name} IS "{comment}"')
+
+# カラムコメント
+column_comments = {
+    "user_id": "会員ID、主キー、例）1",
+    "booking_id": "航空券予約番号、例）B9345721",
+    "flight_id": "便名（機材＋日付で一意）、主キー、例）JL006",
+    "route_id":"区間、例）NYC-NRT",
+    "flight_date":"出発日、YYYY-MM-DDフォーマット",
+    "contents_list":"機内コンテンツリスト、会員ごとにおすすめのコンテンツカテゴリと画像URL(今回デモなのでVolumeパス)を6件ずつ格納します"
+}
+
+for column, comment in column_comments.items():
+    escaped_comment = comment.replace("'", "\\'")
+    sql_query = f"ALTER TABLE {table_name} ALTER COLUMN {column} COMMENT '{escaped_comment}'"
+    spark.sql(sql_query)

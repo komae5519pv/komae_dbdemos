@@ -36,10 +36,47 @@ feature_spec_name = f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_fs"
 
 # COMMAND ----------
 
-from pprint import pprint
+# DBTITLE 1,既存削除
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service.catalog import *
-import mlflow
+from databricks.sdk.errors import NotFound
+import time
+
+w = WorkspaceClient()
+
+def delete_and_wait(name: str, timeout_sec=30):
+    try:
+        # 既存削除
+        w.online_tables.delete(name=name)
+        
+        # 削除完了したかチェック（ポーリング）
+        start = time.time()
+        while time.time() - start < timeout_sec:
+            try:
+                w.online_tables.get(name)
+                time.sleep(2)
+            except NotFound:  # 削除完了時
+                print(f"Deleted: {name}")
+                return
+                
+        raise TimeoutError(f"Timeout after {timeout_sec} seconds")
+        
+    except NotFound:  # 既に存在しない場合
+        print(f"Already deleted: {name}")
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        raise
+
+
+delete_and_wait(online_table_name)
+
+# COMMAND ----------
+
+# DBTITLE 1,新規作成
+# from pprint import pprint
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.service.catalog import *
+# import mlflow
 
 w = WorkspaceClient()
 
@@ -77,7 +114,20 @@ w.online_tables.create_and_wait(table=online_table)
 
 # COMMAND ----------
 
-from databricks.feature_engineering import FeatureLookup, FeatureEngineeringClient
+# DBTITLE 1,既存削除
+from databricks.feature_engineering import FeatureLookup, FeatureFunction, FeatureEngineeringClient
+
+fe = FeatureEngineeringClient()
+
+try:
+    fe.delete_feature_spec(name=feature_spec_name)  # 既存削除
+except Exception as e:
+    if "does not exist" not in str(e):
+        raise
+
+# COMMAND ----------
+
+# DBTITLE 1,新規作成
 from databricks.feature_engineering import FeatureLookup, FeatureFunction, FeatureEngineeringClient
 
 fe = FeatureEngineeringClient()
@@ -118,26 +168,69 @@ from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntity
 w = WorkspaceClient()
 
 # エンドポイント名
-endpoint_name = "get-airline-recommendations"
+endpoint_name = MODEL_NAME_GET_RECOMMENDS
 
 try:
- status = w.serving_endpoints.create_and_wait(
-   name=endpoint_name,
-   config = EndpointCoreConfigInput(
-     served_entities=[
-       ServedEntityInput(
-         entity_name=feature_spec_name,
-         scale_to_zero_enabled=True,
-         workload_size="Small"
-       )
-     ]
-   )
- )
- print(status)
-except Exception as e:  # exceptブロックを追加
+    # 既存のエンドポイントを取得
+    existing_endpoint = w.serving_endpoints.get(name=endpoint_name)
+
+    # エンドポイントが既に存在する場合
+    if existing_endpoint:
+        print(f"エンドポイント '{endpoint_name}' は既に存在します。")
+
+    # エンドポイントが存在しない場合
+    else:
+        # エンドポイントの作成
+        status = w.serving_endpoints.create_and_wait(
+            name=endpoint_name,
+            config=EndpointCoreConfigInput(
+                served_entities=[
+                    ServedEntityInput(
+                        entity_name=feature_spec_name,
+                        scale_to_zero_enabled=True,
+                        workload_size="Small"
+                    )
+                ]
+            )
+        )
+        print(f"エンドポイント '{endpoint_name}' が作成されました。")
+    
+except Exception as e:
     print(f"エラーが発生しました: {str(e)}")
     raise
 
-# エンドポイントステータス取得
+# 最後にエンドポイントのステータスを表示
 status = w.serving_endpoints.get(name=endpoint_name)
 print(status)
+
+# COMMAND ----------
+
+# from databricks.sdk import WorkspaceClient
+# from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntityInput
+
+# w = WorkspaceClient()
+
+# # エンドポイント名
+# endpoint_name = MODEL_NAME_GET_RECOMMENDS
+
+# try:
+#  status = w.serving_endpoints.create_and_wait(
+#    name=endpoint_name,
+#    config = EndpointCoreConfigInput(
+#      served_entities=[
+#        ServedEntityInput(
+#          entity_name=feature_spec_name,
+#          scale_to_zero_enabled=True,
+#          workload_size="Small"
+#        )
+#      ]
+#    )
+#  )
+#  print(status)
+# except Exception as e:  # exceptブロックを追加
+#     print(f"エラーが発生しました: {str(e)}")
+#     raise
+
+# # エンドポイントステータス取得
+# status = w.serving_endpoints.get(name=endpoint_name)
+# print(status)

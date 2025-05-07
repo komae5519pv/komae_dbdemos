@@ -114,7 +114,7 @@
 # MAGIC - クラスター -> アプリ -> 右上「アプリを作成」
 # MAGIC - 全体的な流れ：Customでインスタンス作成後、`_apps`フォルダを指定してアプリをデプロイ
 # MAGIC   - Custom
-# MAGIC   - アプリ名：`<ご自身の名前>-ife-recommend`
+# MAGIC   - アプリ名：`<ご自身の名前など>-airline-recommends`
 # MAGIC   - Advanced setting -> リソースを追加
 # MAGIC     - サービングエンドポイント：`get-airline-recommendations`
 # MAGIC       - 権限：`クエリー可能`
