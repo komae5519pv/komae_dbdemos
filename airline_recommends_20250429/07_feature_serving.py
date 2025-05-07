@@ -44,7 +44,9 @@ import time
 
 w = WorkspaceClient()
 
-def delete_and_wait(name: str, timeout_sec=30):
+# 概要：オンラインテーブル作成処理
+# 補足：既存オンラインテーブルがあるかチェックするポーリング処理。50秒でタイムアウトさせます。
+def delete_and_wait(name: str, timeout_sec=50):
     try:
         # 既存削除
         w.online_tables.delete(name=name)
