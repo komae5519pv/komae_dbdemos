@@ -26,14 +26,13 @@
 # MAGIC   - パフォーマンス
 # MAGIC     - 機械学習：`ON`
 # MAGIC     - Databricks Runtime：`16.0 (includes Apache Spark 3.5.2, Scala 2.12)`
-# MAGIC   - ワーカータイプ：`Standard_DS15_v2 (メモリ140GB、20 個のコア)`
-# MAGIC     - 最小: `2`
-# MAGIC     - 最大: `10`
-# MAGIC   - Advenced
-# MAGIC     - Spark構成
-# MAGIC       - `spark.databricks.pyspark.dataFrameChunk.enabled true`
-# MAGIC       - `spark.scheduler.mode FAIR`
-# MAGIC       - `spark.sql.shuffle.partitions 300`
+# MAGIC   - ワーカータイプ
+# MAGIC     - on Azure：`Standard_D4ds_v5 (メモリ16GB、4 個のコア)`
+# MAGIC       - 最小: `2`
+# MAGIC       - 最大: `10`
+# MAGIC     - on AWS：`rd-fleet.xlarge (メモリ32GB、4 個のコア)`
+# MAGIC       - 最小: `2`
+# MAGIC       - 最大: `10`
 # MAGIC
 # MAGIC #### 2. カタログ、スキーマ、ボリュームの作成
 # MAGIC - ノートブック`00_config`を開いてカタログ名を自分用に変更してください（**ここで指定したカタログ名でカタログを作成することになります**）
