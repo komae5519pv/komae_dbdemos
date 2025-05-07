@@ -161,13 +161,10 @@ print(f"YAMLファイルが生成されました: {generated_file}")
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/step3_copy_yaml.png?raw=true' width='88%'/>
 # MAGIC
 # MAGIC step2. ワークフロー -> 作成 -> ジョブ -> Yamlとして編集
-# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/step4_create_new_job.png?raw=true' width='88%'/>
-# MAGIC
-# MAGIC step3. ワークフロー -> 作成 -> ジョブ -> Yamlとして編集
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/step5_edit_yaml.png?raw=true' width='88%'/>
 # MAGIC
-# MAGIC step4. 先ほどコピーした`workflows.yaml`ファイルの中身を貼り付けて保存してください
+# MAGIC step3. 先ほどコピーした`workflows.yaml`ファイルの中身を貼り付けて保存してください
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/step6_overwrite_yaml.png?raw=true' width='88%'/>
 # MAGIC
-# MAGIC step5. これでワークフローの設定が完了です
+# MAGIC step4. これでワークフローの設定が完了です
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/step7_complete_workflows_setting.png?raw=true' width='88%'/>
