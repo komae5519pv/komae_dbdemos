@@ -11,9 +11,6 @@ MY_VOLUME_MLFLOW = "mlflow_artifacts"
 MODEL_NAME = "als_recommender_model"                        # ALSモデル
 MODEL_NAME_GET_RECOMMENDS = "get-airline-recommendations"   # Feature Serving Endpoint
 
-# SQLウェアハウスID
-WAREHOUSE_ID = "148ccb90800933a1"   # 使用したいSQLウェアハウスのIDに変更してください
-
 # ワークフロー名
 WORKFLOW_NAME = "komae_airline_recommends_wf"   # 使用したいワークフロー名に変更してください
 
@@ -58,5 +55,4 @@ print(f"MY_VOLUME_MLFLOW")
 print(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_MLFLOW}")
 print(f"MODEL_NAME: {MODEL_NAME}")
 print(f"MODEL_NAME_GET_RECOMMENDS: {MODEL_NAME_GET_RECOMMENDS}")
-print(f"WAREHOUSE_ID: {WAREHOUSE_ID}")
 print(f"WORKFLOW_NAME: {WORKFLOW_NAME}")
