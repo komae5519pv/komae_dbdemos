@@ -8,20 +8,25 @@ MY_VOLUME_CONTNETS = "contents_img"
 MY_VOLUME_MLFLOW = "mlflow_artifacts"
 
 # モデル名
-MODEL_NAME = "als_recommender_model"                    # ALSモデル
-MODEL_NAME_GET_RECOMMENDS = "get_ife_recommends_model"  # レコメンド取得関数をpyfucラッパーしたモデル
+MODEL_NAME = "als_recommender_model"                        # ALSモデル
+MODEL_NAME_GET_RECOMMENDS = "get-airline-recommendations"   # Feature Serving Endpoint
 
 # SQLウェアハウスID
-WAREHOUSE_ID = "148ccb90800933a1"
+WAREHOUSE_ID = "148ccb90800933a1"   # 使用したいSQLウェアハウスのIDに変更してください
 
 # ワークフロー名
-WORKFLOW_NAME = "komae_airline_recommends_wf"
+WORKFLOW_NAME = "komae_airline_recommends_wf"   # 使用したいワークフロー名に変更してください
+
+# COMMAND ----------
+
+# DBTITLE 1,スキーマ配下完全削除
+# spark.sql(f"DROP SCHEMA IF EXISTS {MY_CATALOG}.{MY_SCHEMA} CASCADE")
 
 # COMMAND ----------
 
 # DBTITLE 1,カタログ設定
 # カタログ、スキーマ、ボリューム作成
-spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
+# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_QR};")

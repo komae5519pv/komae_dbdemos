@@ -162,75 +162,37 @@ fe.create_feature_spec(                             # 新規作成
 
 # COMMAND ----------
 
+# DBTITLE 1,新規デプロイ
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntityInput
+from databricks.sdk.errors import ResourceConflict
 
 w = WorkspaceClient()
 
-# エンドポイント名
 endpoint_name = MODEL_NAME_GET_RECOMMENDS
 
-try:
-    # 既存のエンドポイントを取得
-    existing_endpoint = w.serving_endpoints.get(name=endpoint_name)
-
-    # エンドポイントが既に存在する場合
-    if existing_endpoint:
-        print(f"エンドポイント '{endpoint_name}' は既に存在します。")
-
-    # エンドポイントが存在しない場合
-    else:
-        # エンドポイントの作成
-        status = w.serving_endpoints.create_and_wait(
-            name=endpoint_name,
-            config=EndpointCoreConfigInput(
-                served_entities=[
-                    ServedEntityInput(
-                        entity_name=feature_spec_name,
-                        scale_to_zero_enabled=True,
-                        workload_size="Small"
-                    )
-                ]
+def create_endpoint_if_not_exists():
+    try:
+      # エンドポイント作成
+      status = w.serving_endpoints.create_and_wait(
+        name=endpoint_name,
+        config = EndpointCoreConfigInput(
+          served_entities=[
+            ServedEntityInput(
+              entity_name=feature_spec_name,
+              scale_to_zero_enabled=True,
+              workload_size="Small"
             )
+          ]
         )
-        print(f"エンドポイント '{endpoint_name}' が作成されました。")
-    
-except Exception as e:
-    print(f"エラーが発生しました: {str(e)}")
-    raise
+      )
+      print(status)
+        
+    except ResourceConflict as e:
+        # 既に存在する場合の処理
+        print(f"※ エンドポイント '{ENDPOINT_NAME}' は既に存在します")
+        print(f"※ デプロイはスキップします")
 
-# 最後にエンドポイントのステータスを表示
-status = w.serving_endpoints.get(name=endpoint_name)
-print(status)
 
-# COMMAND ----------
-
-# from databricks.sdk import WorkspaceClient
-# from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntityInput
-
-# w = WorkspaceClient()
-
-# # エンドポイント名
-# endpoint_name = MODEL_NAME_GET_RECOMMENDS
-
-# try:
-#  status = w.serving_endpoints.create_and_wait(
-#    name=endpoint_name,
-#    config = EndpointCoreConfigInput(
-#      served_entities=[
-#        ServedEntityInput(
-#          entity_name=feature_spec_name,
-#          scale_to_zero_enabled=True,
-#          workload_size="Small"
-#        )
-#      ]
-#    )
-#  )
-#  print(status)
-# except Exception as e:  # exceptブロックを追加
-#     print(f"エラーが発生しました: {str(e)}")
-#     raise
-
-# # エンドポイントステータス取得
-# status = w.serving_endpoints.get(name=endpoint_name)
-# print(status)
+# デプロイ
+create_endpoint_if_not_exists()
