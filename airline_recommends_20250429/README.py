@@ -107,7 +107,7 @@
 # MAGIC
 # MAGIC #### 6. Databricks Appsデプロイ
 # MAGIC - 設定ファイルを編集
-# MAGIC   - airline_recommends_20250429/_apps/app.yaml
+# MAGIC   - airline_recommends_20250429/_apps/app.yaml　を編集してください
 # MAGIC
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/app.yaml.png?raw=true' width='90%'/>
 # MAGIC
