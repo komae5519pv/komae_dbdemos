@@ -25,7 +25,7 @@ qr_code_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_re
 smartphone_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_phone_screen/phone_screen.png?raw=true'
 
 # bell画像URL
-bell_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/product_recommendation_20250411/_images/bell.png?raw=true'
+bell_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_contents/bell.png?raw=true'
 
 # Github上の画像パス（初期値）
 github_base_url = "https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_contents/"
