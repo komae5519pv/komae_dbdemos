@@ -1,0 +1,46 @@
+resources:
+  jobs:
+    komae_airline_recommends_wf:
+      name: komae_airline_recommends_wf
+      tasks:
+      - task_key: load_data
+        notebook_task:
+          notebook_path: /Workspace/Users/konomi.omae@databricks.com/External Work/20250429_CDP_webiner/02_airline_recommend/01_load_data
+          source: WORKSPACE
+        existing_cluster_id: 0203-124810-rmnsgflh
+      - task_key: set_csv
+        depends_on:
+        - task_key: load_data
+        notebook_task:
+          notebook_path: /Workspace/Users/konomi.omae@databricks.com/External Work/20250429_CDP_webiner/02_airline_recommend/02_set_csv
+          source: WORKSPACE
+        existing_cluster_id: 0203-124810-rmnsgflh
+      - task_key: ETL
+        depends_on:
+        - task_key: set_csv
+        pipeline_task:
+          pipeline_id: e6d67be5-71c4-4b58-965f-689107459126
+          full_refresh: false
+      - task_key: train_model
+        depends_on:
+        - task_key: ETL
+        notebook_task:
+          notebook_path: /Workspace/Users/konomi.omae@databricks.com/External Work/20250429_CDP_webiner/02_airline_recommend/04_train_model
+          source: WORKSPACE
+        existing_cluster_id: 0203-124810-rmnsgflh
+      - task_key: get_recommends
+        depends_on:
+        - task_key: train_model
+        notebook_task:
+          notebook_path: /Workspace/Users/konomi.omae@databricks.com/External Work/20250429_CDP_webiner/02_airline_recommend/05_get_recommends
+          source: WORKSPACE
+        existing_cluster_id: 0203-124810-rmnsgflh
+      - task_key: feature_serving
+        depends_on:
+        - task_key: get_recommends
+        notebook_task:
+          notebook_path: /Workspace/Users/konomi.omae@databricks.com/External Work/20250429_CDP_webiner/02_airline_recommend/07_feature_serving
+          source: WORKSPACE
+        existing_cluster_id: 0203-124810-rmnsgflh
+      queue:
+        enabled: true

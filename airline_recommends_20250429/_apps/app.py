@@ -479,9 +479,9 @@ def update_booking_data(user_id):
         labels = {
             'user_id': '会員ID',
             'booking_id': '航空券予約番号',
-            'flight_id': 'フライトID',
-            'route_id': 'ルートID',
-            'flight_date': 'フライト日',
+            'flight_id': '便名',
+            'route_id': '区間',
+            'flight_date': '出発日',
         }
 
         # 各カラムをカードとして表示

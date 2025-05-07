@@ -26,7 +26,7 @@ WORKFLOW_NAME = "komae_airline_recommends_wf"   # 使用したいワークフロ
 
 # DBTITLE 1,カタログ設定
 # カタログ、スキーマ、ボリューム作成
-# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG};")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME};")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_QR};")

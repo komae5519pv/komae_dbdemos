@@ -115,14 +115,7 @@
 # MAGIC - 全体的な流れ：Customでインスタンス作成後、`_apps`フォルダを指定してアプリをデプロイ
 # MAGIC   - Custom
 # MAGIC   - アプリ名：`<ご自身の名前など>-airline-recommends`
-# MAGIC   - Advanced setting -> リソースを追加
-# MAGIC     - サービングエンドポイント：`get-airline-recommendations`
-# MAGIC       - 権限：`クエリー可能`
-# MAGIC       - リソースキー：`serving_endpoint`
-# MAGIC     - SQLウェアハウス：`Shared Endpoint`
-# MAGIC       - 権限：`使用可能`
-# MAGIC       - リソースキー：`sql_warehouse`
-# MAGIC    - ユーザーが承認したAPIスコープ
-# MAGIC       - DatabricksでのSQLの実行とSQL関連リソースの管理をアプリに許可します。：`ON`
+# MAGIC   - 説明：`航空会社の機内レコメンドアプリ`　ご自身にとってわかりやすい説明でOKです
+# MAGIC   - Advanced setting：設定なし
 # MAGIC
-# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/databricks_apps.png?raw=true' width='90%'/>
+# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_manual/databricks_apps.png?raw=true' width='80%'/>
