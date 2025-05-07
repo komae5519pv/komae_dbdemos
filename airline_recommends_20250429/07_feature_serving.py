@@ -200,35 +200,3 @@ def create_endpoint_if_not_exists():
 
 # デプロイ
 create_endpoint_if_not_exists()
-
-# COMMAND ----------
-
-# from databricks.sdk import WorkspaceClient
-# from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntityInput
-
-# w = WorkspaceClient()
-
-# # エンドポイント名
-# endpoint_name = MODEL_NAME_GET_RECOMMENDS
-
-# try:
-#  status = w.serving_endpoints.create_and_wait(
-#    name=endpoint_name,
-#    config = EndpointCoreConfigInput(
-#      served_entities=[
-#        ServedEntityInput(
-#          entity_name=feature_spec_name,
-#          scale_to_zero_enabled=True,
-#          workload_size="Small"
-#        )
-#      ]
-#    )
-#  )
-#  print(status)
-# except Exception as e:  # exceptブロックを追加
-#     print(f"エラーが発生しました: {str(e)}")
-#     raise
-
-# # エンドポイントステータス取得
-# status = w.serving_endpoints.get(name=endpoint_name)
-# print(status)
