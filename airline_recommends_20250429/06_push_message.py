@@ -23,47 +23,19 @@
 # COMMAND ----------
 
 # DBTITLE 1,テストデータ
-dbutils.widgets.text("user_id", "298")
-dbutils.widgets.text("flight_id", "NH872")
-
+dbutils.widgets.text("user_id", "112")
 user_id = dbutils.widgets.get("user_id")
-flight_id = dbutils.widgets.get("flight_id")
 
 # COMMAND ----------
 
-import qrcode
-from PIL import Image
-import io
 import base64
 
-# 画像を圧縮してBase64エンコードする関数
-def encode_image_to_base64(image_path, quality=50, new_width=300):
-    # 画像を開く
-    with Image.open(image_path) as img:
-        # 解像度を変更（幅をnew_widthに設定）
-        width_percent = (new_width / float(img.size[0]))
-        new_height = int((float(img.size[1]) * float(width_percent)))
-        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)  # ANTIALIAS -> LANCZOS
-
-        # 圧縮してバッファに保存
-        buffered = io.BytesIO()
-        img.save(buffered, format="PNG", quality=quality)  # qualityを指定して圧縮
-        # Base64エンコード
-        b64_string = base64.b64encode(buffered.getvalue()).decode('utf-8')
-    return f"data:image/png;base64,{b64_string}"
-
-# プッシュ通知カードの関数
-def send_push_notification(title, subject, thumb_url, icon_url="",
-                           title_size=16, body_size=14):
-    """
-    title_size … タイトル文字サイズ (px)
-    body_size  … 本文文字サイズ (px)
-    """
-    # 小アイコン（省略可）
+# ── プッシュ通知カード描画 ─────────────────────────
+def send_push_notification(title, subject, thumb_b64,
+                           icon_url="", title_size=16, body_size=14):
     icon_html = (f'<img src="{icon_url}" '
                  f'style="width:{title_size}px; margin-bottom:-3px; margin-right:4px;">'
                  if icon_url else "")
-
     displayHTML(f"""
     <div style="border-radius:10px; background:#adeaff; padding:10px; width:400px;
                 box-shadow:2px 2px 2px #F7f7f7; margin-bottom:3px;
@@ -71,51 +43,48 @@ def send_push_notification(title, subject, thumb_url, icon_url="",
 
         <!-- 左：サムネイル -->
         <div style="width:30%; padding-right:10px;">
-            <img src="{thumb_url}" style="width:100%; border-radius:5px; object-fit:cover;">
+            <img src="data:image/png;base64,{thumb_b64}"
+                 style="width:100%; border-radius:5px; object-fit:cover;">
         </div>
 
         <!-- 右：テキスト -->
         <div style="width:70%; padding-left:10px;">
-            <!-- タイトル -->
             <div style="padding-bottom:5px; font-size:{title_size}px; font-weight:600;">
                 {icon_html}{title}
             </div>
-            <!-- 本文 -->
             <div style="font-size:{body_size}px;">
                 {subject}
             </div>
         </div>
     </div>""")
 
-# COMMAND ----------
-
-# テーブルからデータ取得（例: 会員ID、便名、画像URLなど）
-user_id, flight_id, cat, img_path, total = spark.sql(f"""
+# ── 新テーブルから必要列を取得 ─────────────────────
+row = spark.sql(f"""
     SELECT
-           user_id,
-           flight_id,
-           contents_list.content_category[0]　AS cat,
-           contents_list.content_img_url[0] AS img,
-           size(contents_list.content_category) AS total
-      FROM {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6
-     WHERE user_id = {user_id}
-     LIMIT 1
+        user_id,
+        flight_id,
+        contents_list.content_category[0]  AS cat,
+        contents_list.content_img_b64[0]   AS img_b64,
+        size(contents_list.content_category) AS total
+    FROM   {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64
+    WHERE  user_id = {user_id}
+    LIMIT 1
 """).first()
 
-# 画像をBase64エンコード
-base64_img = encode_image_to_base64(img_path, quality=50, new_width=300)  # 画像のBase64エンコード
+# 取得値
+user_id, flight_id, cat, img_b64, total = row
 
-# プッシュ通知のタイトル・本文
-title   = f"機内エンタメ 厳選 {total} 作品をお届け！"
-subject = f"あなた向けの『{cat}』を多数ご用意しています。続きを機内ディスプレイでどうぞ！"
+# プッシュ通知文面
+title   = f"機内エンタメ 厳選 {total} 作品をお届け！⭐️"
+subject = f"あなた向けの『{cat}』を多数ご用意しています。続きを機内ディスプレイでどうぞ！🚀"
 
-# プッシュ通知表示
+# 表示
 send_push_notification(
     title       = title,
     subject     = subject,
-    thumb_url   = base64_img,  # Base64エンコードされた画像を通知に使用
-    title_size  = 16,
-    body_size   = 14
+    thumb_b64   = img_b64,   # base64をそのまま渡す
+    title_size  = 15,
+    body_size   = 13
 )
 
 # COMMAND ----------
@@ -158,7 +127,7 @@ cleanup_volume()
 df = spark.sql(f"""
 SELECT user_id, flight_id 
 FROM {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64
-""").persist()
+""")
 
 # QRコード生成関数（UDF用）
 def generate_qr_udf(user_id, flight_id):
