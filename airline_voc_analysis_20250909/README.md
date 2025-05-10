@@ -1,6 +1,6 @@
 # Bricks Airways 顧客レビュー
 <div style="display: flex; justify-content: space-between;">
-  <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/voc_analysis_20250415/_images/BritishAirways.jpg?raw=true' width='50%'/>
+  <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_voc_analysis_20250909/_imgs_tutorial/aircraft_taking_off.png?raw=true' width='50%'/>
 </div>
 
 ### データセットの概要
