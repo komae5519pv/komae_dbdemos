@@ -10,7 +10,7 @@ MY_VOLUME_IMG = "img"
 WORKFLOW_NAME = "komae_airline_voc_wf"   # 使用したいワークフロー名に変更してください
 
 # ワークスペースのホストURL
-HOST_URL = "https://adb-984752964297111.11.azuredatabricks.net" # ご利用されている本ワークスペースのURLのホスト部分を記述してください
+HOST_URL = "https://adb-984752964297111.11.azuredatabricks.net" # お使いのワークスペースのURLのホスト部分を記述してください
 
 # 「ワークスペースのホストURL」の補足：
 # ・Azureの場合は、`HOST_URL`https://adb-<ワークスペースID含む文字列>.azuredatabricks.net`の形式で記載
