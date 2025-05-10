@@ -1,11 +1,11 @@
 # Bricks Airways 顧客レビューを用いたVoC分析デモ
 <div style="display: flex; justify-content: space-between;">
-  <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_voc_analysis_20250909/_imgs_tutorial/aircraft_taking_off.png?raw=true' width='70%'/>
+  <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_voc_analysis_20250909/_manual/aircraft_taking_off.jpg?raw=true' width='70%'/>
 </div>
 
 ### 概要
 Bricks Airways（架空の航空会社）の各サービスに対する顧客レビューデータを用いたVoC（Voice of Customer）分析のデモです。顧客レビューはアンケート設計が行われていないため、さまざまな論点が複合的に混ざった自由記述のデータです。本デモでは、LLMを用いてこれらの顧客レビューデータから特定のカテゴリに該当する文章の抽出・要約を行うことで、文章のカテゴライズを自動化します。  
-さらに、カテゴライズされたデータをもとに、ダッシュボードやGenie（Databricksが提供する自然言語による分析ツール）で分析を行います。
+さらに、カテゴライズされたデータをもとに、ダッシュボードで分析を行います。
 
 ### カラム説明
 本デモで用いる顧客レビュー（デモ用のサンプルデータ）には、次の情報が含まれます。
@@ -34,3 +34,16 @@ Bricks Airways（架空の航空会社）の各サービスに対する顧客レ
 1. LLMを使ってでレビューから論点抽出＆要約
 1. 論点ごとに抽出された要約文章をレコード展開
 1. ダッシュボードで可視化
+
+### TODO
+- データ準備
+  - 00_config を編集後、すべて実行する
+  - 01_init_data を編集後、すべて実行する
+  - 02_extract_categories をすべて実行する
+    - （オプション）ワークフローの作成と実行
+      - 上記処理を自動化したい場合、03_yaml_for_workflow の手順を参照しながらワークフローを作成する
+      - ワークフローを実行する
+- ダッシュボードで可視化
+  - _Dashboard/BricksAirways_VoC分析ダッシュボード を開く
+  - `Canvas` -> `データ`タグを開き、`FROM`句のテーブルパスを上書き修正（カタログ名をご自身で設定したものに変更）
+    - `FROM <ご自身で設定したカタログ名>.airline_voc.gd_dashboard`
