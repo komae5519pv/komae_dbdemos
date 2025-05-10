@@ -19,13 +19,13 @@
 # COMMAND ----------
 
 # レコメンドリストのテーブル（Deltaテーブル）
-feature_table_name = f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6"
+feature_table_name = f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64"
 
 # オンラインテーブル（レコメンドリストをオンラインテーブル化したもの）
-online_table_name=f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_online"
+online_table_name=f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64_online"
 
 # Feature Spec（オンラインテーブルを参照する。UC上に関数として格納され、これをFeature Servingにデプロイする）
-feature_spec_name = f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_fs"
+feature_spec_name = f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64_fs"
 
 # COMMAND ----------
 
@@ -200,3 +200,35 @@ def create_endpoint_if_not_exists():
 
 # デプロイ
 create_endpoint_if_not_exists()
+
+# COMMAND ----------
+
+# from databricks.sdk import WorkspaceClient
+# from databricks.sdk.service.serving import EndpointCoreConfigInput, ServedEntityInput
+
+# w = WorkspaceClient()
+
+# # エンドポイント名
+# endpoint_name = MODEL_NAME_GET_RECOMMENDS
+
+# try:
+#  status = w.serving_endpoints.create_and_wait(
+#    name=endpoint_name,
+#    config = EndpointCoreConfigInput(
+#      served_entities=[
+#        ServedEntityInput(
+#          entity_name=feature_spec_name,
+#          scale_to_zero_enabled=True,
+#          workload_size="Small"
+#        )
+#      ]
+#    )
+#  )
+#  print(status)
+# except Exception as e:  # exceptブロックを追加
+#     print(f"エラーが発生しました: {str(e)}")
+#     raise
+
+# # エンドポイントステータス取得
+# status = w.serving_endpoints.get(name=endpoint_name)
+# print(status)

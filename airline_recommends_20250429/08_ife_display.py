@@ -19,8 +19,8 @@
 # COMMAND ----------
 
 # DBTITLE 1,テストデータ
-dbutils.widgets.text("user_id", "261")
-dbutils.widgets.text("flight_id", "JL185")
+dbutils.widgets.text("user_id", "298")
+dbutils.widgets.text("flight_id", "NH872")
 
 user_id = dbutils.widgets.get("user_id")
 flight_id = dbutils.widgets.get("flight_id")
@@ -54,12 +54,20 @@ print(response)
 
 # COMMAND ----------
 
-for rec in response['outputs']:
+import json, pprint
+pprint.pprint(response, depth=3)   # or  print(json.dumps(response, indent=2))
+
+# COMMAND ----------
+
+for rec in response["outputs"]:
     print(f"ユーザー {rec['user_id']} 様の {rec['flight_id']} 便向けおすすめ:")
-    for cat, img in zip(rec['contents_list']['content_category'], 
-                       rec['contents_list']['content_img_url']):
+
+    cats = rec["contents_list"]["content_category"]
+    imgs = rec["contents_list"]["content_img_b64"]     # ← 正しいキー
+
+    for cat, img_b64 in zip(cats, imgs):
         print(f"  - カテゴリ: {cat}")
-        print(f"    画像URL: {img}")
+        print(f"    画像(b64 先頭30字): {img_b64[:30]}...")
 
 # COMMAND ----------
 
@@ -68,30 +76,15 @@ for rec in response['outputs']:
 
 # COMMAND ----------
 
-# DBTITLE 1,テスト表示
 from PIL import Image
 import io
 import base64
 from IPython.display import display, HTML
 import ast
 
-# 画像を圧縮してBase64エンコードする関数
-def encode_image_to_base64(image_path, quality=50, new_width=300):
-    # 画像を開く
-    with Image.open(image_path) as img:
-        # 解像度を変更（幅をnew_widthに設定）
-        width_percent = (new_width / float(img.size[0]))
-        new_height = int((float(img.size[1]) * float(width_percent)))
-        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-
-        # 圧縮してバッファに保存
-        buffered = io.BytesIO()
-        img.save(buffered, format="PNG", quality=quality)  # qualityを指定して圧縮
-        # Base64エンコード
-        b64_string = base64.b64encode(buffered.getvalue()).decode('utf-8')
-    return f"data:image/png;base64,{b64_string}"
-
+# ─────────────────────────────────────────────
 # 画像表示用のHTMLテンプレート
+# ─────────────────────────────────────────────
 html_template = """
 <style>
 .recommend-block {{
@@ -160,31 +153,42 @@ html_template = """
 {content}
 """
 
+# ─────────────────────────────────────────────
 # レスポンスからユーザー情報と画像を取得してHTMLを生成
+# ─────────────────────────────────────────────
 def generate_user_tiles(response):
     all_html = ""
-    for rec in response['outputs']:
+    for rec in response["outputs"]:
         user_html = f"""
         <div class="recommend-block">
-            <div class="user-header">お客様[ 会員ID: {rec['user_id']} | フライトID: {rec['flight_id']} ]だけのおすすめ情報♪</div>
+            <div class="user-header">
+                お客様[ 会員ID: {rec['user_id']} | フライトID: {rec['flight_id']} ]だけのおすすめ情報♪
+            </div>
             <div class="tile-container">
         """
-        for cat, img_path in zip(rec['contents_list']['content_category'], rec['contents_list']['content_img_url']):
-            # 画像パスを圧縮してBase64エンコード
-            base64_img = encode_image_to_base64(img_path, quality=50, new_width=300)  # 解像度を300pxに設定
+        # ★ ここで Base64 配列を直接取得
+        cats = rec["contents_list"]["content_category"]
+        imgs = rec["contents_list"]["content_img_b64"]
+
+        for cat, img_b64 in zip(cats, imgs):
             tile = f"""
                 <div class="tile">
                     <div class="square-img-box">
-                        <img src="{base64_img}" class="tile-image" alt="{cat}">
+                        <img src="data:image/png;base64,{img_b64}" class="tile-image" alt="{cat}">
                     </div>
                     <div class="tile-category">{cat}</div>
                 </div>
             """
             user_html += tile
+
         user_html += "</div></div>"
         all_html += user_html
     return all_html
 
+
+# ─────────────────────────────────────────────
+# 表示
+# ─────────────────────────────────────────────
 # ユーザーごとのおすすめ情報を表示
 user_tiles_content = generate_user_tiles(response)
 full_html = html_template.format(content=user_tiles_content)
@@ -195,30 +199,6 @@ display(HTML(full_html))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Volumeに保存された画像を表示してみる（デモ用コード）  
-# MAGIC Githubに保存した画像URLへのアクセスだと、HTTPSアクセスで表示が不安定になるため、Databricks Appsでは、Databricks SDKのWorkspaceクライアントを用いて、Volumeに保存した画像にアクセスし、Base64でエンコードしてレコメンド一覧をHTML表示します。  
+# MAGIC OK！ではDatabricks Appsで表示しましょう！  
 # MAGIC
-# MAGIC この処理に時間がかかるため、Feature Servingでレコメンド情報を高速に取得しているメリットを受けにくいですが、デモなので諦めます。
-
-# COMMAND ----------
-
-# DBTITLE 1,Volume画像表示
-import base64
-from databricks.sdk import WorkspaceClient
-from IPython.core.display import display, HTML
-
-# WorkspaceClientインスタンスを作成
-w = WorkspaceClient()
-
-# Volumeパス（ご使用のパスに置き換えてください）
-volume_path = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME_CONTNETS}/1.png"
-
-# ファイルをダウンロード
-file_data = w.files.download(volume_path).contents.read()
-
-# base64にエンコード
-image_base64 = base64.b64encode(file_data).decode("utf-8")
-
-# HTMLとして画像を表示
-html_content = f'<img src="data:image/jpeg;base64,{image_base64}" alt="Image"/>'
-display(HTML(html_content))
+# MAGIC [_apps/app.py]($_apps/app.py)へGO！

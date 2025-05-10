@@ -23,8 +23,8 @@
 # COMMAND ----------
 
 # DBTITLE 1,テストデータ
-dbutils.widgets.text("user_id", "261")
-dbutils.widgets.text("flight_id", "JL185")
+dbutils.widgets.text("user_id", "298")
+dbutils.widgets.text("flight_id", "NH872")
 
 user_id = dbutils.widgets.get("user_id")
 flight_id = dbutils.widgets.get("flight_id")
@@ -157,7 +157,7 @@ cleanup_volume()
 # Unity Catalogからデータ取得
 df = spark.sql(f"""
 SELECT user_id, flight_id 
-FROM {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6
+FROM {MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64
 """).persist()
 
 # QRコード生成関数（UDF用）

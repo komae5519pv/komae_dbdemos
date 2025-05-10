@@ -34,7 +34,7 @@ class FeatureClient:
     def get_flight_id(self, user_id: int) -> Optional[str]:
         """フライトID取得"""
         # 会員IDに紐づくフライトIDを一件のみ取得（デモ用の処理）
-        query = f"SELECT flight_id FROM {self.catalog}.{self.schema}.gd_recom_top6 WHERE user_id = ? LIMIT 1"
+        query = f"SELECT flight_id FROM {self.catalog}.{self.schema}.gd_recom_top6_bs64 WHERE user_id = ? LIMIT 1"
         result = self._execute_sql(query, [user_id])
         return result[0].flight_id if result else None  # プロパティ形式でアクセス
 

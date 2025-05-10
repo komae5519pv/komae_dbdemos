@@ -6,7 +6,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../00_config
+# %run ../00_config
 
 # COMMAND ----------
 

@@ -18,18 +18,17 @@ import flask
 # Databricks接続設定
 cfg = Config()
 
+# 画像を Base64 で持つ最新テーブル
+RECOM_TABLE = f"{cfg.MY_CATALOG}.{cfg.MY_SCHEMA}.gd_recom_top6_bs64"
+
 # QRコード画像URLのパターン（最初に表示するQRコードを固定）
-qr_code_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_qr_codes/1.png?raw=true'
+qr_code_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_static/qr_code.png?raw=true'
 
 # スマホ画像URL
-smartphone_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_phone_screen/phone_screen.png?raw=true'
+smartphone_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_static/phone_screen.png?raw=true'
 
 # bell画像URL
-bell_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_contents/bell.png?raw=true'
-
-# Github上の画像パス（初期値）
-github_base_url = "https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_contents/"
-
+bell_image_url = 'https://github.com/komae5519pv/komae_dbdemos/blob/main/airline_recommends_20250429/_images/_static/bell.png?raw=true'
 
 def sql_query_with_user_token(query: str, user_token: str) -> pd.DataFrame:
     """ユーザートークンを使用してSQLクエリを実行し、結果をDataFrameで返す"""
@@ -50,11 +49,7 @@ def load_user_ids(user_token: str) -> list:
     """会員IDのリストを取得"""
     try:
         user_token = cfg.DATABRICKS_TOKEN
-        query = f"""
-            SELECT DISTINCT user_id
-            FROM {cfg.MY_CATALOG}.{cfg.MY_SCHEMA}.gd_recom_top6
-            ORDER BY 1 ASC
-        """
+        query = f"SELECT DISTINCT user_id FROM {RECOM_TABLE} ORDER BY 1"
         df = sql_query_with_user_token(query, user_token)
         return df['user_id'].tolist() if not df.empty else list(range(1, 11))  # エラー時のフォールバック
     except Exception as e:
@@ -66,11 +61,7 @@ def ife_load_recommendation(user_id: int, user_token: str) -> dict:
     """会員ごとのレコメンドデータを取得"""
     try:
         user_token = cfg.DATABRICKS_TOKEN
-        query = f"""
-            SELECT * 
-            FROM {cfg.MY_CATALOG}.{cfg.MY_SCHEMA}.gd_recom_top6 
-            WHERE user_id = {user_id}
-        """
+        query = f"SELECT * FROM {RECOM_TABLE} WHERE user_id = {user_id}"
         return sql_query_with_user_token(query, user_token).iloc[0].to_dict()
     except Exception as e:
         print(f"レコメンドデータ取得エラー: {str(e)}")
@@ -84,9 +75,9 @@ def push_load_recommendation(user_id: int) -> dict:
         query = f"""
             SELECT
                 contents_list.content_category[0] AS cat,
-                contents_list.content_img_url[0] AS img,
+                contents_list.content_img_b64[0]  AS img_b64,   -- 画像Base64
                 size(contents_list.content_category) AS total
-            FROM {cfg.MY_CATALOG}.{cfg.MY_SCHEMA}.gd_recom_top6 
+            FROM {RECOM_TABLE}
             WHERE user_id = {user_id}
             LIMIT 1
         """
@@ -107,7 +98,7 @@ def push_load_booking_data(user_id: int) -> pd.DataFrame:
                 flight_id,
                 route_id,
                 flight_date
-            FROM {cfg.MY_CATALOG}.{cfg.MY_SCHEMA}.gd_recom_top6 
+            FROM {RECOM_TABLE}
             WHERE user_id = {user_id}
             LIMIT 1
         """
@@ -120,7 +111,6 @@ def push_load_booking_data(user_id: int) -> pd.DataFrame:
 # -------------------------
 # Dashアプリ初期化とレイアウト定義
 # -------------------------
-# app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.CYBORG])
 feature_client = FeatureClient()
 server = app.server
@@ -320,7 +310,8 @@ app.layout = html.Div([
                                 id='user-id-dropdown-push',
                                 # 初期値としてダミー選択肢を設定（ページロード後に更新される）
                                 options=[{'label': 'Loading...', 'value': 1}],
-                                value=1,
+                                # value=1,
+                                value=None,
                                 placeholder="会員IDを選択してください"
                             ),
 
@@ -435,33 +426,27 @@ def show_notification(_):
     Input('user-id-dropdown-push', 'value')
 )
 def update_notification_content(user_id):
+    # まだ何も選ばれていないときは空表示
+    if not user_id:
+        return "", "", ""
     try:
-        recommendation = push_load_recommendation(user_id)
+        rec = push_load_recommendation(user_id)
 
-        # メッセージタイトルとサブタイトルの生成
-        total = recommendation.get('total', 6)
-        cat = recommendation.get('cat', 'データなし')
-        img = recommendation.get('img', 'データなし')
+        title   = f"機内エンタメ 厳選 {rec.get('total',6)} 作品をお届け⭐️"
+        subject = f"あなた向けの『{rec.get('cat')}』など多数ご用意しています。続きを機内ディスプレイでどうぞ！🚀"
 
-        title = f"機内エンタメ 厳選 {total} 作品をお届け⭐️"
-        subject = f"あなた向けの『{cat}』など多数ご用意しています。続きを機内ディスプレイでどうぞ！🚀"
+        # 取得した Base64 をそのまま <img src=""> に入れる
+        img_src = (
+            f"data:image/png;base64,{rec.get('img_b64','')}"
+            if rec.get('img_b64')
+            else ""                       # ← 画像が無ければ空
+        )
 
-        # 画像URLを生成
-        image_path = recommendation.get('img', '1.png')
+        return title, subject, img_src
         
-        # 画像ファイル名を取り出し、GitHubのURLに変換
-        image_filename = image_path.split('/')[-1]  
-        github_image_url = f"{github_base_url}{image_filename}?raw=true"
-        
-        return title, subject, github_image_url
-    
     except Exception as e:
         print(f"通知更新エラー: {str(e)}")
-        return (
-            'エラーが発生しました',
-            '',
-            ''
-        )
+        return "エラーが発生しました", "", ""
 
 # 4. 機内レコメンドデータの表示更新
 @app.callback(

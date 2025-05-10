@@ -294,7 +294,7 @@ WHERE  rn <= 6      -- TOP6に絞る
 ''')
 
 # 一時ビューとして登録（必要ならテーブル化）
-df.createOrReplaceTempView("gd_recom_top6_v")
+df.createOrReplaceTempView("v_recom_top6")
 
 # 結果を確認
 print(df.count())      # 搭乗者数 × 6 付近になるはず
@@ -305,12 +305,72 @@ display(df.limit(100))
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 2-2. レコメンドTOP6を配列にしてGoldテーブル作成
+# MAGIC ### 2-2. Volumeにある画像をBase64エンコード -> 圧縮後 -> Goldテーブル作成
+# MAGIC Volumeの画像データを読み込み、エンコードしてからApps表示するのは時間がかかる。  
+# MAGIC Appsから画像読み込みを高速化させるために、Volume → Base64 変換 → gd_recom_top6 へテーブル保存。
+
+# COMMAND ----------
+
+from pyspark.sql import functions as F, types as T
+from PIL import Image
+import base64, io
+
+# 1) v_recom_top6 を取得
+df_top6 = spark.table("v_recom_top6")          # /Volumes/... 形式
+
+# 2) 重複のないパスをリスト化し、binaryFile で読める形に "dbfs:" を付ける
+paths = [r.content_img_url for r in df_top6.select("content_img_url").distinct().collect()]
+paths_dbfs = [p if p.startswith("dbfs:/") else f"dbfs:{p}" for p in paths]
+
+# 3) UDF: 300px リサイズ → Base64
+@F.udf(returnType=T.StringType())
+def to_b64(binary):
+    img = Image.open(io.BytesIO(binary))
+    ratio = 300 / img.width
+    img = img.resize((300, int(img.height * ratio)), Image.Resampling.LANCZOS)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", optimize=True, quality=70)
+    return base64.b64encode(buf.getvalue()).decode("utf8")
+
+# 4) Volume から読み込み & パスを /Volumes/... 形式に戻しておく
+df_b64 = (
+    spark.read.format("binaryFile").load(paths_dbfs)
+         .select(
+             F.regexp_replace("path", r"^dbfs:", "").alias("content_img_url"),  # ← キーをそろえる
+             to_b64("content").alias("content_img_b64")
+         )
+)
+
+# 5) JOIN で置き換え
+df_final = (
+    df_top6.alias("t")
+      .join(df_b64.alias("b"), on="content_img_url", how="left")
+      .drop("content_img_url")
+)
+
+# 6) 一時ビューとして登録（必要ならテーブル化）
+df_final.createOrReplaceTempView("v_recom_top6_bs64")
+
+# # 6) Delta テーブルに保存（上書き）
+# TABLE = f"{MY_CATALOG}.{MY_SCHEMA}.sv_recom_top6_bs64"
+# (df_final.write.format("delta")
+#         .mode("overwrite")
+#         .option("comment", "TOP-6 (画像はBase64, 行レイアウト)")
+#         .saveAsTable(TABLE))
+
+print(df_final.columns)
+print(df_final.count())
+display(df_final)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### 2-3. レコメンドTOP6を配列に変換
 
 # COMMAND ----------
 
 df = spark.sql(f'''
--- `gd_recom_top6_v` のレコメンドデータをJSON配列に加工
+-- `v_recom_top6_bs64` のレコメンドデータをJSON配列に加工
 WITH processed_recommendations AS (
   SELECT
     user_id,
@@ -321,12 +381,11 @@ WITH processed_recommendations AS (
     -- 映画、ドラマカテゴリとその画像URLをJSON形式に
     STRUCT(
       collect_list(content_category) AS content_category,
-      collect_list(content_img_url) AS content_img_url
+      collect_list(content_img_b64) AS content_img_b64
     ) AS contents_list
   FROM
-    gd_recom_top6_v
-  GROUP BY
-    user_id, booking_id, flight_id, route_id, flight_date
+    v_recom_top6_bs64
+  GROUP BY ALL
 )
 
 -- 結果を格納
@@ -345,20 +404,20 @@ FROM
 df.write.format("delta")\
   .option("comment", "レコメンド結果 TOP-6")\
   .mode("overwrite")\
-  .saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6")
+  .saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64")
 
 # 結果を表示
 print("レコード数:", df.count())
 print("カラム名:", df.columns)
-display(df.limit(100))
+display(df.limit(10))
 
 
 # COMMAND ----------
 
 # DBTITLE 1,主キー設定
 # 変数定義
-TABLE_PATH = f'{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6'                 # テーブルパス
-PK_CONSTRAINT_NAME = f'pk_gd_recom_top6'                               # 主キー
+TABLE_PATH = f'{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6_bs64'                 # テーブルパス
+PK_CONSTRAINT_NAME = f'pk_gd_recom_top6_bs64'                               # 主キー
 
 # NOT NULL制約の追加
 columns_to_set_not_null = [
@@ -388,10 +447,9 @@ ALTER TABLE {TABLE_PATH}
 SET TBLPROPERTIES (delta.enableChangeDataFeed = true);
 """)
 
-# OPTIMIZE(推奨)
-# 大規模テーブルでOPTIMIZEを実行しない場合、オンラインテーブルとの初回同期に時間がかかる可能性があるため
-spark.sql(f"OPTIMIZE {TABLE_PATH}")
-
+# # OPTIMIZE(推奨)
+# # 大規模テーブルでOPTIMIZEを実行しない場合、オンラインテーブルとの初回同期に時間がかかる可能性があるため
+# spark.sql(f"OPTIMIZE {TABLE_PATH}")
 
 # # チェック
 # display(
@@ -415,16 +473,13 @@ except Exception as e:
 # COMMAND ----------
 
 # DBTITLE 1,コメント追加
-# テーブル名
-table_name = f'{MY_CATALOG}.{MY_SCHEMA}.gd_recom_top6'
-
 # テーブルコメント
 comment = """
-テーブル名：`gd_recom_top6 / 機内レコメンドTOP6（施策用マート）`  
+テーブル名：`gd_recom_top6_bs64 / 機内レコメンドTOP6（施策用マート）`  
 説明：航空サービスの機内エンタメコンテンツのレコメンドコンテンツTOP6です。  
 過去視聴ログを学習したALSモデルで会員ごとに機内コンテンツレコメンドを予測。さらに渡航前アンケートの回答に一致するコンテンツに絞った上で、TOP6コンテンツをレコメンドリストとして登録。プッシュ配信や機内ディスプレイに表示するコンテンツ一覧の元データとして利用します。
 """
-spark.sql(f'COMMENT ON TABLE {table_name} IS "{comment}"')
+spark.sql(f'COMMENT ON TABLE {TABLE_PATH} IS "{comment}"')
 
 # カラムコメント
 column_comments = {
@@ -438,5 +493,5 @@ column_comments = {
 
 for column, comment in column_comments.items():
     escaped_comment = comment.replace("'", "\\'")
-    sql_query = f"ALTER TABLE {table_name} ALTER COLUMN {column} COMMENT '{escaped_comment}'"
+    sql_query = f"ALTER TABLE {TABLE_PATH} ALTER COLUMN {column} COMMENT '{escaped_comment}'"
     spark.sql(sql_query)

@@ -16,11 +16,10 @@ HOST_URL = "https://adb-984752964297111.11.azuredatabricks.net" # お使いの�
 # ・Azureの場合は、`HOST_URL`https://adb-<ワークスペースID含む文字列>.azuredatabricks.net`の形式で記載
 # ・AWSの場合は、`HOST_URL`https://<任意のワークスペース名>.cloud.databricks.com`の形式で記載
 
-
 # COMMAND ----------
 
 # カタログ、スキーマ、ボリューム作成
-spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
+# spark.sql(f"CREATE CATALOG IF NOT EXISTS {MY_CATALOG}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME}")
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME_TMP}")
