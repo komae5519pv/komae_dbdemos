@@ -409,7 +409,7 @@ df.write.format("delta")\
 # 結果を表示
 print("レコード数:", df.count())
 print("カラム名:", df.columns)
-display(df.limit(10))
+# display(df.limit(10))           # サイズが大きいためワークフロー実行時はコメントアウトしてください
 
 
 # COMMAND ----------
