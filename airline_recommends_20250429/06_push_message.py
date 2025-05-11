@@ -23,7 +23,7 @@
 # COMMAND ----------
 
 # DBTITLE 1,テストデータ
-dbutils.widgets.text("user_id", "112")
+dbutils.widgets.text("user_id", "1435")
 user_id = dbutils.widgets.get("user_id")
 
 # COMMAND ----------
@@ -167,4 +167,3 @@ def display_qr_html(row):
 # 結果表示（最初の10件）
 for row in result_df.limit(10).collect():
     display_qr_html(row)
-

@@ -19,8 +19,8 @@
 # COMMAND ----------
 
 # DBTITLE 1,テストデータ
-dbutils.widgets.text("user_id", "298")
-dbutils.widgets.text("flight_id", "NH872")
+dbutils.widgets.text("user_id", "1435")
+dbutils.widgets.text("flight_id", "GK016")
 
 user_id = dbutils.widgets.get("user_id")
 flight_id = dbutils.widgets.get("flight_id")
