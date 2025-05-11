@@ -48,7 +48,7 @@ print(f"{current_dir}")
 
 # COMMAND ----------
 
-CLUSTER_ID = "0203-124810-rmnsgflh"    # ここにクラスタIDを貼り付けてください
+CLUSTER_ID = "<お使いのクラスタID>"    # ここにクラスタIDを貼り付けてください
 
 # COMMAND ----------
 
@@ -60,7 +60,7 @@ CLUSTER_ID = "0203-124810-rmnsgflh"    # ここにクラスタIDを貼り付け�
 
 # COMMAND ----------
 
-PIPELINE_ID = "e6d67be5-71c4-4b58-965f-689107459126"
+PIPELINE_ID = "<お使いのパイプラインID>"    # ここにパイプラインIDを貼り付けてください
 
 # COMMAND ----------
 
