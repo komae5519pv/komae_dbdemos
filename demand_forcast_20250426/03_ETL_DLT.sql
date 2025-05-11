@@ -3,7 +3,7 @@
 -- MAGIC # 自動販売機の需要予測・分析デモデータを作成
 -- MAGIC ## やること
 -- MAGIC - csvを読み込んで、bronzeテーブルおよび需要予測モデルのトレーニングデータセットを作ります、本ノートブックを上から下まで流してください
--- MAGIC - クラスタはDBR15.4 LTS or DBR15.4 LTS ML以降で実行してください
+-- MAGIC - クラスタはサーバレス or DBR16.2 or DBR16.2 ML以降で実行してください
 -- MAGIC - [テーブル定義書](https://docs.google.com/spreadsheets/d/10wdoTxlAGcD5gHjY4_upPYKd1gt4rEupKLSgP5q4uWI/edit?gid=1392031218#gid=1392031218)に基づくテーブルを作ります
 -- MAGIC
 -- MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/demand_forcast_20250426/_image_for_notebook/01.%20DLT_Pipeline.png?raw=true' width='90%'/>

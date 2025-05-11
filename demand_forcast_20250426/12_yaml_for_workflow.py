@@ -2,7 +2,8 @@
 # MAGIC %md
 # MAGIC # ワークフローの設定Yamlファイル作成
 # MAGIC - ワークフローを一括設定するための設定内容をYamlファイルに出力し、Yaml設定内容を使ってワークフローを一括設定します  
-# MAGIC - サーバレス or DBR 16.0ML以降
+# MAGIC - クラスタ サーバレス or DBR16.2 ML 以降で実行してください
+# MAGIC
 
 # COMMAND ----------
 
@@ -47,7 +48,8 @@ print(f"{current_dir}")
 
 # COMMAND ----------
 
-CLUSTER_ID = "0203-124810-rmnsgflh"    # ここにクラスタIDを貼り付けてください
+# CLUSTER_ID = "0203-124810-rmnsgflh"    # ここにクラスタIDを貼り付けてください
+CLUSTER_ID = "0511-064955-hisqc3kh"    # ここにクラスタIDを貼り付けてください
 
 # COMMAND ----------
 

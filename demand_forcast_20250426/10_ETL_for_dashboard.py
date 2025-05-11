@@ -3,7 +3,7 @@
 # MAGIC # 自動販売機の需要予測・分析ダッシュボードを作成
 # MAGIC ## やること
 # MAGIC - 分析用マートを作成してダッシュボードに活用します、本ノートブックを上から下まで流してください
-# MAGIC - クラスタはDBR15.4 LTS or DBR15.4 LTS ML以降で実行してください
+# MAGIC - クラスタ DBR16.2 or DBR16.2 ML 以降で実行してください
 # MAGIC - [テーブル定義書](https://docs.google.com/spreadsheets/d/10wdoTxlAGcD5gHjY4_upPYKd1gt4rEupKLSgP5q4uWI/edit?gid=1392031218#gid=1392031218)に基づくテーブルを作ります
 # MAGIC
 # MAGIC 想定のディレクトリ構成

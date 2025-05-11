@@ -2,8 +2,8 @@
 # MAGIC %md
 # MAGIC # Unity Catalogに登録したProphetモデルをロードして、将来日付を含むデータセットに適用して推論します
 # MAGIC
-# MAGIC **要件**
-# MAGIC クラスタ Runtime 15.4 ML LTS以上を使用してください。
+# MAGIC **要件**  
+# MAGIC クラスタ DBR16.2 ML 以降で実行してください
 
 # COMMAND ----------
 

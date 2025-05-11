@@ -1,6 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Unity Catalogに登録されたモデルをサービングする
+# MAGIC - クラスタ DBR16.2 ML 以降で実行してください
 # MAGIC
 # MAGIC 事前に、ノートブック`./06_AutoML`で、AutoMLでトレーニングしたベストモデルをUnity Catalogに登録しました。  
 # MAGIC さらにここでは、Databricks Model Serving を使用してカスタム モデルを提供するモデル サービング エンドポイントを作成します。

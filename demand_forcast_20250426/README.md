@@ -22,14 +22,9 @@
   - パフォーマンス
     - 機械学習：`ON`
     - Databricks Runtime：`16.2 (includes Apache Spark 3.5.2, Scala 2.12)`
-  - ワーカータイプ：`rd-fleet.xlarge(メモリ32GB、4 個のコア)`
+  - ワーカータイプ：`Standard_D8ds_v5(メモリ32GB、8 個のコア)`
     - 最小: `2`
     - 最大: `8`
-  - Advenced
-    - Spark構成
-      - `spark.databricks.delta.formatCheck.enabled: false`
-      - `spark.scheduler.mode FAIR`
-      - `spark.sql.shuffle.partitions 300`
 
 #### 2. カタログ、スキーマ、ボリュームの作成
 - ノートブック`00_config`を開いてカタログ名を自分用に変更してください（**ここで指定したカタログ名でカタログを作成することになります**）
@@ -108,10 +103,10 @@
 <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/demand_forcast_20250426/_image_for_notebook/workflow_setting.png?raw=true' width='90%'/>
 
 #### 5. ワークフロー実行開始
-- 4まででワークフロー作成完了です。画面右上「今すぐ実行」をクリックしてください
+- 4まででワークフロー作成完了です。画面右上「今すぐ実行」をクリックしてください -> 10~15min程度かかります
 <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/demand_forcast_20250426/_image_for_notebook/workflow_run.png?raw=true' width='90%'/>
 
 #### 6. ダッシュボード作成
-- [11_Dashboard]($11_Dashboard)に従い、ダッシュボードを完成させrてください 
+- [11_Dashboard]($11_Dashboard)に従い、ダッシュボードを完成させてください 
   - _dashboard/Vending Machine Analysis_JP
   - _dashboard/Vending Machine Analysis_EN
