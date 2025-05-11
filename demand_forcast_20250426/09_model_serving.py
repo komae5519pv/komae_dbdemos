@@ -123,13 +123,13 @@ WHERE
 #   item,
 #   y,
 #   ai_query(
-#     'komae_demand_forecast_automl',
+#     'demand_forecast_automl',
 #     named_struct(
 #       "ds", ds,
 #       "vm", vm,
 #       "item", item
 #     )
 #   ).yhat AS prediction
-# FROM komae_demo_v2.demand_forecast.silver_inference_input
+# FROM komae_demo_v3.demand_forecast.silver_inference_input
 # WHERE
 #   ds > '2016-12-31'

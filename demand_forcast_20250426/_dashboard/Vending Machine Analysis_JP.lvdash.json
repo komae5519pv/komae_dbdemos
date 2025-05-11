@@ -2,23 +2,23 @@
   "datasets" : [ {
     "name" : "temp_dataset_name",
     "displayName" : "gold_analysis",
-    "query" : "select * from komae_demo_v1.demand_forecast.gold_analysis\norder by order_date desc"
+    "query" : "select * from komae_demo_v3.demand_forecast.gold_analysis\norder by order_date desc"
   }, {
     "name" : "06187f66",
     "displayName" : "forecast_today",
-    "query" : "SELECT SUM(forecast_sales_quantity) \nFROM komae_demo_v1.demand_forecast.gold_analysis\n-- WHERE order_date = CURRENT_DATE()\nWHERE order_date = '2017-12-20'\n"
+    "query" : "SELECT SUM(forecast_sales_quantity) \nFROM komae_demo_v3.demand_forecast.gold_analysis\n-- WHERE order_date = CURRENT_DATE()\nWHERE order_date = '2017-12-20'\n"
   }, {
     "name" : "377b7d08",
     "displayName" : "yesterday_vs_today",
-    "query" : "-- Step1 当日予測（今日の予測販売数量）\nWITH today AS (\n  SELECT SUM(forecast_sales_quantity) as today_forecast\n  FROM komae_demo_v1.demand_forecast.gold_analysis \n  -- WHERE order_date = CURRENT_DATE\n  WHERE order_date = '2017-12-20'\n),\n-- Step2 前日実績（前日の実績販売数量）\nyesterday AS (\n  SELECT SUM(actual_sales_quantity) as yesterday_actual\n  FROM komae_demo_v1.demand_forecast.gold_analysis \n  -- WHERE order_date = CURRENT_DATE - 1\n  WHERE order_date = date_sub(CAST('2017-12-20' AS DATE), 1)\n)\n-- Step3 前日実績に対する当日予測の変化率\nSELECT \n  CASE \n    WHEN yesterday.yesterday_actual = 0 THEN NULL\n    ELSE (today.today_forecast / yesterday.yesterday_actual)\n  END as daily_change_percent\nFROM today, yesterday"
+    "query" : "-- Step1 当日予測（今日の予測販売数量）\nWITH today AS (\n  SELECT SUM(forecast_sales_quantity) as today_forecast\n  FROM komae_demo_v3.demand_forecast.gold_analysis \n  -- WHERE order_date = CURRENT_DATE\n  WHERE order_date = '2017-12-20'\n),\n-- Step2 前日実績（前日の実績販売数量）\nyesterday AS (\n  SELECT SUM(actual_sales_quantity) as yesterday_actual\n  FROM komae_demo_v3.demand_forecast.gold_analysis \n  -- WHERE order_date = CURRENT_DATE - 1\n  WHERE order_date = date_sub(CAST('2017-12-20' AS DATE), 1)\n)\n-- Step3 前日実績に対する当日予測の変化率\nSELECT \n  CASE \n    WHEN yesterday.yesterday_actual = 0 THEN NULL\n    ELSE (today.today_forecast / yesterday.yesterday_actual)\n  END as daily_change_percent\nFROM today, yesterday"
   }, {
     "name" : "56c6cfe7",
     "displayName" : "yesterday_actual",
-    "query" : "SELECT SUM(actual_sales_quantity)\nFROM komae_demo_v1.demand_forecast.gold_analysis\n-- WHERE order_date = CURRENT_DATE - 1\nWHERE order_date = DATE_SUB('2017-12-20', 1)\n"
+    "query" : "SELECT SUM(actual_sales_quantity)\nFROM komae_demo_v3.demand_forecast.gold_analysis\n-- WHERE order_date = CURRENT_DATE - 1\nWHERE order_date = DATE_SUB('2017-12-20', 1)\n"
   }, {
     "name" : "5fb8fd1b",
     "displayName" : "current_dataset",
-    "query" : "SELECT\n    HOST_URL,\n    MY_CATALOG,\n    MY_SCHEMA,\n    MY_VOLUME,\n    vending_machine_id,\n    item_id,\n    item_name,\n    address,\n    pref,\n    city,\n    latitude,\n    longitude,\n    restock_flag,\n    stock_warn,\n    stock_quantity,\n    demand_fulfillment_rate\nFROM komae_demo_v1.demand_forecast.gold_analysis\nWHERE order_date = '2017-12-20'\n-- WHERE order_date = (\n--     SELECT MAX(order_date) \n--     FROM komae.demand_forecast.gold_analysis\n-- )"
+    "query" : "SELECT\n    HOST_URL,\n    MY_CATALOG,\n    MY_SCHEMA,\n    MY_VOLUME,\n    vending_machine_id,\n    item_id,\n    item_name,\n    address,\n    pref,\n    city,\n    latitude,\n    longitude,\n    restock_flag,\n    stock_warn,\n    stock_quantity,\n    demand_fulfillment_rate\nFROM komae_demo_v3.demand_forecast.gold_analysis\nWHERE order_date = '2017-12-20'\n-- WHERE order_date = (\n--     SELECT MAX(order_date) \n--     FROM komae.demand_forecast.gold_analysis\n-- )"
   } ],
   "pages" : [ {
     "name" : "temp_page_name",

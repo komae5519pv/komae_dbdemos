@@ -48,7 +48,8 @@
 import mlflow
 from pyspark.sql.functions import struct, col
 
-# Get Model Path
+mlflow.set_registry_uri('databricks-uc')# Get Model Path
+
 model_path = f"models:/{MY_CATALOG}.{MY_SCHEMA}.{MODEL_NAME_AUTOML}@prod"
 print(model_path)
 

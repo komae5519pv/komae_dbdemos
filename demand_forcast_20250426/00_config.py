@@ -1,6 +1,6 @@
 # Databricks notebook source
 # カタログ
-MY_CATALOG = "komae_demo_v1" # 使用したいカタログ名に変更してください
+MY_CATALOG = "komae_demo_v3" # 使用したいカタログ名に変更してください
 
 # スキーマ
 MY_SCHEMA = "demand_forecast"
