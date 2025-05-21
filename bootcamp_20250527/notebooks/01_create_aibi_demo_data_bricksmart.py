@@ -42,16 +42,16 @@ spark.sql(f"USE SCHEMA {schema}")
 
 # COMMAND ----------
 
-# スキーマ内のすべてのテーブル名を取得する
-tables_df = spark.sql(f"SHOW TABLES IN {catalog}.{schema}")
+# # スキーマ内のすべてのテーブル名を取得する
+# tables_df = spark.sql(f"SHOW TABLES IN {catalog}.{schema}")
 
-# テーブル名が "gold_" で始まるテーブルのみ削除する
-for table in tables_df.collect():
-    table_name = table["tableName"]
-    spark.sql(f"DROP TABLE IF EXISTS {catalog}.{schema}.{table_name}")
-    print(f"削除されたテーブル: {table_name}")
+# # テーブル名が "gold_" で始まるテーブルのみ削除する
+# for table in tables_df.collect():
+#     table_name = table["tableName"]
+#     spark.sql(f"DROP TABLE IF EXISTS {catalog}.{schema}.{table_name}")
+#     print(f"削除されたテーブル: {table_name}")
 
-print(f"{catalog}.{schema}配下の全てのテーブルが削除されました。")
+# print(f"{catalog}.{schema}配下の全てのテーブルが削除されました。")
 
 
 # COMMAND ----------
