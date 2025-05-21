@@ -25,23 +25,24 @@ if not schema:
 # COMMAND ----------
 
 # DBTITLE 1,カタログ指定・スキーマの設定
-# # カタログを指定
-# spark.sql(f"USE CATALOG {catalog}")
+# カタログを指定
+spark.sql(f"USE CATALOG {catalog}")
 
-# # スキーマを再作成するかどうか
-# if recreate_schema:
-#     print(f"スキーマ {schema} を一度削除してから作成します")
-#     spark.sql(f"DROP SCHEMA IF EXISTS {schema} CASCADE;")
-#     spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema}")
-# else:
-#     print(f"スキーマ {schema} が存在しない場合は作成します (存在する場合は何もしません)")
-#     spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema}")
+# スキーマを再作成するかどうか
+if recreate_schema:
+    print(f"スキーマ {schema} を一度削除してから作成します")
+    spark.sql(f"DROP SCHEMA IF EXISTS {schema} CASCADE;")
+    spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema}")
+else:
+    print(f"スキーマ {schema} が存在しない場合は作成します (存在する場合は何もしません)")
+    spark.sql(f"CREATE SCHEMA IF NOT EXISTS {schema}")
 
-# # スキーマを使用
-# spark.sql(f"USE SCHEMA {schema}")
+# スキーマを使用
+spark.sql(f"USE SCHEMA {schema}")
 
 # COMMAND ----------
 
+# DBTITLE 1,テーブルALL削除
 # # スキーマ内のすべてのテーブル名を取得する
 # tables_df = spark.sql(f"SHOW TABLES IN {catalog}.{schema}")
 
