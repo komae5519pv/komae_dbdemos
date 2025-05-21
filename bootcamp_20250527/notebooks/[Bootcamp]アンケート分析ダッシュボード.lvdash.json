@@ -61,14 +61,14 @@
       "widget" : {
         "name" : "641f2523",
         "queries" : [ {
-          "name" : "dashboards/01f035f704441c5288017a985b364065/datasets/01f035f7044512a69445a208fa607d0c_comment_category",
+          "name" : "dashboards/01f036034e7f1f03b04c563f49f57ef5/datasets/01f036034e8015529cd8c61073890423_category",
           "query" : {
             "datasetName" : "db87ec49",
             "fields" : [ {
-              "name" : "comment_category",
-              "expression" : "`comment_category`"
+              "name" : "category",
+              "expression" : "`category`"
             }, {
-              "name" : "comment_category_associativity",
+              "name" : "category_associativity",
               "expression" : "COUNT_IF(`associative_filter_predicate_group`)"
             } ],
             "disaggregated" : false
@@ -79,9 +79,9 @@
           "widgetType" : "filter-multi-select",
           "encodings" : {
             "fields" : [ {
-              "fieldName" : "comment_category",
-              "displayName" : "comment_category",
-              "queryName" : "dashboards/01f035f704441c5288017a985b364065/datasets/01f035f7044512a69445a208fa607d0c_comment_category"
+              "fieldName" : "category",
+              "displayName" : "category",
+              "queryName" : "dashboards/01f036034e7f1f03b04c563f49f57ef5/datasets/01f036034e8015529cd8c61073890423_category"
             } ]
           },
           "frame" : {
