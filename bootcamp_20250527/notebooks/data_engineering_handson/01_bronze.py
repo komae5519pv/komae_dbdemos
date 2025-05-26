@@ -131,6 +131,11 @@ print("💡 Bronzeテーブルでは生データをそのまま保存してい�
 
 # COMMAND ----------
 
+# DBTITLE 1,テーブル名を返却
+dbutils.notebook.exit(table_name)
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## 6. まとめ
 # MAGIC 

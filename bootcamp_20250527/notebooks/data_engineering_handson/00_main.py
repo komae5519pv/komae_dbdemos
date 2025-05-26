@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Databricks データエンジニアリング ハンズオン
-# MAGIC このハンズオンでは、Databricksを使用したデータエンジニアリングの基本的な流れを学習します。学習内容は以下の通りです。
+# MAGIC このハンズオンでは、Databricksを使用したデータエンジニアリングの基本的な流れを学習します。実行するステップは以下の通りです。
 # MAGIC 
 # MAGIC 1. ウィジェットを使用したパラメーター設定
 # MAGIC 2. データファイルをUnity Catalogボリュームにアップロード
@@ -9,26 +9,25 @@
 # MAGIC 4. Silverテーブルの作成
 # MAGIC 5. Databricksワークフローの作成と実行
 # MAGIC
-# MAGIC 本ノートブックを実行することで、上記1〜4までの処理が自動的に実行されます。受講者は実行結果を確認し、各ステップで何が行われたかを理解できます。
+# MAGIC 本ノートブックを実行することで、上記の1〜4までの処理が自動的に実行されます。受講者は実行結果を確認し、各ステップで何が行われたかを理解できます。
 # MAGIC
 # MAGIC 5のワークフローの作成は、**受講者が手動で行う**必要があります。作成手順自体を本ノートブックに記載していますので、受講者はその手順に従ってワークフローを作成します。
 # MAGIC 
-# MAGIC ## 所用時間
+# MAGIC ## 所要時間
 # MAGIC 約35分
-# MAGIC 
-# MAGIC ## 使用するデータセット
-# MAGIC 本ノートブックと同じフォルダにあるIoTセンサーデータ `de_iot_data.csv` を使用します。このデータは、架空のIoTデバイスからのセンサーデータを含んでいます。
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 1. ウィジェットを使用したパラメーター設定
-# MAGIC 1. **以下のセルを実行**してウィジェットを作成します
-# MAGIC 2. **ウィジェットに値を入力します**
+# MAGIC ---
+# MAGIC ## Step 1: ウィジェットを使用したパラメーター設定
+# MAGIC 1. 以下の**「ウィジェットの作成」セルを実行**してウィジェットを作成します
+# MAGIC 2. **ウィジェットに値を入力**します
 # MAGIC    - **カタログ名**: `dbacademy`（固定）
 # MAGIC    - **スキーマ名**: `labuser`から始まるスキーマ名を指定
 # MAGIC 3. ノートブック右上にある**「すべてを実行」**をクリックします
-# MAGIC 4. すべての処理が成功するまで待ちます（約3-5分）
+# MAGIC 4. 各セルの実行結果を順次確認しながら、すべてのセルが**成功することを確認**します
+# MAGIC    - すべてのセルの処理に**約3-4分**かかります
 
 # COMMAND ----------
 
@@ -44,6 +43,14 @@ schema_name = dbutils.widgets.get("schema_name")
 
 print(f"📊 カタログ名: {catalog_name}")
 print(f"📊 スキーマ名: {schema_name}")
+
+# COMMAND ----------
+# MAGIC %md
+# MAGIC ### Note: ウィジェットの値チェックについて
+# MAGIC - 以下の「必須パラメータのチェック」セルで、ウィジェットの値が正しく設定されているかが自動的にチェックされます
+# MAGIC - もし指定した値に不備がある場合、エラーメッセージが表示されますので、指示に従って修正してください
+# MAGIC     - 特に、スキーマのところに `dbacademy.` というカタログ名までコピーしてしまわないよう注意してください
+# MAGIC - 必須パラメータのチェック以外のセルでは基本的にエラーは起きない想定です。もしエラーが起きた場合、講師にお声がけください
 
 # COMMAND ----------
 
@@ -76,8 +83,8 @@ print(f"🎯 必須パラメーターのチェック完了: {catalog_name}.{sche
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 2. データファイルをUnity Catalogボリュームにアップロード
-# MAGIC 本ノートブックをすべて実行することで、以下の手順が自動的に実行されます。
+# MAGIC ## Step 2: データファイルをUnity Catalogボリュームにアップロード
+# MAGIC ノートブックで「すべてを実行」をクリックすることで、本ステップは自動的に実行されます。本ステップで実行される処理は以下の通りです。
 # MAGIC
 # MAGIC 1. **Unity Catalogボリュームの作成**
 # MAGIC 2. **データファイルのボリュームへのアップロード**
@@ -91,7 +98,7 @@ volume_path = f"{catalog_name}.{schema_name}.files"
 try:
    # ボリュームが既に存在するかチェック
    spark.sql(f"DESCRIBE VOLUME {volume_path}")
-   print(f"ℹ️  ボリューム '{volume_path}' は既に存在します")
+   print(f"ℹ️ ボリューム '{volume_path}' は既に存在します")
 except:
    # ボリュームが存在しない場合は作成
    spark.sql(f"CREATE VOLUME IF NOT EXISTS {volume_path}")
@@ -131,7 +138,7 @@ try:
    print("\n📋 データプレビュー:")
    df_check.show(5, truncate=False)
 
-   print("\n💡 GUIでの確認方法:")
+   print("\n👀 GUIでボリュームにあるファイルを確認してみてください")
    print(f"左サイドバー > Catalog > {catalog_name} > {schema_name} > ボリューム > files > de_iot_data.csv")
    
 except Exception as e:
@@ -141,88 +148,112 @@ except Exception as e:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 3. ノートブック実行
-# MAGIC 本ノートブックをすべて実行することで、以下の処理が自動的に実行されます。
+# MAGIC ## Step 3: Bronzeテーブル作成
+# MAGIC ノートブックで「すべてを実行」をクリックすることで、本ステップは自動的に実行されます。本ステップで実行される処理は以下の通りです。
 
-# MAGIC 1. **Bronzeテーブルの作成**（`01_bronze_layer`ノートブックを実行）
-# MAGIC 2. **Silverテーブルの作成**（`02_silver_layer`ノートブックを実行）
-# MAGIC 
-# MAGIC 各ノートブックの実行結果は、ノートブックのワークフローの開始時刻のリンクをクリックして確認できます。
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Bronzeテーブル作成用ノートブックの実行
+# MAGIC 1. `01_bronze_layer`ノートブックを実行し、Bronzeテーブルを作成
 
 # COMMAND ----------
 
 # DBTITLE 1,Bronzeテーブル作成用ノートブックの実行
 print("🚀 Bronzeテーブル作成用ノートブックを実行中...")
-dbutils.notebook.run("./01_bronze", 300, {
+bronze_table_name = dbutils.notebook.run("./01_bronze", 300, {
     "catalog_name": catalog_name,
     "schema_name": schema_name
 })
 
 print("✅ Bronzeテーブルの作成が完了しました")
+print(f"👀 テーブル名: {bronze_table_name} - カタログエクスプローラーで内容を確認してください")
 print("👀 ノートブックのワークフローの開始時刻のリンクをクリックし、実行された内容を確認してください")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Silverテーブル作成用ノートブックの実行
+# MAGIC ## Step 4: Silverテーブル作成
+# MAGIC ノートブックで「すべてを実行」をクリックすることで、本ステップは自動的に実行されます。本ステップで実行される処理は以下の通りです。
+
+# MAGIC 1. `02_silver_layer`ノートブックを実行し、Silverテーブルを作成
 
 # COMMAND ----------
 
 # DBTITLE 1,Silverテーブル作成用ノートブックの実行
 print("🚀 Silverテーブル作成用ノートブックを実行中...")
-dbutils.notebook.run("./02_silver", 300, {
+silver_table_name = dbutils.notebook.run("./02_silver", 300, {
     "catalog_name": catalog_name,
     "schema_name": schema_name
 })
 
 print("✅ Silverテーブルの作成が完了しました")
+print(f"👀 テーブル名: {silver_table_name} - カタログエクスプローラーで内容を確認してください")
 print("👀 ノートブックのワークフローの開始時刻のリンクをクリックし、実行された内容を確認してください")
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 4. ワークフロー作成手順
+# MAGIC ## Step 5: ジョブの作成
+# MAGIC ここから、受講者が手動でジョブを作成します。以下の手順で作業を進めてください。
 # MAGIC 
-# MAGIC ### 4.1 ワークフローの作成
-# MAGIC 1. 左サイドバーの **「Workflows」** をクリック
-# MAGIC 2. 右上の **「Create Job」** ボタンをクリック
-# MAGIC 3. **Job名** に `de_iot_workflow` と入力
-# MAGIC 4. **「Add task」** をクリック
+# MAGIC > 💡 **Note**: ジョブの作成はAPI/CLI/SDKを使った自動化が可能ですが、学習のために手動で作成します。
+# MAGIC
+# MAGIC ### 1. ジョブの作成
+# MAGIC 1. 左サイドバーの**「ワークフロー」**をクリック
+# MAGIC 2. 「ジョブとパイプライン」の画面で右上の**「作成」**ボタンをクリック > **「ジョブ」**を選択
+# MAGIC
+# MAGIC     ![create-job](../../images/data_engineering_handson/create-job.png)
+# MAGIC 3. ジョブ名に `de_iot_job` と入力
+# MAGIC
+# MAGIC ### 2. タスク1の作成（Bronzeテーブル作成用ノートブック）
+# MAGIC 1. 名前のないタスクが表示されるので、以下の項目を設定
+# MAGIC     - **タスク名**: `01_bronze`
+# MAGIC     - **タイプ**: `ノートブック`
+# MAGIC     - **ソース**: `ワークスペース`
+# MAGIC     - **パス**: ノートブックを選択をクリックし、以下のパスを選択
+# MAGIC         - `{home_dir}/komae_dbdemos/bootcamp_20250527/notebooks/data_engineering_handson/01_bronze`
+# MAGIC     - **クラスター**: `サーバーレス` (デフォルトから変更しない)
+# MAGIC 2. **「タスクを作成」**をクリック
+# MAGIC
+# MAGIC    ![create-task-bronze](../../images/data_engineering_handson/create-task-bronze.png)
 # MAGIC 
-# MAGIC ### 4.2 タスク1の設定（Bronze層）
-# MAGIC 1. **Task name**: `bronze_task`
-# MAGIC 2. **Type**: `Notebook`
-# MAGIC 3. **Source**: `Workspace`
-# MAGIC 4. **Path**: `notebooks/data_engineering_handson/01_bronze_layer`
-# MAGIC 5. **「Create task」** をクリック
-# MAGIC 
-# MAGIC ### 4.3 タスク2の設定（Silver層）
-# MAGIC 1. **「Add task」** をクリック
-# MAGIC 2. **Task name**: `silver_task`
-# MAGIC 3. **Type**: `Notebook`
-# MAGIC 4. **Source**: `Workspace`
-# MAGIC 5. **Path**: `notebooks/data_engineering_handson/02_silver_layer`
-# MAGIC 6. **Depends on**: `bronze_task` を選択
-# MAGIC 7. **「Create task」** をクリック
-# MAGIC 
-# MAGIC ### 4.4 ワークフローの実行
-# MAGIC 1. 右上の **「Run now」** ボタンをクリック
-# MAGIC 2. 実行状況を確認
-# MAGIC 3. 各タスクをクリックして詳細ログを確認
-# MAGIC 
-# MAGIC ### 4.5 スケジュール設定
-# MAGIC 1. **「Schedule」** タブをクリック
-# MAGIC 2. **「Add schedule」** をクリック
-# MAGIC 3. **Schedule type**: `Scheduled`
-# MAGIC 4. **Trigger**: `Cron expression`
-# MAGIC 5. **Cron expression**: `0 * * * *` (1時間毎)
-# MAGIC 6. **Timezone**: `Asia/Tokyo`
-# MAGIC 7. **「Create」** をクリック
+# MAGIC ### 3. タスク2の作成（Silverテーブル作成用ノートブック）
+# MAGIC 1. **「タスクを追加」** をクリック > **「ノートブック」**を選択
+# MAGIC 2. 名前のないタスクが表示されるので、以下の項目を設定
+# MAGIC     - **タスク名**: `02_silver`
+# MAGIC     - **タイプ**: `ノートブック`
+# MAGIC     - **ソース**: `ワークスペース`
+# MAGIC     - **パス**: ノートブックを選択をクリックし、以下のパスを選択
+# MAGIC         - `{home_dir}/komae_dbdemos/bootcamp_20250527/notebooks/data_engineering_handson/02_silver`
+# MAGIC     - **依存先**: `01_bronze` (デフォルトで選択されているはず)
+# MAGIC     - **依存関係がある場合に実行**: `すべて成功しました` (デフォルトで選択されているはず)
+# MAGIC 3. **「タスクを作成」**をクリック
+# MAGIC
+# MAGIC    ![create-task-silver](../../images/data_engineering_handson/create-task-silver.png)
+# MAGIC
+# MAGIC ### 4. ジョブパラメーターの定義
+# MAGIC 1. ジョブの画面右側の **「パラメーターを編集」**をクリック
+# MAGIC 2. **「パラメーター」**セクションで以下の項目を設定
+# MAGIC     - **キー**: `catalog_name`, **値**: `dbacademy`
+# MAGIC     - **キー**: `schema_name`, **値**: `labuser` から始まるスキーマ名
+# MAGIC 3. **「保存」**をクリック
+# MAGIC
+# MAGIC     ![define-job-parameters](../../images/data_engineering_handson/define-job-parameters.png)
+# MAGIC
+# MAGIC ### 5. スケジュールの設定
+# MAGIC > 💡 **Note**: この後すぐにマニュアルで実行するのでスケジュール設定に意味は無いのですが、学習のために実施します。
+# MAGIC
+# MAGIC 1. ジョブの画面右側の **「トリガーを追加」**をクリック
+# MAGIC 2. **「トリガータイプ」**を `スケジュール済み` に設定し、以下の項目を設定
+# MAGIC     - **スケジュールのタイプ**: `Simple`
+# MAGIC     - **定期的**: Every `1` `時間`
+# MAGIC 3. **「保存」**をクリック
+# MAGIC
+# MAGIC     ![define-trigger](../../images/data_engineering_handson/define-job-trigger.png)
+# MAGIC
+# MAGIC ### 6. ジョブの実行
+# MAGIC 1. ジョブの画面右上の **「今すぐ実行」** ボタンをクリック
+# MAGIC 2. **「ジョブの実行」**タブに切り替えて実行状況を確認、ステータスが `成功` になることを確認
+# MAGIC 3. ジョブの開始時刻のリンクをクリックして、実行された内容を確認
+# MAGIC
+# MAGIC     ![run-job](../../images/data_engineering_handson/run-job.png)
 
 # COMMAND ----------
 

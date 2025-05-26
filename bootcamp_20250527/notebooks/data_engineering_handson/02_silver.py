@@ -177,6 +177,11 @@ print("🎉 Time Travelにより、過去のバージョンのデータを参照
 
 # COMMAND ----------
 
+# DBTITLE 1,テーブル名を返却
+dbutils.notebook.exit(silver_table)
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## 7. まとめ
 # MAGIC 
