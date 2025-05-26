@@ -7,9 +7,9 @@
 - [ハンズオン環境セットアップ手順](setup.md)
 
 # データエンジニアリング ハンズオン
-以下のノートブックを使用します。
+Databricksワークスペースで以下のノートブックを開きます。
 
-- TODO: ノートブックを追加
+- notebooks/data_engineering_hands_on/00_main.py
 
 # AI/BIワークショップ
 以下のスライドを使用します。
