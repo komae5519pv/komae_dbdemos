@@ -1,6 +1,6 @@
 # Databricks notebook source
 MY_CATALOG = "komae_cleanroom"
-MY_SCHEMA = "point_service_data"
+MY_SCHEMA = "default"
 
 # COMMAND ----------
 
