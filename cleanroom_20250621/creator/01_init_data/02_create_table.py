@@ -9,7 +9,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC # ハッシュ化(個人情報)したテーブル作成
+# MAGIC # bronzeテーブル作成
 
 # COMMAND ----------
 
@@ -19,34 +19,25 @@
 # COMMAND ----------
 
 # DBTITLE 1,テーブル作成
-from pyspark.sql import functions as F
-
-# 既存テーブル読み込み
-df = spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.customers")
-
-# SHA256でハッシュ化（16進数文字列で出力）
-df = df.withColumn(
-    "customerid_sha256",
-    F.sha2(F.col("customerid").cast("string"), 256)
+# CSV 読み込み
+csv_path = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/raw_data/customers/customers.csv"
+df = (
+    spark.read.format("csv")
+        .option("header", "true")
+        .option("quote", '"')
+        .option("escape", '"')
+        .option("multiLine", "true")
+        .option("inferSchema", "true")
+        .option("overwriteSchema", "true")
+        .load(csv_path)
 )
 
-df = df.withColumn(
-    "customername_sha256",
-    F.sha2(F.col("customername").cast("string"), 256)
-)
+# テーブル保存
+df.write.format("delta").mode("overwrite").saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.customers")
 
-selected_df = df.select(
-      'customerid_sha256',
-      'customername_sha256',
-      'city',
-      'state'
-      )
-
-# 新規テーブル作成
-selected_df.write.mode("overwrite") \
-            .format("delta") \
-            .option("overwriteSchema", "true") \
-            .saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.hashed_customers")
+print(df.count())
+print(df.columns)
+display(df.limit(100))
 
 # COMMAND ----------
 
@@ -54,15 +45,15 @@ selected_df.write.mode("overwrite") \
 '''
 変数設定
 '''
-TABLE_PATH = f'{MY_CATALOG}.{MY_SCHEMA}.hashed_customers' # テーブルパス
-PK_CONSTRAINT_NAME = f'pk_hashed_customers'               # 主キー制約名
+TABLE_PATH = f'{MY_CATALOG}.{MY_SCHEMA}.customers' # テーブルパス
+PK_CONSTRAINT_NAME = f'pk_customers'               # 主キー制約名
 
 '''
 コメント追加
 '''
 # テーブルコメント
 comment = """
-テーブル名：`hashed_customers / 顧客の基本情報（匿名化済み）`
+テーブル名：`customers / 顧客の基本情報（匿名化済み）`
 """
 spark.sql(f'COMMENT ON TABLE {TABLE_PATH} IS "{comment}"')
 
@@ -131,42 +122,25 @@ except Exception as e:
 # COMMAND ----------
 
 # DBTITLE 1,テーブル作成
-# from pyspark.sql import functions as F
-
-# # 既存テーブル読み込み
-# df = spark.table(f"{MY_CATALOG}.{MY_SCHEMA}.orders")
-
-# # SHA256でハッシュ化（16進数文字列で出力）
-# df = df.withColumn(
-#     "orderid_sha256",
-#     F.sha2(F.col("orderid").cast("string"), 256)
+# # CSV 読み込み
+# csv_path = f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/raw_data/orders/orders.csv"
+# df = (
+#     spark.read.format("csv")
+#         .option("header", "true")
+#         .option("quote", '"')
+#         .option("escape", '"')
+#         .option("multiLine", "true")
+#         .option("inferSchema", "true")
+#         .option("overwriteSchema", "true")
+#         .load(csv_path)
 # )
 
-# df = df.withColumn(
-#     "customerid_sha256",
-#     F.sha2(F.col("customerid").cast("string"), 256)
-# )
+# # テーブル保存
+# df.write.format("delta").mode("overwrite").saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.orders")
 
-# df = df.withColumn(
-#     "productid_sha256",
-#     F.sha2(F.col("productid").cast("string"), 256)
-# )
-
-# selected_df = df.select(
-#       'orderid_sha256',
-#       'customerid_sha256',
-#       'productid_sha256',
-#       'orderdate',
-#       'quantity',
-#       'orderamt',
-#       'salesrep'
-#       )
-
-# # 新規テーブル作成
-# selected_df.write.mode("overwrite") \
-#             .format("delta") \
-#             .option("overwriteSchema", "true") \
-#             .saveAsTable(f"{MY_CATALOG}.{MY_SCHEMA}.hashed_orders")
+# print(df.count())
+# print(df.columns)
+# display(df.limit(100))
 
 # COMMAND ----------
 
@@ -174,15 +148,15 @@ except Exception as e:
 # '''
 # 変数設定
 # '''
-# TABLE_PATH = f'{MY_CATALOG}.{MY_SCHEMA}.hashed_orders' # テーブルパス
-# PK_CONSTRAINT_NAME = f'pk_hashed_orders'               # 主キー制約名
+# TABLE_PATH = f'{MY_CATALOG}.{MY_SCHEMA}.orders' # テーブルパス
+# PK_CONSTRAINT_NAME = f'pk_orders'               # 主キー制約名
 
 # '''
 # コメント追加
 # '''
 # # テーブルコメント
 # comment = """
-# テーブル名：`hashed_orders / 商品購入などの注文履歴（顧客・商品・営業との関連）`
+# テーブル名：`orders / 商品購入などの注文履歴（顧客・商品・営業との関連）`
 # """
 # spark.sql(f'COMMENT ON TABLE {TABLE_PATH} IS "{comment}"')
 

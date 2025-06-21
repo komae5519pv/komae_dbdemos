@@ -38,18 +38,18 @@ class DBDemos:
 
 # COMMAND ----------
 
-# customers をダウンロード
-DBDemos.download_file_from_git(
-    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/raw_data/customers",
-    owner="komae5519pv",
-    repo="komae_dbdemos",
-    path="/cleanroom_20250621/creator/raw_data/"
-)
-
-# # orders をダウンロード
+# # customers をダウンロード
 # DBDemos.download_file_from_git(
-#     dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/raw_data/orders",
+#     dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/raw_data/customers",
 #     owner="komae5519pv",
 #     repo="komae_dbdemos",
-#     path="/cleanroom_20250621/collaborator/raw_data/"
+#     path="/cleanroom_20250621/creator/01_init_data/raw_data/"
 # )
+
+# orders をダウンロード
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/raw_data/orders",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/cleanroom_20250621/collaborator/01_init_data/raw_data"
+)
