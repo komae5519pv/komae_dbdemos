@@ -1,16 +1,14 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # Githubのデータをダウンロード
-# MAGIC - ここではデモ用のサンプルデータをGithubからボリュームにロードします  
-# MAGIC - サーバレス or DBR 16.0ML以降
+# MAGIC デモ用のサンプルデータをGithubからボリュームにロードします
 
 # COMMAND ----------
 
-# MAGIC %run ../00_setup
+# %run ../00_setup
 
 # COMMAND ----------
 
-print("start downloading raw_data from github...")
+print("Githubからデータダウンロード中...")
 
 # COMMAND ----------
 
@@ -42,14 +40,31 @@ class DBDemos:
 
 # COMMAND ----------
 
-# ダウンロード
+'''ダウンロード'''
+# customer
 DBDemos.download_file_from_git(
-    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}",
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/customer",
     owner="komae5519pv",
     repo="komae_dbdemos",
-    path="/e2e_ML_20250629/raw_data/"
+    path="/e2e_ML_20250629/_data/_raw_data/customer/"
+)
+
+# ml_sample
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/ml_sample",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/e2e_ML_20250629/_data/_raw_data/ml_sample/"
+)
+
+# data
+DBDemos.download_file_from_git(
+    dest=f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/data",
+    owner="komae5519pv",
+    repo="komae_dbdemos",
+    path="/e2e_ML_20250629/_data/_raw_data/data/"
 )
 
 # COMMAND ----------
 
-print("ダッシュボードが参照する画像データのダウンロードが完了しました！")
+print("ダウンロードが完了しました！")
