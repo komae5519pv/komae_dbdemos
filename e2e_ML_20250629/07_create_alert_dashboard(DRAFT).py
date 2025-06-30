@@ -92,8 +92,7 @@
 # MAGIC       クエリー名：　name_workshop (任意)
 # MAGIC     </td>
 # MAGIC     <td>
-# MAGIC       <!-- <img src='https://sajpstorage.blob.core.windows.net/workshop2022/20220623-quickstart-workshop/sql6.png' width='600' /> -->
-# MAGIC       <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/imgs/sql6.png?raw=true' width='600' />
+# MAGIC       <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/_data/_imgs/sql6.png?raw=true' width='600' />
 # MAGIC     </td>
 # MAGIC   </tr>
 # MAGIC   
@@ -104,8 +103,7 @@
 # MAGIC       ダッシュボード名： name_dashboard (任意)
 # MAGIC     </td>
 # MAGIC     <td>
-# MAGIC       <!-- <img src='https://sajpstorage.blob.core.windows.net/workshop2022/20220623-quickstart-workshop/sql7.png' width='600' /> -->
-# MAGIC       <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/imgs/sql7.png?raw=true' width='600' />
+# MAGIC       <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/_data/_imgs/sql7.png?raw=true' width='600' />
 # MAGIC     </td>
 # MAGIC   </tr>
 # MAGIC   
@@ -114,8 +112,7 @@
 # MAGIC       パネルの追加 <br>
 # MAGIC     </td>
 # MAGIC     <td>
-# MAGIC       <!-- <img src='https://sajpstorage.blob.core.windows.net/workshop2022/20220623-quickstart-workshop/sql8.png' width='600' /> -->
-# MAGIC       <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/imgs/sql8.png?raw=true' width='600' />
+# MAGIC       <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/_data/_imgs/sql8.png?raw=true' width='600' />
 # MAGIC     </td>
 # MAGIC   </tr>
 # MAGIC
@@ -125,8 +122,7 @@
 # MAGIC
 # MAGIC パネルのサイズや配置を変えて完成させよう! 
 # MAGIC
-# MAGIC <!-- <img src='https://sajpstorage.blob.core.windows.net/maruyama/Demo/image/ml_dashboard.png' width='1000' /> -->
-# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/imgs/ml_dashboard.png?raw=true' width='1000' />
+# MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/_data/_imgs/ml_dashboard.png?raw=true' width='1000' />
 
 # COMMAND ----------
 
