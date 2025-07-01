@@ -1,4 +1,9 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC DBR 15.4 ML 以降をお使いください
+
+# COMMAND ----------
+
 MY_CATALOG = "komae_demo_v1"      # 任意のカタログ名に変更してください
 MY_SCHEMA = "ml_handson"
 MY_VOLUME = "raw_data"

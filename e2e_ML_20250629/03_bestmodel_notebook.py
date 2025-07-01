@@ -1,6 +1,8 @@
 # Databricks notebook source
 # MAGIC %md # 03.ベストモデルノートブック
 # MAGIC
+# MAGIC DBR 15.4 ML 以降をお使いください
+# MAGIC
 # MAGIC こちらは、AutoMLで生成されたベストモデルを作成したノートブックをクローンしたものです。 <br>
 # MAGIC こちらのノートブックをベースにチューニングを行なっていきます。
 # MAGIC

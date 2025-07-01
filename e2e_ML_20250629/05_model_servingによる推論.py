@@ -1,7 +1,8 @@
 # Databricks notebook source
 # MAGIC %md # 05. モデルサービングによる推論
 # MAGIC
-# MAGIC <!-- <img src='https://sajpstorage.blob.core.windows.net/maruyama/public_share/demo_end2end/5_model_serving.png' width='800' /> -->
+# MAGIC DBR 15.4 ML 以降をお使いください
+# MAGIC
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/_data/_imgs/5_model_serving.png?raw=true' width='1200' />
 
 # COMMAND ----------

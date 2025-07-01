@@ -3,6 +3,7 @@
 # MAGIC
 # MAGIC このノートブックでは、01で作った特徴量を使ってベストなモデルを作成し、Unity Catalogにベストモデルを登録します
 # MAGIC
+# MAGIC DBR 15.4 ML 以降をお使いください
 # MAGIC <img src='https://github.com/komae5519pv/komae_dbdemos/blob/main/e2e_ML_20250629/_data/_imgs/2_automl.png?raw=true' width='1200' />
 
 # COMMAND ----------

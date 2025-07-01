@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md 
-# MAGIC **要件**  Databricks Runtime ML & 12.2〜15.4
+# MAGIC **要件**  DBR 15.4 ML 以降をお使いください
 
 # COMMAND ----------
 
