@@ -162,11 +162,55 @@ finally:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC #### 2-3. MLflowにログされたモデルが正常に使えるかテストします
+# MAGIC #### 2-3. テスト推論
+# MAGIC [Python MLflow モデルのロード]{https://learn.microsoft.com/ja-jp/azure/databricks/mlflow/models}
+# MAGIC MLflowにログされたモデルをMlflow.pyfuncでロードし、正常に使えるかテストします
 
 # COMMAND ----------
 
-# DBTITLE 1,テスト推論 loaded from MLflow Experiment
+# MAGIC %md
+# MAGIC ##### 2-3-1. Python 汎用関数としてモデルロード & Python環境での推論
+# MAGIC Python MLflow モデルの場合、Python 汎用関数として`mlflow.pyfunc.load_model()`でモデルをロードできます。
+# MAGIC - 目的: 単一ノードのPython環境でモデルを直接実行し、小規模データやローカルテストに適しています。<br>
+# MAGIC - 実行環境: Pythonプロセス内で動作（例: Pandas DataFrameやNumPy配列の入力）。<br>
+# MAGIC - スケーラビリティ: 単一マシンのリソース制限あり。大規模データには向かない。<br>
+# MAGIC - ユースケース: 開発中の検証、小規模バッチ推論、APIサーバーでのリアルタイム推論
+
+# COMMAND ----------
+
+# best_run_id = "beb9b8563f6844a181da4ff05a1f2d1a"
+
+# COMMAND ----------
+
+import mlflow
+import pandas as pd
+
+# MLflowモデルのロード
+logged_model = f'runs:/{best_run_id}/model'
+loaded_model = mlflow.pyfunc.load_model(model_uri=logged_model)
+
+# Spark DataFrameをpandas DataFrameに変換
+pdf = df.toPandas()
+
+# 推論
+predictions = loaded_model.predict(pdf)
+
+# pandas DataFrameをSpark DataFrameへ変換
+predictions_df = spark.createDataFrame(pdf.assign(predictions=predictions))
+display(predictions_df.limit(10))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ##### 2-3-2. Spark UDFとしてモデルロード & 分散推論
+# MAGIC Apache Spark UDF として`mlflow.pyfunc.spark_udf()`でモデルをロードできます。<br>
+# MAGIC - 目的: Sparkクラスター上でモデルを分散処理し、大規模データやストリーミングに適しています<br>
+# MAGIC - 実行環境: Spark UDF（User Defined Function）として登録され、Sparkエンジンで分散実行<br>
+# MAGIC - スケーラビリティ: クラスターリソースを活用し、TB級データでも効率的<br>
+# MAGIC - ユースケース: バッチジョブ（例: 全顧客データのスコアリング）、Sparkストリーミング処理
+
+# COMMAND ----------
+
 import mlflow
 from pyspark.sql.functions import struct, col
 logged_model = f'runs:/{best_run_id}/model'
