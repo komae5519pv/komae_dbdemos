@@ -10,14 +10,13 @@ SERVING_ENDPOINT = "komae_churn_model"
 # DBTITLE 1,Unity Catalog設定(管理者はあらかじめ作成し、権限を付与しておいてください）
 # カタログ、スキーマ、ボリューム作成
 spark.sql(f'CREATE CATALOG IF NOT EXISTS {MY_CATALOG}')
-spark.sql(f'CREATE SCHEMA IF NOT EXISTS {MY_SCHEMA}')
+spark.sql(f'CREATE SCHEMA IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}')
 spark.sql(f"CREATE VOLUME IF NOT EXISTS {MY_CATALOG}.{MY_SCHEMA}.{MY_VOLUME}")
 
 # アクセス許可
 spark.sql(f'GRANT CREATE, USAGE ON CATALOG {MY_CATALOG} TO `account users`')
 
 spark.sql(f'USE CATALOG {MY_CATALOG}')
-spark.sql(f'USE {MY_SCHEMA}')
 
 # ボリュームのサブディレクトリ作成
 dbutils.fs.mkdirs(f"/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/customer")

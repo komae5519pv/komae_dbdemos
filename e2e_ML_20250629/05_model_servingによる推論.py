@@ -331,7 +331,7 @@ def score_model(dataset):
 
 # モデルサービングは、比較的小さいデータバッチにおいて低レーテンシーで予測するように設計されています。
 
-sample_data = f'/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/ml_sample.csv'
+sample_data = f'/Volumes/{MY_CATALOG}/{MY_SCHEMA}/{MY_VOLUME}/ml_sample/ml_sample.csv'
 sample_df = spark.read.format('csv').option("header","true").option("inferSchema", "true").load(sample_data).toPandas()
 #display(sample_df)
 
