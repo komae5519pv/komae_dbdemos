@@ -1,0 +1,9 @@
+command:
+- "python"
+- "app.py"
+
+env:
+- name: "SPACE_ID"
+  value: "<ここはGenie Space ID を記述してください>"
+- name: "SERVING_ENDPOINT_NAME"
+  value: "databricks-llama-4-maverick"
