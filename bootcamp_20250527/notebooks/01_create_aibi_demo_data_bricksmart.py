@@ -1,7 +1,7 @@
 # Databricks notebook source
 # DBTITLE 1,パラメーターの設定
 # Widgetsの作成
-dbutils.widgets.text("catalog", "aibi_demo_catalog", "カタログ")
+dbutils.widgets.text("catalog", "workspace", "カタログ")
 dbutils.widgets.text("schema", "bricksmart", "スキーマ")
 dbutils.widgets.dropdown("recreate_schema", "False", ["True", "False"], "スキーマを再作成")
 dbutils.widgets.text("volume", "csv", "ボリューム")
@@ -750,7 +750,7 @@ display(df.limit(100))
 #   CAST(date AS DATE) AS date,
 #   -- カテゴリ
 #   ai_query(
-#     'databricks-claude-3-7-sonnet',
+#     'databricks-llama-4-maverick',
 #     CONCAT(
 #       "[指示]次の顧客レビュー内容を、次のカテゴリのいずれかに分類してください",
 #       "\n[顧客レビュー]" || comment,
@@ -768,7 +768,7 @@ display(df.limit(100))
 #   ).result AS category,
 #   -- 要約
 #   ai_query(
-#     'databricks-claude-3-7-sonnet',
+#     'databricks-llama-4-maverick',
 #     CONCAT(
 #       "[指示]次の顧客レビューから要点を絞って、明快で簡潔な一つの文章に要約して下さい",
 #       "\n[顧客レビュー]" || comment,
@@ -780,7 +780,7 @@ display(df.limit(100))
 #   -- ポジティブスコア
 #   CAST( 
 #     ai_query(
-#         'databricks-claude-3-7-sonnet',
+#         'databricks-llama-4-maverick',
 #         CONCAT(
 #         "[指示]次の顧客レビュー内容について、0~1の間でポジティブスコアを付与してください",
 #         "\n[顧客レビュー]" || comment,

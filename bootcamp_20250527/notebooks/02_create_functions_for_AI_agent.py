@@ -1,6 +1,6 @@
 # Databricks notebook source
 # Widgetsの作成
-dbutils.widgets.text("catalog", "aibi_demo_catalog", "カタログ")
+dbutils.widgets.text("catalog", "workspace", "カタログ")
 dbutils.widgets.text("schema", "bricksmart", "スキーマ")
 dbutils.widgets.dropdown("recreate_schema", "False", ["True", "False"], "スキーマを再作成")
 
